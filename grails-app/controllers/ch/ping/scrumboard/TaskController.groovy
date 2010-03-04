@@ -60,7 +60,7 @@ class TaskController {
 		StateTaskOpen taskState = StateTaskOpen.withCriteria(uniqueResult:true) {
 		}
 		
-		new Task(name: taskName, effort: taskEffort, url: new Url(url: taskLink).save(), state: taskState).save()
+		new Task(name: taskName, effort: taskEffort, url: new Url(url: taskLink).save(), state: taskState, priority: Priority.NORMAL).save()
 		
 		redirect(controller:'task', action:'list')
 	}

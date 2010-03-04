@@ -2,7 +2,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="layout" content="main" />
-		<title>ScrumBoard</title>
+		<title>Skramboord</title>
 		
 		<style type="text/css">
 			#open, #checkout, #done, #next, #standBy { list-style-type: none; margin: 0; padding: 0; float: left; width: 230px;}
@@ -68,7 +68,7 @@
 	</head>
 	<body>
 		<div class="body">	
-			<h3>Informations</h3>
+			<h3>Project informations</h3>
 			<table>
 				<tr>
 					<th>Project</th>
@@ -105,7 +105,7 @@
 								</g:else>
 									<g:each var="task" in="${session.taskListOpen}" status="i">
 										<li id="taskId_${task.id}" class="ui-state-default">
-											<g:link url="${task.url?.url}">${task.name}</g:link>
+											<g:link url="${task.url?.url}" style="color: #${task.priority.toString()};">${task.name}</g:link>
 											<div id="taskInfo">
 												Effort: ${task.effort}<br/>
 												Person: unknown
@@ -123,7 +123,7 @@
 								</g:else>
 									<g:each var="task" in="${session.taskListCheckout}" status="i">
 										<li id="taskId_${task.id}" class="ui-state-default">
-											<g:link url="${task.url?.url}">${task.name}</g:link>
+											<g:link url="${task.url?.url}" style="color: #${task.priority.toString()};">${task.name}</g:link>
 											<div id="taskInfo">
 												Effort: ${task.effort}<br/>
 												Person: unknown
@@ -141,7 +141,7 @@
 								</g:else>
 									<g:each var="task" in="${session.taskListDone}" status="i">
 										<li id="taskId_${task.id}" class="ui-state-default">
-											<g:link url="${task.url?.url}">${task.name}</g:link>
+											<g:link url="${task.url?.url}" style="color: #${task.priority.toString()};">${task.name}</g:link>
 											<div id="taskInfo">
 												Effort: ${task.effort}<br/>
 												Person: unknown
@@ -165,7 +165,7 @@
 								</g:else>
 									<g:each var="task" in="${session.taskListStandBy}" status="i">
 										<li id="taskId_${task.id}" class="ui-state-default">
-											<g:link url="${task.url?.url}">${task.name}</g:link>
+											<g:link url="${task.url?.url}" style="color: #${task.priority.toString()};">${task.name}</g:link>
 											<div id="taskInfo">
 												Effort: ${task.effort}<br/>
 												Person: unknown
@@ -183,7 +183,7 @@
 								</g:else>
 									<g:each var="task" in="${session.taskListNext}" status="i">
 										<li id="taskId_${task.id}" class="ui-state-default">
-											<g:link url="${task.url?.url}">${task.name}</g:link>
+											<g:link url="${task.url?.url}" style="color: #${task.priority.toString()};">${task.name}</g:link>
 											<div id="taskInfo">
 												Effort: ${task.effort}<br/>
 												Person: unknown

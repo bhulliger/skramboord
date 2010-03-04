@@ -1,0 +1,22 @@
+# Grails stuff
+stacktrace.log
+
+# vim
+*.swp
+ 
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+ 
+# tools
+.pmd
+.checkstyle
+ 
+# building
+*.class
+web-app/WEB-INF/classes/
+target/
+build/
+dist/

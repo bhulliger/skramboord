@@ -201,11 +201,13 @@
 					    <th>Name</th>
 					    <th>Effort</th>
 					    <th>Link</th>
+					    <th>Priority</th>
 					</tr>
 					<tr>
 						<td><input type="text" id="taskName" name="taskName" maxlength="100" size="30"/></td>
 						<td><input type="text" id="taskEffort" name="taskEffort" maxlength="4" size="4"/></td>
 						<td><input type="text" id="taskLink" name="taskLink" maxlength="100" size="30"/></td>
+						<td><g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/></td>
 						<td>
 							<div class="buttons"><span class="button"><g:actionSubmit class="add" value="add" action="addTask"/></span></div>
 						</td>

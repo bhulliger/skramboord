@@ -8,6 +8,8 @@ class TaskController {
 	def list = {
 		def taskList = Task.list(sort:'name', ignoreCase:false)
 
+		session.priorityList=Priority.list()
+
 		session.taskListOpen = Task.withCriteria {
 			eq('state', StateTask.getStateOpen())
 			order('name',"asc")
@@ -56,11 +58,13 @@ class TaskController {
 		def taskName = params.taskName
 		def taskEffort = params.taskEffort
 		def taskLink = params.taskLink
+		def taskPriority = params.taskPriority
 		
-		StateTaskOpen taskState = StateTaskOpen.withCriteria(uniqueResult:true) {
+		Priority priority = Priority.withCriteria(uniqueResult:true) {
+			eq('name', taskPriority)
 		}
 		
-		new Task(name: taskName, effort: taskEffort, url: new Url(url: taskLink).save(), state: taskState, priority: Priority.NORMAL).save()
+		new Task(name: taskName, effort: taskEffort, url: new Url(url: taskLink).save(), state: StateTask.getStateOpen(), priority: priority).save()
 		
 		redirect(controller:'task', action:'list')
 	}

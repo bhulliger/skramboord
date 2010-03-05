@@ -29,15 +29,15 @@ class BootStrap {
 		taskStateStandBy.save()
 
 		// Initialize priorities
-		Priority low = new Priority(name: "low", color: Color.GRAY);
+		Priority low = new Priority(name: "low", color: Color.GRAY)
 		low.save()
-		Priority normal = new Priority(name: "normal", color: Color.GREEN);
+		Priority normal = new Priority(name: "normal", color: Color.GREEN)
 		normal.save()
-		Priority high = new Priority(name: "high", color: Color.BLUE);
+		Priority high = new Priority(name: "high", color: Color.BLUE)
 		high.save()
-		Priority urgent = new Priority(name: "urgent", color: Color.ORANGE);
+		Priority urgent = new Priority(name: "urgent", color: Color.ORANGE)
 		urgent.save()
-		Priority immediate = new Priority(name: "immediate", color: Color.RED);
+		Priority immediate = new Priority(name: "immediate", color: Color.RED)
 		immediate.save()
 
 		// Initialize tasks for scrum board		

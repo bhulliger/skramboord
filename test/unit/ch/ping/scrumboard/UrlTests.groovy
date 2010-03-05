@@ -16,7 +16,12 @@ class UrlTests extends GrailsUnitTestCase {
 	 * Url can't be null
 	 */
 	void testNullAsUrl() {
+		// given
 		def correctUrl = new Url(url:null)
+		
+		// when
+		
+		// then
 		assertFalse correctUrl.validate()
 	}
 	
@@ -24,7 +29,12 @@ class UrlTests extends GrailsUnitTestCase {
      * Positive test HTTP
      */
     void testCorrectUrlHttp() {
+		// given
     	def correctUrl = new Url(url:"http://www.puzzle.ch")
+		
+		// when
+		
+		// then
 		assertTrue correctUrl.validate()
     }
 	
@@ -32,7 +42,12 @@ class UrlTests extends GrailsUnitTestCase {
 	 * Negative test: Missing domain
 	 */
 	void testInCorrectUrlMissingDomain() {
+		// given
 		def incorrectUrl = new Url(url:"http://www.puzzle")
+		
+		// when
+		
+		// then
 		assertFalse incorrectUrl.validate()
 	}
 	
@@ -40,7 +55,12 @@ class UrlTests extends GrailsUnitTestCase {
 	 * Positive test HTTPS
 	 */
 	void testCorrectUrlHttps() {
+		// given
 		def correctUrl = new Url(url:"https://www.puzzle.ch")
+		
+		// when
+		
+		// then
 		assertTrue correctUrl.validate()
 	}
 	
@@ -48,7 +68,12 @@ class UrlTests extends GrailsUnitTestCase {
 	 * Negative test: Missing protocol
 	 */
 	void testInCorrectUrlMissingProtocol() {
+		// given
 		def incorrectUrl = new Url(url:"www.puzzle.ch")
+		
+		// when
+		
+		// then
 		assertFalse incorrectUrl.validate()
 	}
 	
@@ -56,7 +81,12 @@ class UrlTests extends GrailsUnitTestCase {
 	 * Negative test: url with lot of whitespace
 	 */
 	void testInCorrectUrlWithWhitespace() {
+		// given
 		def incorrectUrl = new Url(url:"htt p:/ /ww w. puz z l e")
+		
+		// when
+		
+		// then
 		assertFalse incorrectUrl.validate()
 	}
 }

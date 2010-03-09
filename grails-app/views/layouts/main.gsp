@@ -10,7 +10,7 @@
         <div id="spinner" class="spinner" style="display:none;">
             <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner"/>
         </div>
-        <div id="grailsLogo" class="logo"><a href="http://github.com/pablohess/skramboord" target="_blank"><h1>Skramboord</h1></a></div>
+        <div id="grailsLogo" class="logo"><a href="http://github.com/pablohess/skramboord" target="_blank"><img src="${resource(dir:'images/skramboord',file:'skramboord.logo.small.png')}" border="0" alt="Logo Skramboord"/></a></div>
         <hr/>
         <g:layoutBody />
     </body>

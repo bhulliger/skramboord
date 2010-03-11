@@ -15,14 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-class UrlMappings {
-    static mappings = {
-      "/$controller/$action?/$id?"{
-	      constraints {
-			 // apply constraints here
-		  }
-	  }
-      "/"(controller:"sprint", action:"list")
-	  "500"(view:'/error')
-	}
+package ch.ping.scrumboard
+
+import grails.test.*
+
+class SprintControllerTests extends ControllerUnitTestCase {
+    protected void setUp() {
+        super.setUp()
+    }
+
+    protected void tearDown() {
+        super.tearDown()
+    }
+
+    void testSomething() {
+
+    }
 }

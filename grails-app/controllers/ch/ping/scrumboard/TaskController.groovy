@@ -23,35 +23,37 @@ class TaskController {
 	}
 	
 	def list = {
-		def taskList = Task.list(sort:'name', ignoreCase:false)
-		
 		session.priorityList=Priority.list()
-		
-		Sprint sprint = Sprint.get(1)
+
+		if (params.sprint) {
+			session.sprint = Sprint.get(params.sprint)
+		}
+
+		session.project = Project.get(1)
 		
 		session.taskListOpen = Task.withCriteria {
 			eq('state', StateTask.getStateOpen())
-			eq('sprint', sprint)
+			eq('sprint', session.sprint)
 			order('priority',"desc")
 		}
 		session.taskListCheckout = Task.withCriteria {
 			eq('state', StateTask.getStateCheckedOut())
-			eq('sprint', sprint)
+			eq('sprint', session.sprint)
 			order('priority',"desc")
 		}
 		session.taskListDone = Task.withCriteria {
 			eq('state', StateTask.getStateDone())
-			eq('sprint', sprint)
+			eq('sprint', session.sprint)
 			order('priority',"desc")
 		}
 		session.taskListStandBy = Task.withCriteria {
 			eq('state', StateTask.getStateStandBy())
-			eq('sprint', sprint)
+			eq('sprint', session.sprint)
 			order('priority',"desc")
 		}
 		session.taskListNext = Task.withCriteria {
 			eq('state', StateTask.getStateNext())
-			eq('sprint', sprint)
+			eq('sprint', session.sprint)
 			order('priority',"desc")
 		}
 		
@@ -73,7 +75,6 @@ class TaskController {
 		}
 		session.totalEffort = totalEffort
 		session.totalEffortDone = totalEffortDone
-		session.sprint = sprint
 	}
 	
 	/**

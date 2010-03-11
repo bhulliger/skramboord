@@ -17,6 +17,8 @@
 
 import java.awt.Color;
 
+import org.apache.catalina.connector.ResponseFacade.DateHeaderPrivilegedAction;
+
 import ch.ping.scrumboard.StateTaskCheckedOut;
 import ch.ping.scrumboard.StateTaskDone;
 import ch.ping.scrumboard.StateTaskNext;
@@ -26,6 +28,7 @@ import ch.ping.scrumboard.Task;
 import ch.ping.scrumboard.Url;
 import ch.ping.scrumboard.Priority;
 import ch.ping.scrumboard.Sprint;
+import ch.ping.scrumboard.Project;
 
 class BootStrap {
 
@@ -58,7 +61,32 @@ class BootStrap {
 		Priority immediate = new Priority(name: "immediate", color: Color.RED)
 		immediate.save()
 
-		// Initialize tasks for scrum board		
+		// Initialize dates
+		Date date1 = new Date()
+		Date date2 = date1-10
+		Date date3 = date2-10
+		
+		// Sprint 1.0
+		// Initialize tasks
+		Task task1812 = new Task(name:"Mantis 1812", effort: 2.0, url: urlPuzzle, state: taskStateDone, priority: normal)
+		task1812.save()
+		Task task1798 = new Task(name:"Mantis 1798", effort: 7.0, url: urlPuzzle, state: taskStateDone, priority: normal)
+		task1798.save()
+		Task task1765 = new Task(name:"Mantis 1765", effort: 9.5, url: urlPuzzle, state: taskStateDone, priority: high)
+		task1765.save()
+		Task task1722 = new Task(name:"Mantis 1722", effort: 0.5, url: urlPuzzle, state: taskStateDone, priority: low)
+		task1722.save()
+
+		// Initialize sprints
+		Sprint sprint1_0 = new Sprint(name:"1.0", goal:"Some Mantis Tasks", startDate:date3, endDate:date2, tasks: [])
+		sprint1_0.addToTasks(task1812)
+		sprint1_0.addToTasks(task1798)
+		sprint1_0.addToTasks(task1765)
+		sprint1_0.addToTasks(task1722)
+		sprint1_0.save()
+
+		// Sprint 1.1
+		// Initialize tasks
 		Task task2001 = new Task(name:"Mantis 2001", effort: 2.0, url: urlPuzzle, state: taskStateOpen, priority: normal)
 		task2001.save()
 		Task task2015 = new Task(name:"Mantis 2015", effort: 3.5, url: urlPuzzle, state: taskStateOpen, priority: urgent)
@@ -75,18 +103,21 @@ class BootStrap {
 		task2014.save()
 
 		// Initialize sprints
-		Date date1 = new Date()-10
-		Date date2 = new Date()
+		Sprint sprint1_1 = new Sprint(name:"1.1", goal:"Lots Mantis Tasks", startDate:date2, endDate:date1, tasks: [])
+		sprint1_1.addToTasks(task2001)
+		sprint1_1.addToTasks(task2015)
+		sprint1_1.addToTasks(task1987)
+		sprint1_1.addToTasks(task1950)
+		sprint1_1.addToTasks(task1999)
+		sprint1_1.addToTasks(task2012)
+		sprint1_1.addToTasks(task2014)
+		sprint1_1.save()
 		
-		Sprint sprint1 = new Sprint(name:"1.0", goal:"Some Mantis Tasks", startDate:date1, endDate:date2, tasks: [])
-		sprint1.addToTasks(task2001)
-		sprint1.addToTasks(task2015)
-		sprint1.addToTasks(task1987)
-		sprint1.addToTasks(task1950)
-		sprint1.addToTasks(task1999)
-		sprint1.addToTasks(task2012)
-		sprint1.addToTasks(task2014)
-		sprint1.save()
+		// Initialize Project skramboord
+		Project skramboord = new Project(name: "skramboord")
+		skramboord.addToSprints(sprint1_0)
+		skramboord.addToSprints(sprint1_1)
+		skramboord.save()
      }
      def destroy = {
      }

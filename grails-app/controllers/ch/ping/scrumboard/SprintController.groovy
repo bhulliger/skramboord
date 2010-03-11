@@ -15,14 +15,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-class UrlMappings {
-    static mappings = {
-      "/$controller/$action?/$id?"{
-	      constraints {
-			 // apply constraints here
-		  }
-	  }
-      "/"(controller:"sprint", action:"list")
-	  "500"(view:'/error')
+package ch.ping.scrumboard
+
+class SprintController {
+	
+	def index = { redirect(controller:'sprint', action:'list')
+	}
+	
+	def list = {
+		session.project = Project.get(1)
+
+		session.sprintList = Sprint.withCriteria {
+			eq('project', session.project)
+			order('endDate',"desc")
+		}
 	}
 }

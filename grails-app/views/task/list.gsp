@@ -13,7 +13,6 @@
 			label, input { display:block; }
 			input.text { margin-bottom:12px; width:95%; padding: .4em; }
 			fieldset { padding:0; border:0; margin-top:25px; }
-			h1 { font-size: 1.2em; margin: .6em 0; }
 			div#users-contain { width: 350px; margin: 20px 0; }
 			div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
 			div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
@@ -74,7 +73,7 @@
 					.click(function() {
 						$('#dialog-form').dialog('open');
 				});
-				
+
 				$("#open").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
@@ -105,21 +104,24 @@
 
 	</head>
 	<body>
-		<div class="body">	
+		<div class="body">
+			<h1><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: session.sprint.id]">> ${session.sprint.name}</g:link></h1>
 			<h3>Project informations</h3>
 			<table>
 				<tr>
-					<th>Project</th>
 					<th>Sprint</th>
 					<th>Goal</th>
+					<th>Start</th>
+					<th>End</th>
 					<th>Number of Tasks</th>
 				    <th>Total effort</th>
 				    <th>Total effort done</th>
 				</tr>
 				<tr>
-					<td><b>Test</b></td>
 					<td><b>${session.sprint.name}</b></td>
 					<td>${session.sprint.goal}</td>
+					<td><g:formatDate format="dd.MM.yyyy" date="${session.sprint.startDate}"/></td>
+					<td><g:formatDate format="dd.MM.yyyy" date="${session.sprint.endDate}"/></td>
 					<td>${session.numberOfTasks}</td>
 					<td>${session.totalEffort}</td>
 					<td>${session.totalEffortDone}</td>
@@ -143,8 +145,10 @@
 					</fieldset>
 					</g:form>
 				</div>
-				<g:submitButton name="create-task" value="Create task"/>
-				
+				<g:if test="${session.sprint.isSprintActive()}">
+					<g:submitButton name="create-task" value="Create task"/>
+				</g:if>
+
 				<table>
 					<tr>
 					    <th>Open</th>

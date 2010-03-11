@@ -24,6 +24,7 @@ class Sprint {
 	Date endDate
 	List tasks
 	static hasMany = [tasks:Task]
+	static belongsTo = [project:Project]
 
     static constraints = {
 		name(nullable:false)
@@ -31,4 +32,17 @@ class Sprint {
 		startDate(nullable:false)
 		endDate(nullable:false)
     }
+	
+	/**
+	 * Returns true if end date of sprint is after today.
+	 * 
+	 * @return true if active
+	 */
+	def isSprintActive() {
+		Date today = new Date()
+		today.hours = 0
+		today.minutes = 0
+		today.seconds = 0
+		return today.before(endDate)
+	}
 }

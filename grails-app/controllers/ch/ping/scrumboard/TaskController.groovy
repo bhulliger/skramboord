@@ -24,28 +24,35 @@ class TaskController {
 	
 	def list = {
 		def taskList = Task.list(sort:'name', ignoreCase:false)
-
+		
 		session.priorityList=Priority.list()
-
+		
+		Sprint sprint = Sprint.get(1)
+		
 		session.taskListOpen = Task.withCriteria {
 			eq('state', StateTask.getStateOpen())
-			order('name',"asc")
+			eq('sprint', sprint)
+			order('priority',"desc")
 		}
 		session.taskListCheckout = Task.withCriteria {
 			eq('state', StateTask.getStateCheckedOut())
-			order('name',"asc")
+			eq('sprint', sprint)
+			order('priority',"desc")
 		}
 		session.taskListDone = Task.withCriteria {
 			eq('state', StateTask.getStateDone())
-			order('name',"asc")
+			eq('sprint', sprint)
+			order('priority',"desc")
 		}
 		session.taskListStandBy = Task.withCriteria {
 			eq('state', StateTask.getStateStandBy())
-			order('name',"asc")
+			eq('sprint', sprint)
+			order('priority',"desc")
 		}
 		session.taskListNext = Task.withCriteria {
 			eq('state', StateTask.getStateNext())
-			order('name',"asc")
+			eq('sprint', sprint)
+			order('priority',"desc")
 		}
 		
 		session.numberOfTasks = session.taskListOpen.size() + session.taskListCheckout.size() + session.taskListDone.size() + session.taskListStandBy.size()
@@ -66,6 +73,7 @@ class TaskController {
 		}
 		session.totalEffort = totalEffort
 		session.totalEffortDone = totalEffortDone
+		session.sprint = sprint
 	}
 	
 	/**
@@ -80,9 +88,14 @@ class TaskController {
 		Priority priority = Priority.withCriteria(uniqueResult:true) {
 			eq('name', taskPriority)
 		}
-		
-		new Task(name: taskName, effort: taskEffort, url: new Url(url: taskLink).save(), state: StateTask.getStateOpen(), priority: priority).save()
-		
+				
+		Task task = new Task(name: taskName, effort: taskEffort, url: new Url(url: taskLink).save(), state: StateTask.getStateOpen(), priority: priority)
+		task.save()
+
+		Sprint sprint = Sprint.find(session.sprint)
+		sprint.addToTasks(task)
+		sprint.save()
+
 		redirect(controller:'task', action:'list')
 	}
 	
@@ -106,12 +119,7 @@ class TaskController {
 	 * Changes status of a task to open
 	 */
 	def changeTaskStateToOpen = {
-		def taskId = params.taskId
-		
-		// Prefix von JavaScript entfernen
-		taskId = taskId.replaceFirst("taskId_", "")
-		
-		Task task = Task.get(taskId)
+		Task task = Task.get(removeTaskPrefix(params.taskId))
 		task.state.open(task)
 		task.save()
 		
@@ -122,12 +130,7 @@ class TaskController {
 	 * Changes status of a task to checkout
 	 */
 	def changeTaskStateToCheckOut = {
-		def taskId = params.taskId
-		
-		// Prefix von JavaScript entfernen
-		taskId = taskId.replaceFirst("taskId_", "")
-		
-		Task task = Task.get(taskId)
+		Task task = Task.get(removeTaskPrefix(params.taskId))
 		task.state.checkOut(task)
 		task.save()
 		
@@ -138,12 +141,7 @@ class TaskController {
 	 * Changes status of a task to done
 	 */
 	def changeTaskStateToDone = {
-		def taskId = params.taskId
-		
-		// Prefix von JavaScript entfernen
-		taskId = taskId.replaceFirst("taskId_", "")
-		
-		Task task = Task.get(taskId)
+		Task task = Task.get(removeTaskPrefix(params.taskId))
 		task.state.done(task)
 		task.save()
 		
@@ -154,12 +152,7 @@ class TaskController {
 	 * Changes status of a task to next
 	 */
 	def changeTaskStateToNext = {
-		def taskId = params.taskId
-		
-		// Prefix von JavaScript entfernen
-		taskId = taskId.replaceFirst("taskId_", "")
-		
-		Task task = Task.get(taskId)
+		Task task = Task.get(removeTaskPrefix(params.taskId))
 		task.state.next(task)
 		task.save()
 		
@@ -170,15 +163,20 @@ class TaskController {
 	 * Changes status of a task to standby
 	 */
 	def changeTaskStateToStandBy = {
-		def taskId = params.taskId
-		
-		// Prefix von JavaScript entfernen
-		taskId = taskId.replaceFirst("taskId_", "")
-		
-		Task task = Task.get(taskId)
+		Task task = Task.get(removeTaskPrefix(params.taskId))
 		task.state.standBy(task)
 		task.save()
 		
 		redirect(controller:'task', action:'list')
+	}
+	
+	/**
+	 * Removes prefix 'taskId_'
+	 * 
+	 * @param String
+	 * @return task id
+	 */
+	private String removeTaskPrefix(String taskId) {
+		return taskId.replaceFirst("taskId_", "")
 	}
 }

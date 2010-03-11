@@ -110,14 +110,16 @@
 			<table>
 				<tr>
 					<th>Project</th>
-					<th>Release</th>
+					<th>Sprint</th>
+					<th>Goal</th>
 					<th>Number of Tasks</th>
 				    <th>Total effort</th>
 				    <th>Total effort done</th>
 				</tr>
 				<tr>
 					<td><b>Test</b></td>
-					<td><b>1.0</b></td>
+					<td><b>${session.sprint.name}</b></td>
+					<td>${session.sprint.goal}</td>
 					<td>${session.numberOfTasks}</td>
 					<td>${session.totalEffort}</td>
 					<td>${session.totalEffortDone}</td>

@@ -17,19 +17,18 @@
 
 package ch.ping.scrumboard
 
-class Task {	
+class Sprint {
 	String name
-	Double effort
-	Url url
-	StateTask state
-	Priority priority
-	static belongsTo = [sprint:Sprint]
-	
-	static constraints = {
+	String goal
+	Date startDate
+	Date endDate
+	List tasks
+	static hasMany = [tasks:Task]
+
+    static constraints = {
 		name(nullable:false)
-		effort(nullable:false)
-		url(nullable:true)
-		state(nullable:false)
-		priority(nullable:false)
+		goal(nullable:true)
+		startDate(nullable:false)
+		endDate(nullable:false)
     }
 }

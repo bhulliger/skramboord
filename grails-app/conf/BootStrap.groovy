@@ -25,6 +25,7 @@ import ch.ping.scrumboard.StateTaskStandBy;
 import ch.ping.scrumboard.Task;
 import ch.ping.scrumboard.Url;
 import ch.ping.scrumboard.Priority;
+import ch.ping.scrumboard.Sprint;
 
 class BootStrap {
 
@@ -58,13 +59,34 @@ class BootStrap {
 		immediate.save()
 
 		// Initialize tasks for scrum board		
-		new Task(name:"Mantis 2001", effort: 2.0, url: urlPuzzle, state: taskStateOpen, priority: normal).save()
-		new Task(name:"Mantis 2015", effort: 3.5, url: urlPuzzle, state: taskStateOpen, priority: urgent).save()
-		new Task(name:"Mantis 1987", effort: 0.5, url: urlPuzzle, state: taskStateOpen, priority: high).save()
-		new Task(name:"Mantis 1950", effort: 2.5, url: urlPuzzle, state: taskStateOpen, priority: normal).save()
-		new Task(name:"Mantis 1999", effort: 1.0, url: urlPuzzle, state: taskStateChecked, priority: immediate).save()
-		new Task(name:"Mantis 2012", effort: 1.5, url: urlPuzzle, state: taskStateNext, priority: normal).save()
-		new Task(name:"Mantis 2014", effort: 5.0, url: urlPuzzle, state: taskStateNext, priority: low).save()
+		Task task2001 = new Task(name:"Mantis 2001", effort: 2.0, url: urlPuzzle, state: taskStateOpen, priority: normal)
+		task2001.save()
+		Task task2015 = new Task(name:"Mantis 2015", effort: 3.5, url: urlPuzzle, state: taskStateOpen, priority: urgent)
+		task2015.save()
+		Task task1987 = new Task(name:"Mantis 1987", effort: 0.5, url: urlPuzzle, state: taskStateOpen, priority: high)
+		task1987.save()
+		Task task1950 = new Task(name:"Mantis 1950", effort: 2.5, url: urlPuzzle, state: taskStateOpen, priority: normal)
+		task1950.save()
+		Task task1999 = new Task(name:"Mantis 1999", effort: 1.0, url: urlPuzzle, state: taskStateChecked, priority: immediate)
+		task1999.save()
+		Task task2012 = new Task(name:"Mantis 2012", effort: 1.5, url: urlPuzzle, state: taskStateNext, priority: normal)
+		task2012.save()
+		Task task2014 = new Task(name:"Mantis 2014", effort: 5.0, url: urlPuzzle, state: taskStateNext, priority: low)
+		task2014.save()
+
+		// Initialize sprints
+		Date date1 = new Date()-10
+		Date date2 = new Date()
+		
+		Sprint sprint1 = new Sprint(name:"1.0", goal:"Some Mantis Tasks", startDate:date1, endDate:date2, tasks: [])
+		sprint1.addToTasks(task2001)
+		sprint1.addToTasks(task2015)
+		sprint1.addToTasks(task1987)
+		sprint1.addToTasks(task1950)
+		sprint1.addToTasks(task1999)
+		sprint1.addToTasks(task2012)
+		sprint1.addToTasks(task2014)
+		sprint1.save()
      }
      def destroy = {
      }

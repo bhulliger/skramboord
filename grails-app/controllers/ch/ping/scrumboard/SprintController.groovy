@@ -30,4 +30,23 @@ class SprintController {
 			order('endDate',"desc")
 		}
 	}
+	
+	/**
+	 * Add new sprint
+	 */
+	def addSprint = {
+		def sprintName = params.sprintName
+		def sprintGoal = params.sprintGoal
+		def startDate = new Date(params.startDateHidden)
+		def endDate = new Date(params.endDateHidden)
+		
+		Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate)
+		sprint.save()
+		
+		Project project = Project.find(session.project)
+		project.addToSprints(sprint)
+		project.save()
+		
+		redirect(controller:'sprint', action:'list')
+	}
 }

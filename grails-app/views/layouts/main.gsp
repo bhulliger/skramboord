@@ -1,7 +1,7 @@
 <html>
     <head>
         <title><g:layoutTitle default="Skramboord" /></title>
-        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/flick',file:'jquery.ui.all.css')}" >
+        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/skramboord',file:'jquery.ui.all.css')}" >
         <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" />
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <g:layoutHead />

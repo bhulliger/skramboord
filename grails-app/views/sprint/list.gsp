@@ -93,6 +93,10 @@
 				</g:form>
 			</div>
 			<g:submitButton name="create-sprint" value="Create sprint"/>
+			
+			<g:if test="${flash.message}">
+				<div class="message">${flash.message}</div>
+			</g:if>
 			<table>
 				<tr>
 					<th>Sprint</th>

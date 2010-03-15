@@ -27,7 +27,7 @@ class Sprint {
 	static belongsTo = [project:Project]
 
     static constraints = {
-		name(nullable:false)
+		name(nullable:false, minSize: 1, unique: ['name', 'project'])
 		goal(nullable:true)
 		startDate(nullable:false)
 		endDate(nullable:false)

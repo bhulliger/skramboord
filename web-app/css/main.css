@@ -12,10 +12,22 @@ html * {
 }
 
 body {
-    background: #fff;
+	background: #fff url('../images/skramboord/postit.green.jpg') repeat-x;
     color: #333;
     font: 11px verdana, arial, helvetica, sans-serif;
 }
+
+#content {
+    display:		table;
+	width: 			992px;
+	height:			100%;
+	margin:         auto;
+    padding:        0px 16px 40px 16px;
+    background:     #fff;
+	border-left:	1px solid #E9E9E7;
+	border-right:	1px solid #E9E9E7;
+}
+
 #grailsLogo {
 	padding:3px;
 }

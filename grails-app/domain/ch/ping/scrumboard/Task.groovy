@@ -20,7 +20,7 @@ package ch.ping.scrumboard
 class Task {	
 	String name
 	Double effort
-	Url url
+	String url
 	StateTask state
 	Priority priority
 	static belongsTo = [sprint:Sprint]
@@ -28,7 +28,7 @@ class Task {
 	static constraints = {
 		name(nullable:false)
 		effort(nullable:false)
-		url(nullable:true)
+		url(nullable:true, url:true, blank:false)
 		state(nullable:false)
 		priority(nullable:false)
     }

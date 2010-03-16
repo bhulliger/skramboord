@@ -24,11 +24,11 @@ class TaskController {
 	
 	def list = {
 		session.priorityList=Priority.list()
-
+		
 		if (params.sprint) {
 			session.sprint = Sprint.get(params.sprint)
 		}
-
+		
 		session.project = Project.get(1)
 		
 		session.taskListOpen = Task.withCriteria {
@@ -89,14 +89,14 @@ class TaskController {
 		Priority priority = Priority.withCriteria(uniqueResult:true) {
 			eq('name', taskPriority)
 		}
-				
-		Task task = new Task(name: taskName, effort: taskEffort, url: new Url(url: taskLink).save(), state: StateTask.getStateOpen(), priority: priority)
-		task.save()
-
+		
 		Sprint sprint = Sprint.find(session.sprint)
-		sprint.addToTasks(task)
-		sprint.save()
-
+		
+		Task task = new Task(name: taskName, effort: taskEffort, url: taskLink, state: StateTask.getStateOpen(), priority: priority, sprint: sprint)
+		if (!task.save()) {
+			flash.task = task
+		}
+		
 		redirect(controller:'task', action:'list')
 	}
 	

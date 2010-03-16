@@ -40,12 +40,12 @@ class SprintController {
 		def startDate = new Date(params.startDateHidden)
 		def endDate = new Date(params.endDateHidden)
 		
-		Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate)
-		sprint.save()
-		
 		Project project = Project.find(session.project)
-		project.addToSprints(sprint)
-		project.save()
+		
+		Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, project: project)
+		if (!sprint.save()) {
+			flash.sprint=sprint
+		}
 		
 		redirect(controller:'sprint', action:'list')
 	}

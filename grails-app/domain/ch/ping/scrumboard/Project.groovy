@@ -19,7 +19,6 @@ package ch.ping.scrumboard
 
 class Project {
 	String name
-	List sprints
 	static hasMany = [sprints:Sprint]
 	
     static constraints = {

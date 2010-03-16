@@ -53,7 +53,7 @@
 			$(function() {
 				$("#dialog-form").dialog({
 					autoOpen: false,
-					height: 320,
+					height: 340,
 					width: 300,
 					modal: true,
 					buttons: {
@@ -132,22 +132,26 @@
 				<h3>Tasks</h3>
 				<div id="dialog-form" title="Create new task">
 					<g:form name="myform" action="addTask">
-					
-					<fieldset>
-						<label for="name">Name</label>
-						<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
-						<label for="effort">Effort</label>
-						<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
-						<label for="link">Link</label>
-						<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
-						<label for="link">Priority</label>
-						<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/>
-					</fieldset>
+						<fieldset>
+							<label for="name">Name</label>
+							<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
+							<label for="effort">Effort</label>
+							<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
+							<label for="link">Link</label>
+							<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
+							<label for="link">Priority</label>
+							<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/>
+						</fieldset>
 					</g:form>
 				</div>
 				<g:if test="${session.sprint.isSprintActive()}">
 					<g:submitButton name="create-task" value="Create task"/>
 				</g:if>
+				<g:hasErrors bean="${flash.task}">
+					<div class="errors">
+						<g:renderErrors bean="${flash.task}" as="list"/>
+					</div>
+				</g:hasErrors>
 
 				<table>
 					<tr>
@@ -165,7 +169,7 @@
 							</g:else>
 								<g:each var="task" in="${session.taskListOpen}" status="i">
 									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url?.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 										<div id="taskInfo">
 											Effort: ${task.effort}<br/>
 											Person: unknown
@@ -183,7 +187,7 @@
 							</g:else>
 								<g:each var="task" in="${session.taskListCheckout}" status="i">
 									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url?.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 										<div id="taskInfo">
 											Effort: ${task.effort}<br/>
 											Person: unknown
@@ -201,7 +205,7 @@
 							</g:else>
 								<g:each var="task" in="${session.taskListDone}" status="i">
 									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url?.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 										<div id="taskInfo">
 											Effort: ${task.effort}<br/>
 											Person: unknown
@@ -225,7 +229,7 @@
 							</g:else>
 								<g:each var="task" in="${session.taskListStandBy}" status="i">
 									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url?.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 										<div id="taskInfo">
 											Effort: ${task.effort}<br/>
 											Person: unknown
@@ -243,7 +247,7 @@
 							</g:else>
 								<g:each var="task" in="${session.taskListNext}" status="i">
 									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url?.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 										<div id="taskInfo">
 											Effort: ${task.effort}<br/>
 											Person: unknown

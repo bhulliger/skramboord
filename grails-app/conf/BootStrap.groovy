@@ -34,8 +34,7 @@ class BootStrap {
 
      def init = { servletContext ->
 		// Create some test data
-		Url urlPuzzle = new Url(url:"http://www.puzzle.ch")
-		urlPuzzle.save()
+		String urlPuzzle = "http://www.puzzle.ch"
 
 		// Initialize states
 		StateTaskOpen taskStateOpen = new StateTaskOpen()

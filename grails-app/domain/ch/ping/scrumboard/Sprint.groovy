@@ -22,15 +22,15 @@ class Sprint {
 	String goal
 	Date startDate
 	Date endDate
-	List tasks
 	static hasMany = [tasks:Task]
 	static belongsTo = [project:Project]
 
     static constraints = {
-		name(nullable:false, minSize: 1, unique: ['name', 'project'])
+		name(nullable:false, minSize: 1, unique: ['project'])
 		goal(nullable:true)
 		startDate(nullable:false)
 		endDate(nullable:false)
+		project(nullable:false)
     }
 	
 	/**

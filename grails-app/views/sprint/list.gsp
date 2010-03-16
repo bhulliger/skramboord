@@ -34,7 +34,7 @@
 			$(function() {
 				$("#dialog-form-sprint").dialog({
 					autoOpen: false,
-					height: 460,
+					height: 480,
 					width: 500,
 					modal: true,
 					buttons: {
@@ -94,9 +94,11 @@
 			</div>
 			<g:submitButton name="create-sprint" value="Create sprint"/>
 			
-			<g:if test="${flash.message}">
-				<div class="message">${flash.message}</div>
-			</g:if>
+			<g:hasErrors bean="${flash.sprint}">
+				<div class="errors">
+					<g:renderErrors bean="${flash.sprint}" as="list"/>
+				</div>
+			</g:hasErrors>
 			<table>
 				<tr>
 					<th>Sprint</th>

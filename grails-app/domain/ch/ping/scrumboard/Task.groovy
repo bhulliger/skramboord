@@ -17,12 +17,15 @@
 
 package ch.ping.scrumboard
 
+import java.util.Date;
+
 class Task {	
 	String name
 	Double effort
 	String url
 	StateTask state
 	Priority priority
+	Date finishedDate
 	static belongsTo = [sprint:Sprint]
 	
 	static constraints = {
@@ -31,5 +34,6 @@ class Task {
 		url(nullable:true, url:true, blank:false)
 		state(nullable:false)
 		priority(nullable:false)
+		finishedDate(nullable:true)
     }
 }

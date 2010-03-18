@@ -22,13 +22,16 @@ class StateTaskOpen extends StateTask {
 		
     def checkOut(Task task) {
 		task.state = super.getStateCheckedOut()
+		task.finishedDate = null
 	}
 	
 	def next(Task task) {
 		task.state = super.getStateNext()
+		task.finishedDate = null
 	}
 	
 	def standBy(Task task) {
 		task.state = super.getStateStandBy()
+		task.finishedDate = null
 	}
 }

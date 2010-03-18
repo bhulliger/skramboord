@@ -34,15 +34,22 @@ class Sprint {
     }
 	
 	/**
+	 * Returns true if today is between start and end date.
+	 * 
+	 * @return true if sprint is running
+	 */
+	def isSprintRunning() {
+		Date today = Today.getInstance()
+		return (today.after(startDate) || today.equals(startDate)) && (today.before(endDate) || today.equals(endDate))
+	}
+	
+	/**
 	 * Returns true if end date of sprint is after today.
 	 * 
-	 * @return true if active
+	 * @return true if sprint is active
 	 */
 	def isSprintActive() {
-		Date today = new Date()
-		today.hours = 0
-		today.minutes = 0
-		today.seconds = 0
-		return today.before(endDate)
+		Date today = Today.getInstance()
+		return today.before(endDate) || today.equals(endDate)
 	}
 }

@@ -31,7 +31,9 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.position.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.resizable.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.button.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.tabs.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.core.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/flot',file:'jquery.flot.js')}"></script>
 		
 		<script type="text/javascript">
 			function changeToOpen(event, ui){
@@ -99,7 +101,15 @@
 					dropOnEmpty: true,
 					receive: changeToStandBy
 				}).disableSelection();
-			});
+
+				$("#tabs").tabs({
+					ajaxOptions: {
+						error: function(xhr, status, index, anchor) {
+							$(anchor.hash).html("Couldn't load this tab. We'll try to fix this as soon as possible. If this wouldn't be a demo.");
+						}
+					}
+				});
+			});							
 		</script>
 
 	</head>
@@ -127,137 +137,145 @@
 					<td>${session.totalEffortDone}</td>
 				</tr>
 			</table>
-
-			<div>
-				<h3>Tasks</h3>
-				<div id="dialog-form" title="Create new task">
-					<g:form name="myform" action="addTask">
-						<fieldset>
-							<label for="name">Name</label>
-							<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
-							<label for="effort">Effort</label>
-							<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
-							<label for="link">Link</label>
-							<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
-							<label for="link">Priority</label>
-							<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/>
-						</fieldset>
-					</g:form>
-				</div>
-				<g:if test="${session.sprint.isSprintActive()}">
-					<g:submitButton name="create-task" value="Create task"/>
-				</g:if>
-				<g:hasErrors bean="${flash.task}">
-					<div class="errors">
-						<g:renderErrors bean="${flash.task}" as="list"/>
+				
+			<div id="tabs">
+				<ul>
+					<li><a href="#tabs-1">Tasks</a></li>
+					<li><a href="burndown.gsp">Burn Down</a></li>
+				</ul>
+				<div id="tabs-1">
+					<div>
+						<h3>Tasks</h3>
+						<div id="dialog-form" title="Create new task">
+							<g:form name="myform" action="addTask">
+								<fieldset>
+									<label for="name">Name</label>
+									<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
+									<label for="effort">Effort</label>
+									<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
+									<label for="link">Link</label>
+									<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
+									<label for="link">Priority</label>
+									<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/>
+								</fieldset>
+							</g:form>
+						</div>
+						<g:if test="${session.sprint.isSprintActive()}">
+							<g:submitButton name="create-task" value="Create task"/>
+						</g:if>
+						<g:hasErrors bean="${flash.task}">
+							<div class="errors">
+								<g:renderErrors bean="${flash.task}" as="list"/>
+							</div>
+						</g:hasErrors>
+		
+						<table>
+							<tr>
+							    <th>Open</th>
+							    <th>Checkout</th>
+							    <th>Done</th>
+							</tr>
+							<tr>
+								<td>
+									<g:if test="${session.taskListOpen.size() > 0}">
+										<ul id="open" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${session.taskListOpen}" status="i">
+											<li id="taskId_${task.id}" class="ui-state-default">
+												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div id="taskInfo">
+													Effort: ${task.effort}<br/>
+													Person: unknown
+												</div>
+											</li>
+										</g:each>
+									</ul>
+								</td>
+								<td>
+									<g:if test="${session.taskListCheckout.size() > 0}">
+										<ul id="checkout" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${session.taskListCheckout}" status="i">
+											<li id="taskId_${task.id}" class="ui-state-default">
+												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div id="taskInfo">
+													Effort: ${task.effort}<br/>
+													Person: unknown
+												</div>
+											</li>
+										</g:each>
+									</ul>
+								</td>
+								<td>
+									<g:if test="${session.taskListDone.size() > 0}">
+										<ul id="done" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${session.taskListDone}" status="i">
+											<li id="taskId_${task.id}" class="ui-state-default">
+												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div id="taskInfo">
+													Effort: ${task.effort}<br/>
+													Person: unknown
+												</div>
+											</li>
+										</g:each>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<th colspan="2">Stand by</th>
+								<th>Next</th>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<g:if test="${session.taskListStandBy.size() > 0}">
+										<ul id="standBy" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${session.taskListStandBy}" status="i">
+											<li id="taskId_${task.id}" class="ui-state-default">
+												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div id="taskInfo">
+													Effort: ${task.effort}<br/>
+													Person: unknown
+												</div>
+											</li>
+										</g:each>
+									</ul>
+								</td>
+								<td>
+									<g:if test="${session.taskListNext.size() > 0}">
+										<ul id="next" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${session.taskListNext}" status="i">
+											<li id="taskId_${task.id}" class="ui-state-default">
+												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div id="taskInfo">
+													Effort: ${task.effort}<br/>
+													Person: unknown
+												</div>
+											</li>
+										</g:each>
+									</ul>
+								</td>
+							</tr>
+						</table>
 					</div>
-				</g:hasErrors>
-
-				<table>
-					<tr>
-					    <th>Open</th>
-					    <th>Checkout</th>
-					    <th>Done</th>
-					</tr>
-					<tr>
-						<td>
-							<g:if test="${session.taskListOpen.size() > 0}">
-								<ul id="open" class="connectedSortable">
-							</g:if>
-							<g:else>
-								<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
-							</g:else>
-								<g:each var="task" in="${session.taskListOpen}" status="i">
-									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-										<div id="taskInfo">
-											Effort: ${task.effort}<br/>
-											Person: unknown
-										</div>
-									</li>
-								</g:each>
-							</ul>
-						</td>
-						<td>
-							<g:if test="${session.taskListCheckout.size() > 0}">
-								<ul id="checkout" class="connectedSortable">
-							</g:if>
-							<g:else>
-								<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
-							</g:else>
-								<g:each var="task" in="${session.taskListCheckout}" status="i">
-									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-										<div id="taskInfo">
-											Effort: ${task.effort}<br/>
-											Person: unknown
-										</div>
-									</li>
-								</g:each>
-							</ul>
-						</td>
-						<td>
-							<g:if test="${session.taskListDone.size() > 0}">
-								<ul id="done" class="connectedSortable">
-							</g:if>
-							<g:else>
-								<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
-							</g:else>
-								<g:each var="task" in="${session.taskListDone}" status="i">
-									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-										<div id="taskInfo">
-											Effort: ${task.effort}<br/>
-											Person: unknown
-										</div>
-									</li>
-								</g:each>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<th colspan="2">Stand by</th>
-						<th>Next</th>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<g:if test="${session.taskListStandBy.size() > 0}">
-								<ul id="standBy" class="connectedSortable">
-							</g:if>
-							<g:else>
-								<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
-							</g:else>
-								<g:each var="task" in="${session.taskListStandBy}" status="i">
-									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-										<div id="taskInfo">
-											Effort: ${task.effort}<br/>
-											Person: unknown
-										</div>
-									</li>
-								</g:each>
-							</ul>
-						</td>
-						<td>
-							<g:if test="${session.taskListNext.size() > 0}">
-								<ul id="next" class="connectedSortable">
-							</g:if>
-							<g:else>
-								<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
-							</g:else>
-								<g:each var="task" in="${session.taskListNext}" status="i">
-									<li id="taskId_${task.id}" class="ui-state-default">
-										<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-										<div id="taskInfo">
-											Effort: ${task.effort}<br/>
-											Person: unknown
-										</div>
-									</li>
-								</g:each>
-							</ul>
-						</td>
-					</tr>
-				</table>
+				</div>
 			</div>
 		</div>
 	</body>

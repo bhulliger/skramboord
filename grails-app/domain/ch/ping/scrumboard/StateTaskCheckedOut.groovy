@@ -22,17 +22,21 @@ class StateTaskCheckedOut extends StateTask {
 	
 	def open(Task task) {
 		task.state = super.getStateOpen()
+		task.finishedDate = null
 	}
 
 	def done(Task task) {
 		task.state = super.getStateDone()
+		task.finishedDate = Today.getInstance()
 	}
 	
 	def next(Task task) {
 		task.state = super.getStateNext()
+		task.finishedDate = null
 	}
 	
 	def standBy(Task task) {
 		task.state = super.getStateStandBy()
+		task.finishedDate = null
 	}
 }

@@ -75,6 +75,32 @@ class TaskController {
 		}
 		session.totalEffort = totalEffort
 		session.totalEffortDone = totalEffortDone
+		
+		// Burn down target
+		def datesXTarget = []
+		def burnDownEffort = session.totalEffort
+		session.burndownReal = []
+		session.burndownReal.add([session.sprint.startDate.getTime(), burnDownEffort])
+		for (Date startDate = session.sprint.startDate; startDate <= session.sprint.endDate; startDate++) {
+			datesXTarget.add(startDate.getTime())
+			
+			def taskListDone = Task.withCriteria {
+				eq('state', StateTask.getStateDone())
+				eq('sprint', session.sprint)
+				eq('finishedDate', startDate)
+			}
+			def tmpEffort = 0
+			for (Task task : taskListDone) {
+				tmpEffort += task.effort
+			}
+			burnDownEffort -= tmpEffort
+			if (tmpEffort > 0) {
+				session.burndownReal.add([startDate.getTime(), burnDownEffort])
+			}
+		}
+		session.burndownTargetXSize = datesXTarget.size()-1
+		session.burndownTargetX = datesXTarget
+		session.today = Today.getInstance().getTime()
 	}
 	
 	/**

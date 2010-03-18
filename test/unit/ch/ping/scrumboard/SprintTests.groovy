@@ -20,38 +20,42 @@ package ch.ping.scrumboard
 import grails.test.*
 
 class SprintTests extends GrailsUnitTestCase {
-    protected void setUp() {
-        super.setUp()
+	Date today
+	
+	protected void setUp() {
+		super.setUp()
 		
-        mockForConstraintsTests(Sprint)
-    }
-
-    protected void tearDown() {
-        super.tearDown()
-    }
-
-    /**
-     * Tests if sprint is active between date in past and date in future.
-     */
-    void testSprintActive() {
+		mockForConstraintsTests(Sprint)
+		
+		today = Today.getInstance()
+	}
+	
+	protected void tearDown() {
+		super.tearDown()
+	}
+	
+	/**
+	 * Tests if sprint is active between date in past and date in future.
+	 */
+	void testSprintActive() {
 		// given
-		Date end = new Date()+10
-		Date start = new Date()-10
-    	Sprint sprint = new Sprint(name: "test", startDate: start, endDate: end)
+		Date end =  today + 10
+		Date start =  today - 10
+		Sprint sprint = new Sprint(name: "test", startDate: start, endDate: end)
 		
 		// when
 		
 		// then
 		assertTrue sprint.isSprintActive()
-    }
+	}
 	
 	/**
 	 * Tests if sprint is active between date in past and date in future.
 	 */
 	void testSprintActiveLastDay() {
 		// given
-		Date end = new Date()
-		Date start = new Date()-10
+		Date end = today
+		Date start = today - 10
 		Sprint sprint = new Sprint(name: "test", startDate: start, endDate: end)
 		
 		// when
@@ -65,8 +69,8 @@ class SprintTests extends GrailsUnitTestCase {
 	 */
 	void testSprintActiveInFuture() {
 		// given
-		Date end = new Date()+20
-		Date start = new Date()+10
+		Date end = today + 20
+		Date start = today + 10
 		Sprint sprint = new Sprint(name: "test", startDate: start, endDate: end)
 		
 		// when
@@ -81,8 +85,8 @@ class SprintTests extends GrailsUnitTestCase {
 	 */
 	void testSprintPassiv() {
 		// given
-		Date end = new Date()-1
-		Date start = new Date()-10
+		Date end = today - 1
+		Date start = today - 10
 		Sprint sprint = new Sprint(name: "test", startDate: start, endDate: end)
 		
 		// when

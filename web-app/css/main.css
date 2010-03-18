@@ -28,6 +28,10 @@ body {
 	border-right:	1px solid #E9E9E7;
 }
 
+#tabs {
+	margin-top: 15px;
+}
+
 #grailsLogo {
 	padding:3px;
 }
@@ -77,8 +81,9 @@ input:focus, select:focus, textarea:focus {
 }
 
 .body {
+	width: 962px;
     float: left;
-    margin: 0 15px 10px 15px;
+    margin: 10px 15px 10px 15px;
 }
 
 /* NAVIGATION MENU */

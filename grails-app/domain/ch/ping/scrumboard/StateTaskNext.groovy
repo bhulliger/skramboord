@@ -22,5 +22,6 @@ class StateTaskNext extends StateTask {
 	
 	def open(Task task) {
 		task.state = super.getStateOpen()
+		task.finishedDate = null
 	}
 }

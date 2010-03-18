@@ -105,7 +105,8 @@
 					<th>Goal</th>
 					<th>Start</th>
 					<th>End</th>
-					<th>Number of Tasks</th>
+					<th style="text-align:center;">Number of Tasks</th>
+					<th style="text-align:center; width: 20px;">Active</th>
 				</tr>
 				<g:each var="sprint" in="${session.sprintList}" status="i">
 					<g:def var="sprintId" value="${sprint.id}"/>
@@ -116,7 +117,18 @@
 						<td>${sprint.goal}</td>
 						<td><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
 						<td><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
-						<td>${sprint.tasks.size()}</td>
+						<td style="text-align:center;">${sprint.tasks.size()}</td>
+						<td style="text-align:center;">
+							<g:if test="${sprint.isSprintRunning()}">
+								<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>
+							</g:if>
+							<g:elseif test="${!sprint.isSprintRunning() && sprint.isSprintActive()}">
+								<img src="${resource(dir:'images/icons',file:'flag_blue.png')}" alt="Sprint not started yet"/>
+							</g:elseif>
+							<g:else>
+								<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
+							</g:else>
+						</td>
 					</tr>
 				</g:each>
 			</table>

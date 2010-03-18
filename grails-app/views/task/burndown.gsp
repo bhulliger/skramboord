@@ -22,4 +22,4 @@
 	    	    });
 	});
 </script>
-<div id="placeholder" style="width:920px;height:400px;"></div>
+<div id="placeholder" style="width:920px;height:380px;"></div>

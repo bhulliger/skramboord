@@ -11,11 +11,17 @@
 	        <div id="spinner" class="spinner" style="display:none;">
 	            <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner"/>
 	        </div>
-	        <div id="grailsLogo" class="logo"><a href="http://github.com/pablohess/skramboord" target="_blank">
-	        	<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" border="0" alt="Logo Skramboord"/></a>
+	        <div id="grailsLogo" class="logo">
+	        	<a href="http://github.com/pablohess/skramboord" target="_blank">
+	        		<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" border="0" alt="Logo Skramboord"/>
+	        	</a>
 	        </div>
-	    
         	<g:layoutBody />
         </div>
+        <div style="margin-top: 10px; text-align: center;">
+       		<a href="http://github.com/pablohess/skramboord" target="_blank">
+        		<g:meta name="app.name"/>, Version <g:meta name="app.version"/>, built with Grails <g:meta name="app.grails.version"/>
+        	</a>
+	    </div>
     </body>
 </html>

@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 import org.apache.catalina.connector.ResponseFacade.DateHeaderPrivilegedAction;
 
+import ch.ping.scrumboard.StateTask;
 import ch.ping.scrumboard.StateTaskCheckedOut;
 import ch.ping.scrumboard.StateTaskDone;
 import ch.ping.scrumboard.StateTaskNext;
@@ -33,11 +34,11 @@ import ch.ping.scrumboard.Sprint;
 import ch.ping.scrumboard.Project;
 
 class BootStrap {
-
-     def init = { servletContext ->
+	
+	def init = { servletContext ->
 		// Create some test data
 		String urlPuzzle = "http://www.puzzle.ch"
-
+		
 		// Initialize states
 		StateTaskOpen taskStateOpen = new StateTaskOpen()
 		taskStateOpen.save()
@@ -49,7 +50,7 @@ class BootStrap {
 		taskStateNext.save()
 		StateTaskStandBy taskStateStandBy = new StateTaskStandBy()
 		taskStateStandBy.save()
-
+		
 		// Initialize priorities
 		Priority low = new Priority(name: "low", color: Color.GRAY)
 		low.save()
@@ -61,77 +62,65 @@ class BootStrap {
 		urgent.save()
 		Priority immediate = new Priority(name: "immediate", color: Color.RED)
 		immediate.save()
-
+		
 		// Initialize dates
-		Date date1 = Today.getInstance() + 5
+		Date date0 = Today.getInstance() + 15
+		Date date1 = date0 - 10
 		Date date2 = date1 - 10
 		Date date3 = date2 - 10
 		
 		// Sprint 1.0
-		// Initialize tasks
-		Task task1812 = new Task(name:"Mantis 1812", effort: 2.0, url: urlPuzzle, state: taskStateDone, priority: normal, finishedDate: date3 + 1)
-		task1812.save()
-		Task task1798 = new Task(name:"Mantis 1798", effort: 7.0, url: urlPuzzle, state: taskStateDone, priority: normal, finishedDate: date3 + 3)
-		task1798.save()
-		Task task1765 = new Task(name:"Mantis 1765", effort: 9.5, url: urlPuzzle, state: taskStateDone, priority: high, finishedDate: date3 + 4)
-		task1765.save()
-		Task task1731 = new Task(name:"Mantis 1731", effort: 2.0, url: urlPuzzle, state: taskStateDone, priority: low, finishedDate: date3 + 6)
-		task1731.save()
-		Task task1722 = new Task(name:"Mantis 1722", effort: 0.5, url: urlPuzzle, state: taskStateDone, priority: low, finishedDate: date3 + 9)
-		task1722.save()
-		Task task1700 = new Task(name:"Mantis 1700", effort: 4, url: urlPuzzle, state: taskStateDone, priority: low, finishedDate: date3 + 10)
-		task1700.save()
-
-		// Initialize sprints
-		Sprint sprint1_0 = new Sprint(name: "1.0", goal: "Some Mantis Tasks", startDate: date3, endDate: date2, tasks: [])
-		sprint1_0.addToTasks(task1812)
-		sprint1_0.addToTasks(task1798)
-		sprint1_0.addToTasks(task1765)
-		sprint1_0.addToTasks(task1731)
-		sprint1_0.addToTasks(task1722)
-		sprint1_0.addToTasks(task1700)
-		sprint1_0.save()
-
+		Sprint sprint1_0 = new Sprint(name: "1.0", goal: "Login System", startDate: date3, endDate: date2, tasks: [])
+		createTask(sprint1_0, "Mantis 1812", 2.0, urlPuzzle, taskStateDone, normal, date3 + 1)
+		createTask(sprint1_0, "Mantis 1798", 4.0, urlPuzzle, taskStateDone, normal, date3 + 3)
+		createTask(sprint1_0, "Mantis 1765", 4.5, urlPuzzle, taskStateDone, high, date3 + 4)
+		createTask(sprint1_0, "Mantis 1705", 3.5, urlPuzzle, taskStateDone, normal, date3 + 5)
+		createTask(sprint1_0, "Mantis 1731", 2.0, urlPuzzle, taskStateDone, low, date3 + 6)
+		createTask(sprint1_0, "Mantis 1733", 2.5, urlPuzzle, taskStateDone, low, date3 + 8)
+		createTask(sprint1_0, "Mantis 1722", 0.5, urlPuzzle, taskStateDone, low, date3 + 9)
+		createTask(sprint1_0, "Mantis 1700", 4, urlPuzzle, taskStateDone, low, date3 + 10)
+		
 		// Sprint 1.1
-		// Initialize tasks
-		Task task1980 = new Task(name:"Mantis 1980", effort: 5.5, url: urlPuzzle, state: taskStateDone, priority: normal, finishedDate: date2 + 2)
-		task1980.save()
-		Task task2100 = new Task(name:"Mantis 2100", effort: 2.0, url: urlPuzzle, state: taskStateDone, priority: immediate, finishedDate: date2 + 4)
-		task2100.save()
-		Task task2001 = new Task(name:"Mantis 2001", effort: 2.0, url: urlPuzzle, state: taskStateOpen, priority: normal)
-		task2001.save()
-		Task task2015 = new Task(name:"Mantis 2015", effort: 3.5, url: urlPuzzle, state: taskStateOpen, priority: urgent)
-		task2015.save()
-		Task task1987 = new Task(name:"Mantis 1987", effort: 0.5, url: urlPuzzle, state: taskStateOpen, priority: high)
-		task1987.save()
-		Task task1950 = new Task(name:"Mantis 1950", effort: 2.5, url: urlPuzzle, state: taskStateOpen, priority: normal)
-		task1950.save()
-		Task task1999 = new Task(name:"Mantis 1999", effort: 1.0, url: urlPuzzle, state: taskStateChecked, priority: immediate)
-		task1999.save()
-		Task task2012 = new Task(name:"Mantis 2012", effort: 1.5, url: urlPuzzle, state: taskStateNext, priority: normal)
-		task2012.save()
-		Task task2014 = new Task(name:"Mantis 2014", effort: 5.0, url: urlPuzzle, state: taskStateNext, priority: low)
-		task2014.save()
-
-		// Initialize sprints
-		Sprint sprint1_1 = new Sprint(name: "1.1", goal: "Lots Mantis Tasks", startDate: date2, endDate: date1, tasks: [])
-		sprint1_1.addToTasks(task1980)
-		sprint1_1.addToTasks(task2100)
-		sprint1_1.addToTasks(task2001)
-		sprint1_1.addToTasks(task2015)
-		sprint1_1.addToTasks(task1987)
-		sprint1_1.addToTasks(task1950)
-		sprint1_1.addToTasks(task1999)
-		sprint1_1.addToTasks(task2012)
-		sprint1_1.addToTasks(task2014)
-		sprint1_1.save()
+		Sprint sprint1_1 = new Sprint(name: "1.1", goal: "Drag'n'Drop Functionality", startDate: date2, endDate: date1, tasks: [])
+		createTask(sprint1_1, "Mantis 1980", 5.5, urlPuzzle, taskStateDone, normal, date2 + 2)
+		createTask(sprint1_1, "Mantis 2100", 2.0, urlPuzzle, taskStateDone, immediate, date2 + 4)
+		createTask(sprint1_1, "Mantis 2001", 2.0, urlPuzzle, taskStateOpen, normal, null)
+		createTask(sprint1_1, "Mantis 2015", 3.5, urlPuzzle, taskStateOpen, urgent, null)
+		createTask(sprint1_1, "Mantis 1987", 0.5, urlPuzzle, taskStateOpen, high, null)
+		createTask(sprint1_1, "Mantis 1950", 2.5, urlPuzzle, taskStateOpen, normal, null)
+		createTask(sprint1_1, "Mantis 1999", 1.0, urlPuzzle, taskStateChecked, immediate, null)
+		createTask(sprint1_1, "Mantis 2012", 1.5, urlPuzzle, taskStateNext, normal, null)
+		createTask(sprint1_1, "Mantis 2014", 5.0, urlPuzzle, taskStateNext, low, null)
+		
+		// Sprint 1.2
+		Sprint sprint1_2 = new Sprint(name: "1.2", goal: "Email Warning System", startDate: date1, endDate: date0, tasks: [])
+		sprint1_2.save()
 		
 		// Initialize Project skramboord
 		Project skramboord = new Project(name: "skramboord")
 		skramboord.addToSprints(sprint1_0)
 		skramboord.addToSprints(sprint1_1)
+		skramboord.addToSprints(sprint1_2)
 		skramboord.save()
-     }
-     def destroy = {
-     }
+	}
+	def destroy = {
+	}
+	
+	/**
+	 * Creates a new task an adds it to a sprint.
+	 * 
+	 * @param sprint
+	 * @param name
+	 * @param effort
+	 * @param url
+	 * @param state
+	 * @param priority
+	 * @param finished
+	 */
+	def createTask(Sprint sprint, String name, Double effort, String url, StateTask state, Priority priority, Date finished) {
+		Task task = new Task(name: name, effort: effort, url: url, state: state, priority: priority, finishedDate: finished)
+		task.save()
+		sprint.addToTasks(task)
+		sprint.save()
+	}
 } 

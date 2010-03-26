@@ -22,6 +22,6 @@ class Project {
 	static hasMany = [sprints:Sprint]
 	
     static constraints = {
-		name(nullable:false)
+		name(nullable:false, blank:false, unique: true)
     }
 }

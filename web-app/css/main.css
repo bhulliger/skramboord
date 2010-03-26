@@ -4,6 +4,13 @@ html * {
 }
 
 /* GENERAL */
+#edit {
+  display: inline-block; /** important **/
+  vertical-align:middle; /** important **/
+  padding:0;
+  margin: 0;
+  margin-right:2px;
+}
 
 .spinner {
     padding: 5px;

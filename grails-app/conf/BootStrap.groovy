@@ -102,6 +102,10 @@ class BootStrap {
 		skramboord.addToSprints(sprint1_1)
 		skramboord.addToSprints(sprint1_2)
 		skramboord.save()
+		
+		// Initialize Project Grails
+		Project grails = new Project(name: "grails")
+		grails.save()
 	}
 	def destroy = {
 	}

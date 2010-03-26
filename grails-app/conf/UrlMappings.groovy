@@ -22,7 +22,7 @@ class UrlMappings {
 			 // apply constraints here
 		  }
 	  }
-      "/"(controller:"sprint", action:"list")
+      "/"(controller:"project", action:"list")
 	  "500"(view:'/error')
 	}
 }

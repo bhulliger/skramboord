@@ -67,7 +67,7 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
+			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
 			<h3>Sprint List</h3>
 			<div id="dialog-form-sprint" title="Create new sprint">
 				<g:form name="myform" action="addSprint">
@@ -99,39 +99,46 @@
 					<g:renderErrors bean="${flash.sprint}" as="list"/>
 				</div>
 			</g:hasErrors>
-			<table>
-				<tr>
-					<th>Sprint</th>
-					<th>Goal</th>
-					<th>Start</th>
-					<th>End</th>
-					<th style="text-align:center;">Number of Tasks</th>
-					<th style="text-align:center; width: 20px;">Active</th>
-				</tr>
-				<g:each var="sprint" in="${session.sprintList}" status="i">
-					<g:def var="sprintId" value="${sprint.id}"/>
+			<g:if test="${session.project.sprints.isEmpty()}">
+				<div class="message">
+					No sprints created yet.
+				</div>
+			</g:if>
+			<g:else>
+				<table>
 					<tr>
-						<td>
-							<g:link controller="task" action="list" params="[sprint: sprintId]">${sprint.name}</g:link>
-						</td>
-						<td>${sprint.goal}</td>
-						<td><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
-						<td><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
-						<td style="text-align:center;">${sprint.tasks.size()}</td>
-						<td style="text-align:center;">
-							<g:if test="${sprint.isSprintRunning()}">
-								<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>
-							</g:if>
-							<g:elseif test="${!sprint.isSprintRunning() && sprint.isSprintActive()}">
-								<img src="${resource(dir:'images/icons',file:'flag_blue.png')}" alt="Sprint not started yet"/>
-							</g:elseif>
-							<g:else>
-								<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
-							</g:else>
-						</td>
+						<th>Sprint</th>
+						<th>Goal</th>
+						<th>Start</th>
+						<th>End</th>
+						<th style="text-align:center;">Number of Tasks</th>
+						<th style="text-align:center; width: 20px;">Active</th>
 					</tr>
-				</g:each>
-			</table>
+					<g:each var="sprint" in="${session.sprintList}" status="i">
+						<g:def var="sprintId" value="${sprint.id}"/>
+						<tr>
+							<td>
+								<g:link controller="task" action="list" params="[sprint: sprintId]"><span id="edit"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit" border="0"/></span><span id="edit">${sprint.name}</span></g:link>
+							</td>
+							<td>${sprint.goal}</td>
+							<td><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
+							<td><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
+							<td style="text-align:center;">${sprint.tasks.size()}</td>
+							<td style="text-align:center;">
+								<g:if test="${sprint.isSprintRunning()}">
+									<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>
+								</g:if>
+								<g:elseif test="${!sprint.isSprintRunning() && sprint.isSprintActive()}">
+									<img src="${resource(dir:'images/icons',file:'flag_blue.png')}" alt="Sprint not started yet"/>
+								</g:elseif>
+								<g:else>
+									<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
+								</g:else>
+							</td>
+						</tr>
+					</g:each>
+				</table>
+			</g:else>
 		</div>
 	</body>
 </html>

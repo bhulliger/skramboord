@@ -29,8 +29,6 @@ class TaskController {
 			session.sprint = Sprint.get(params.sprint)
 		}
 		
-		session.project = Project.get(1)
-		
 		session.taskListOpen = Task.withCriteria {
 			eq('state', StateTask.getStateOpen())
 			eq('sprint', session.sprint)

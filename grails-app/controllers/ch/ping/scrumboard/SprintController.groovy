@@ -23,11 +23,14 @@ class SprintController {
 	}
 	
 	def list = {
-		session.project = Project.get(1)
+		if (params.project) {
+			session.project = Project.get(params.project)
+		}
 
 		session.sprintList = Sprint.withCriteria {
 			eq('project', session.project)
-			order('endDate',"desc")
+			order('endDate','desc')
+			order('startDate', 'desc')
 		}
 	}
 	

@@ -4,7 +4,7 @@ html * {
 }
 
 /* GENERAL */
-#edit {
+#icon {
   display: inline-block; /** important **/
   vertical-align:middle; /** important **/
   padding:0;

@@ -17,28 +17,16 @@
 
 package ch.ping.scrumboard
 
-class ProjectController {
+/**
+ * Request Map domain class.
+ */
+class Requestmap {
 	
-	def index = { redirect(controller:'project', action:'list')
-	}
+	String url
+	String configAttribute
 	
-	def list = {
-		session.projectList = Project.withCriteria {
-			order('name','asc')
-		}
-	}
-	
-	/**
-	 * Add new project
-	 */
-	def addProject = {
-		def projectName = params.projectName
-		
-		Project project = new Project(name: projectName)
-		if (!project.save()) {
-			flash.project=project
-		}
-
-		redirect(controller:'project', action:'list')
+	static constraints = {
+		url(blank: false, unique: true)
+		configAttribute(blank: false)
 	}
 }

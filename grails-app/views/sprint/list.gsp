@@ -118,7 +118,7 @@
 						<g:def var="sprintId" value="${sprint.id}"/>
 						<tr>
 							<td>
-								<g:link controller="task" action="list" params="[sprint: sprintId]"><span id="edit"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit" border="0"/></span><span id="edit">${sprint.name}</span></g:link>
+								<g:link controller="task" action="list" params="[sprint: sprintId]"><span id="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit" border="0"/></span><span id="icon">${sprint.name}</span></g:link>
 							</td>
 							<td>${sprint.goal}</td>
 							<td><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>

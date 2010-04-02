@@ -16,29 +16,16 @@
  *******************************************************************************/
 
 package ch.ping.scrumboard
-
-class ProjectController {
-	
-	def index = { redirect(controller:'project', action:'list')
-	}
-	
-	def list = {
-		session.projectList = Project.withCriteria {
-			order('name','asc')
-		}
-	}
+/**
+ * Logout Controller (Example).
+ */
+class LogoutController {
 	
 	/**
-	 * Add new project
+	 * Index action. Redirects to the Spring security logout uri.
 	 */
-	def addProject = {
-		def projectName = params.projectName
-		
-		Project project = new Project(name: projectName)
-		if (!project.save()) {
-			flash.project=project
-		}
-
-		redirect(controller:'project', action:'list')
+	def index = {
+		// TODO  put any pre-logout code here
+		redirect(uri: '/j_spring_security_logout')
 	}
 }

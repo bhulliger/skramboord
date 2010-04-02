@@ -58,7 +58,7 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/></g:link></h1>
+			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/></g:link></h1>
 			<h3>Project List</h3>
 			<div id="dialog-form-project" title="Create new project">
 				<g:form name="myform" action="addProject">
@@ -83,7 +83,7 @@
 					<g:def var="projectId" value="${project.id}"/>
 					<tr>
 						<td>
-							<g:link controller="sprint" action="list" params="[project: projectId]"><span id="edit"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit" border="0"/></span><span id="edit">${project.name}</span></g:link>
+							<g:link controller="sprint" action="list" params="[project: projectId]"><span id="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit" border="0"/></span><span id="icon">${project.name}</span></g:link>
 						</td>
 						<td style="text-align:center;">${project.sprints.size()}</td>
 					</tr>

@@ -17,28 +17,20 @@
 
 package ch.ping.scrumboard
 
-class ProjectController {
+/**
+ * Authority domain class.
+ */
+class Role {
 	
-	def index = { redirect(controller:'project', action:'list')
-	}
+	static hasMany = [people: User]
 	
-	def list = {
-		session.projectList = Project.withCriteria {
-			order('name','asc')
-		}
-	}
+	/** description */
+	String description
+	/** ROLE String */
+	String authority
 	
-	/**
-	 * Add new project
-	 */
-	def addProject = {
-		def projectName = params.projectName
-		
-		Project project = new Project(name: projectName)
-		if (!project.save()) {
-			flash.project=project
-		}
-
-		redirect(controller:'project', action:'list')
+	static constraints = {
+		authority(blank: false, unique: true)
+		description()
 	}
 }

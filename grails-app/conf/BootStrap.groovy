@@ -32,8 +32,14 @@ import ch.ping.scrumboard.Url;
 import ch.ping.scrumboard.Priority;
 import ch.ping.scrumboard.Sprint;
 import ch.ping.scrumboard.Project;
+import ch.ping.scrumboard.User;
+import ch.ping.scrumboard.Role;
+import ch.ping.scrumboard.Requestmap;
+import org.apache.commons.codec.digest.DigestUtils
 
 class BootStrap {
+	
+	def authenticateService
 	
 	def init = { servletContext ->
 		// Create some test data
@@ -50,6 +56,17 @@ class BootStrap {
 		taskStateNext.save()
 		StateTaskStandBy taskStateStandBy = new StateTaskStandBy()
 		taskStateStandBy.save()
+		
+		// Adding Roles
+		def roleAdmin = new Role(authority:'ROLE_ADMIN', description:'role administration').save()
+		def roleUser = new Role(authority:'ROLE_USER', description:'role user').save()
+		
+		// Adding Users
+		def userAdmin = new User(username:'admin', userRealName:'Pablo Hess', enabled: true, emailShow: true, email: 'admin@skramboord.ch', passwd: authenticateService.encodePassword("admin")).save()
+		
+		// Adding user to roles
+		roleAdmin.addToPeople(userAdmin)
+		roleUser.addToPeople(userAdmin)
 		
 		// Initialize priorities
 		Priority low = new Priority(name: "low", color: Color.GRAY)

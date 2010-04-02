@@ -12,9 +12,22 @@
 	            <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner"/>
 	        </div>
 	        <div id="grailsLogo" class="logo">
-	        	<a href="http://github.com/pablohess/skramboord" target="_blank">
-	        		<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" border="0" alt="Logo Skramboord"/>
-	        	</a>
+	        	<div style="float: left;">
+		        	<a href="http://github.com/pablohess/skramboord" target="_blank">
+		        		<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" border="0" alt="Logo Skramboord"/>
+		        	</a>
+	        	</div>
+	        	<div style="float: right;">
+	        		<g:if test="${!(flash.loggedIn==false)}">
+		        		<g:link controller="logout" action="index">
+		        			<span id="icon">
+		        				<img src="${resource(dir:'images/icons',file:'application_go.png')}" alt="logout" border="0"/>
+		        			</span>
+		        			<span id="icon">Logout</span>
+		        		</g:link>
+	        		</g:if>
+	        	</div>
+	        	<div style="clear: both;"/>
 	        </div>
         	<g:layoutBody />
         </div>

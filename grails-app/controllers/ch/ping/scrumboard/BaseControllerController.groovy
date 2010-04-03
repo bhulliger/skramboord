@@ -19,28 +19,20 @@ package ch.ping.scrumboard
 
 import org.grails.plugins.springsecurity.service.AuthenticateService;
 
-class ProjectController extends BaseControllerController {
-
-	def index = { redirect(controller:'project', action:'list')
-	}
+abstract class BaseControllerController {
+	AuthenticateService authenticateService
 	
-	def list = {
-		session.projectList = Project.withCriteria {
-			order('name','asc')
-		}
-	}
+	def beforeInterceptor = [action:this.&doBefore]
 	
-	/**
-	 * Add new project
-	 */
-	def addProject = {
-		def projectName = params.projectName
-		
-		Project project = new Project(name: projectName)
-		if (!project.save()) {
-			flash.project=project
+	def doBefore() {
+		if (authenticateService && authenticateService.isLoggedIn()) {
+			def username = authenticateService.principal().username
+			if (username && !username.equals(session.username)) {
+				User user = User.withCriteria(uniqueResult:true) {
+					eq('username', username)
+				}
+				session.user = user
+			}
 		}
-
-		redirect(controller:'project', action:'list')
 	}
 }

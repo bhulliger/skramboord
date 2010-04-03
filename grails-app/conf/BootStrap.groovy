@@ -58,15 +58,22 @@ class BootStrap {
 		taskStateStandBy.save()
 		
 		// Adding Roles
+		def roleSuperUser = new Role(authority:'ROLE_SUPERUSER', description:'role superuser').save()
 		def roleAdmin = new Role(authority:'ROLE_ADMIN', description:'role administration').save()
 		def roleUser = new Role(authority:'ROLE_USER', description:'role user').save()
 		
 		// Adding Users
 		def userAdmin = new User(username:'admin', userRealName:'Pablo Hess', enabled: true, emailShow: true, email: 'admin@skramboord.ch', passwd: authenticateService.encodePassword("admin")).save()
+		def userDevChief = new User(username:'wmozart', userRealName:'Wolfgang Mozart', enabled: true, emailShow: true, email: 'wolfgang.mozart@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
+		def userDev1 = new User(username:'hmuster', userRealName:'Hans Muster', enabled: true, emailShow: true, email: 'hans.muster@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
 		
 		// Adding user to roles
+		roleSuperUser.addToPeople(userAdmin)
 		roleAdmin.addToPeople(userAdmin)
+		roleAdmin.addToPeople(userDevChief)
 		roleUser.addToPeople(userAdmin)
+		roleUser.addToPeople(userDevChief)
+		roleUser.addToPeople(userDev1)
 		
 		// Initialize priorities
 		Priority low = new Priority(name: "low", color: Color.GRAY)

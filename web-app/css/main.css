@@ -22,6 +22,7 @@ body {
 	background: #fff url('../images/skramboord/postit.green.jpg') repeat-x;
     color: #333;
     font: 11px verdana, arial, helvetica, sans-serif;
+    font-size: 62.5%;
 }
 
 #content {

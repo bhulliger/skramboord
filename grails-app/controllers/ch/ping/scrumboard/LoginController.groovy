@@ -28,7 +28,7 @@ import org.springframework.security.ui.webapp.AuthenticationProcessingFilter
 /**
  * Login Controller (Example).
  */
-class LoginController {
+class LoginController extends BaseControllerController {
 	
 	/**
 	 * Dependency injection for the authentication service.

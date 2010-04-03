@@ -18,14 +18,21 @@
 		        	</a>
 	        	</div>
 	        	<div style="float: right;">
-	        		<g:if test="${!(flash.loggedIn==false)}">
+	        		<g:isLoggedIn>
+	        			<g:def var="userId" value="${session.user.id}"/>
+	        			<g:link controller="user" action="edit" params="[id: userId]" style="padding-right: 10px;">
+	        				<span id="icon">
+		        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil" border="0"/>
+		        			</span>
+		        			<span id="icon">Welcome, ${session.user.userRealName}</span>
+	        			</g:link>
 		        		<g:link controller="logout" action="index">
 		        			<span id="icon">
 		        				<img src="${resource(dir:'images/icons',file:'application_go.png')}" alt="logout" border="0"/>
 		        			</span>
 		        			<span id="icon">Logout</span>
 		        		</g:link>
-	        		</g:if>
+	        		</g:isLoggedIn>
 	        	</div>
 	        	<div style="clear: both;"/>
 	        </div>

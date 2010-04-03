@@ -17,7 +17,7 @@
 
 package ch.ping.scrumboard
 
-class TaskController {
+class TaskController extends BaseControllerController {
 	
 	def index = { redirect(controller:'task', action:'list')
 	}

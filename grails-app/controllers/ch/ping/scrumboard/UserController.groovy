@@ -20,9 +20,7 @@ package ch.ping.scrumboard
 /**
  * User controller.
  */
-class UserController {
-	
-	def authenticateService
+class UserController extends BaseControllerController {
 	
 	// the delete, save and update actions only accept POST requests
 	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
@@ -60,24 +58,27 @@ class UserController {
 	 * he should be removed from those authorities which he is involved.
 	 */
 	def delete = {
-		
-		def person = User.get(params.id)
-		if (person) {
-			def authPrincipal = authenticateService.principal()
-			//avoid self-delete if the logged-in user is an admin
-			if (!(authPrincipal instanceof String) && authPrincipal.username == person.username) {
-				flash.message = "You can not delete yourself, please login as another admin and try again"
+		if (authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
+			def person = User.get(params.id)
+			if (person) {
+				def authPrincipal = authenticateService.principal()
+				//avoid self-delete if the logged-in user is an admin
+				if (!(authPrincipal instanceof String) && authPrincipal.username == person.username) {
+					flash.message = "You can not delete yourself, please login as another admin and try again"
+				}
+				else {
+					//first, delete this person from People_Authorities table.
+					Role.findAll().each { it.removeFromPeople(person)
+					}
+					person.delete()
+					flash.message = "User $params.id deleted."
+				}
 			}
 			else {
-				//first, delete this person from People_Authorities table.
-				Role.findAll().each { it.removeFromPeople(person)
-				}
-				person.delete()
-				flash.message = "User $params.id deleted."
+				flash.message = "User not found with id $params.id"
 			}
-		}
-		else {
-			flash.message = "User not found with id $params.id"
+		} else {
+			
 		}
 		
 		redirect action: list
@@ -120,7 +121,7 @@ class UserController {
 		if (!params.passwd.equals(oldPassword)) {
 			person.passwd = authenticateService.encodePassword(params.passwd)
 		}
-		if (person.save()) {
+		if (person.save() && authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
 			Role.findAll().each { it.removeFromPeople(person)
 			}
 			addRoles(person)

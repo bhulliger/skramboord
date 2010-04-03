@@ -17,7 +17,7 @@
 
 package ch.ping.scrumboard
 
-class SprintController {
+class SprintController extends BaseControllerController {
 	
 	def index = { redirect(controller:'sprint', action:'list')
 	}

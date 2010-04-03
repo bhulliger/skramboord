@@ -19,7 +19,7 @@ package ch.ping.scrumboard
 /**
  * Logout Controller (Example).
  */
-class LogoutController {
+class LogoutController extends BaseControllerController {
 	
 	/**
 	 * Index action. Redirects to the Spring security logout uri.

@@ -25,6 +25,7 @@ class TaskTests extends GrailsUnitTestCase {
 	Priority normal
 	StateTaskOpen taskStateOpen
 	StateTaskCheckedOut taskStateChecked
+	Sprint sprint
 	
     protected void setUp() {
         super.setUp()
@@ -36,6 +37,10 @@ class TaskTests extends GrailsUnitTestCase {
 		normal = new Priority(name: "normal", color: Color.GREEN)
 		taskStateOpen = new StateTaskOpen()
 		taskStateChecked = new StateTaskCheckedOut()
+        
+		Date date0 = Today.getInstance() + 15
+		Date date1 = date0 - 10
+        sprint = new Sprint(name: "1.1", goal: "GOOOOAAAAL!", startDate: date1, endDate: date0, tasks: [])
     }
 
     protected void tearDown() {
@@ -47,7 +52,7 @@ class TaskTests extends GrailsUnitTestCase {
      */
     void testCorrectTask() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: urlPuzzle, state: taskStateOpen, priority: normal)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: urlPuzzle, state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -60,7 +65,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testAnotherCorrectTask() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, state: taskStateChecked, priority: immediate)
+		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, state: taskStateChecked, priority: immediate, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -73,7 +78,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithoutUrl() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 1.0, state: taskStateChecked, priority: normal)
+		Task task = new Task(name:"Mantis 3050", effort: 1.0, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -86,7 +91,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingEffort() {
 		// given
-		Task task = new Task(name:"Mantis 2001", url: urlPuzzle, state: taskStateChecked, priority: normal)
+		Task task = new Task(name:"Mantis 2001", url: urlPuzzle, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -99,7 +104,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingName() {
 		// given
-		Task task = new Task(effort: 2.0, url: urlPuzzle, state: taskStateChecked, priority: normal)
+		Task task = new Task(effort: 2.0, url: urlPuzzle, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -112,7 +117,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingPriority() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, state: taskStateChecked)
+		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, state: taskStateChecked, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -125,7 +130,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingState() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, priority: normal)
+		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		

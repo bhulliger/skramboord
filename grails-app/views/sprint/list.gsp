@@ -5,7 +5,6 @@
 		<title>Skramboord</title>
 		
 		<style type="text/css">
-			body { font-size: 62.5%; }
 			label, input { display:block; }
 			input.text { margin-bottom:12px; width:95%; padding: .4em; }
 			fieldset { padding:0; border:0; margin-top:25px; }

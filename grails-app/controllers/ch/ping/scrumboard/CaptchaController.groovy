@@ -24,7 +24,7 @@ import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
-class CaptchaController {
+class CaptchaController extends BaseControllerController {
 	
 	private static final String SOURCECHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	

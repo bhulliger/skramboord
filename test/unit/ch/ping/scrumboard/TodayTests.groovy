@@ -34,7 +34,7 @@ class TodayTests extends GrailsUnitTestCase {
 	void testTodayInstance() {
 		// given
 		Calendar calendar = Calendar.getInstance()
-		Date today = Date.parse("dd.MM.yyyy", "${calendar.get(Calendar.DATE)}.${calendar.get(Calendar.MONTH)}.${calendar.get(Calendar.YEAR)}")
+		Date today = Date.parse("dd.MM.yyyy", "${calendar.get(Calendar.DATE)}.${calendar.get(Calendar.MONTH)+1}.${calendar.get(Calendar.YEAR)}")
 		
 		// when
 		

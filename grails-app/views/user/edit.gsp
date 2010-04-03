@@ -89,7 +89,12 @@
 							<ul>
 							<g:each var="entry" in="${roleMap}">
 								<li>${entry.key.authority.encodeAsHTML()}
-									<g:checkBox name="${entry.key.authority}" value="${entry.value}"/>
+									<g:ifAllGranted role="ROLE_SUPERUSER">
+										<g:checkBox name="${entry.key.authority}" value="${entry.value}"/>
+									</g:ifAllGranted>
+									<g:ifNotGranted role="ROLE_SUPERUSER">
+										<g:checkBox name="${entry.key.authority}" value="${entry.value}" disabled="true"/>
+									</g:ifNotGranted>
 								</li>
 							</g:each>
 							</ul>
@@ -102,7 +107,9 @@
 
 			<div class="buttons">
 				<span class="button"><g:actionSubmit class="save" value="Update" /></span>
-				<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+				<g:ifAllGranted role="ROLE_SUPERUSER">
+					<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+				</g:ifAllGranted>
 			</div>
 
 		</g:form>

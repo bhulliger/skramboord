@@ -9,7 +9,6 @@
 			#open li, #checkout li, #done li, #next li, #standBy li { margin: 1px; padding: 5px; font-size: 1.2em; width: 200px; }
 			#taskInfo { font-style:italic; font-weight: normal; font-size:x-small; color: black; }
 			
-			body { font-size: 62.5%; }
 			label, input { display:block; }
 			input.text { margin-bottom:12px; width:95%; padding: .4em; }
 			fieldset { padding:0; border:0; margin-top:25px; }

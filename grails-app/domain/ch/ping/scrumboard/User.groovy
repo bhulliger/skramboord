@@ -22,7 +22,7 @@ package ch.ping.scrumboard
  */
 class User {
 	static transients = ['pass']
-	static hasMany = [authorities: Role]
+	static hasMany = [authorities:Role, tasks:Task]
 	static belongsTo = Role
 
 	/** Username */

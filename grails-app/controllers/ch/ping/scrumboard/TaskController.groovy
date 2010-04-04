@@ -156,6 +156,7 @@ class TaskController extends BaseControllerController {
 	 */
 	def changeTaskStateToCheckOut = {
 		Task task = Task.get(removeTaskPrefix(params.taskId))
+		task.user = session.user
 		task.state.checkOut(task)
 		task.save()
 		

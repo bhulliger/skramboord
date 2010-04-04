@@ -151,10 +151,10 @@
 				
 			<div id="tabs">
 				<ul>
-					<li><a href="#tabs-1">Tasks</a></li>
+					<li><a href="#tab-task">Tasks</a></li>
 					<li><a href="burndown.gsp">Burn Down</a></li>
 				</ul>
-				<div id="tabs-1">
+				<div id="tab-task">
 					<div>
 						<h3>Tasks</h3>
 						<div id="dialog-form" title="Create new task">
@@ -195,11 +195,18 @@
 										<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListOpen}" status="i">
-											<li id="taskId_${task.id}" class="ui-state-default">
+											<g:if test="${task.user && task.user.equals(session.user)}">
+												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
+											</g:if>
+											<g:else>
+												<li id="taskId_${task.id}" class="ui-state-default">
+											</g:else>
 												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 												<div id="taskInfo">
 													Effort: ${task.effort}<br/>
-													Person: unknown
+													<g:if test="${task.user}">
+														Person: ${task.user.userRealName}
+													</g:if>
 												</div>
 											</li>
 										</g:each>
@@ -213,11 +220,18 @@
 										<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListCheckout}" status="i">
-											<li id="taskId_${task.id}" class="ui-state-default">
+											<g:if test="${task.user && task.user.equals(session.user)}">
+												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
+											</g:if>
+											<g:else>
+												<li id="taskId_${task.id}" class="ui-state-default">
+											</g:else>
 												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 												<div id="taskInfo">
 													Effort: ${task.effort}<br/>
-													Person: unknown
+													<g:if test="${task.user}">
+														Person: ${task.user.userRealName}
+													</g:if>
 												</div>
 											</li>
 										</g:each>
@@ -231,11 +245,18 @@
 										<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListDone}" status="i">
-											<li id="taskId_${task.id}" class="ui-state-default">
+											<g:if test="${task.user && task.user.equals(session.user)}">
+												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
+											</g:if>
+											<g:else>
+												<li id="taskId_${task.id}" class="ui-state-default">
+											</g:else>
 												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 												<div id="taskInfo">
 													Effort: ${task.effort}<br/>
-													Person: unknown
+													<g:if test="${task.user}">
+														Person: ${task.user.userRealName}
+													</g:if>
 												</div>
 											</li>
 										</g:each>
@@ -255,11 +276,18 @@
 										<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListStandBy}" status="i">
-											<li id="taskId_${task.id}" class="ui-state-default">
+											<g:if test="${task.user && task.user.equals(session.user)}">
+												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
+											</g:if>
+											<g:else>
+												<li id="taskId_${task.id}" class="ui-state-default">
+											</g:else>
 												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 												<div id="taskInfo">
 													Effort: ${task.effort}<br/>
-													Person: unknown
+													<g:if test="${task.user}">
+														Person: ${task.user.userRealName}
+													</g:if>
 												</div>
 											</li>
 										</g:each>
@@ -273,11 +301,18 @@
 										<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListNext}" status="i">
-											<li id="taskId_${task.id}" class="ui-state-default">
+											<g:if test="${task.user && task.user.equals(session.user)}">
+												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
+											</g:if>
+											<g:else>
+												<li id="taskId_${task.id}" class="ui-state-default">
+											</g:else>
 												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
 												<div id="taskInfo">
 													Effort: ${task.effort}<br/>
-													Person: unknown
+													<g:if test="${task.user}">
+														Person: ${task.user.userRealName}
+													</g:if>
 												</div>
 											</li>
 										</g:each>

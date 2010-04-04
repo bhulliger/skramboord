@@ -26,7 +26,7 @@ class Task {
 	StateTask state
 	Priority priority
 	Date finishedDate
-	static belongsTo = [sprint:Sprint]
+	static belongsTo = [sprint:Sprint, user:User]
 	
 	static constraints = {
 		name(nullable:false)
@@ -35,5 +35,6 @@ class Task {
 		state(nullable:false)
 		priority(nullable:false)
 		finishedDate(nullable:true)
+		user(nullable:true)
     }
 }

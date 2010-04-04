@@ -65,7 +65,9 @@ class BootStrap {
 		// Adding Users
 		def userAdmin = new User(username:'admin', userRealName:'Pablo Hess', enabled: true, emailShow: true, email: 'admin@skramboord.ch', passwd: authenticateService.encodePassword("admin")).save()
 		def userDevChief = new User(username:'wmozart', userRealName:'Wolfgang Mozart', enabled: true, emailShow: true, email: 'wolfgang.mozart@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
-		def userDev1 = new User(username:'hmuster', userRealName:'Hans Muster', enabled: true, emailShow: true, email: 'hans.muster@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
+		def userDev1 = new User(username:'lbeethoven', userRealName:'Ludwig Beethoven', enabled: true, emailShow: true, email: 'ludwig.beethoven@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
+		def userDev2 = new User(username:'asalieri', userRealName:'Antonio Salieri', enabled: true, emailShow: true, email: 'antonio.salieri@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
+		def userDev3 = new User(username:'jbach', userRealName:'Johann Bach', enabled: true, emailShow: true, email: 'johann.bach@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
 		
 		// Adding user to roles
 		roleSuperUser.addToPeople(userAdmin)
@@ -74,6 +76,8 @@ class BootStrap {
 		roleUser.addToPeople(userAdmin)
 		roleUser.addToPeople(userDevChief)
 		roleUser.addToPeople(userDev1)
+		roleUser.addToPeople(userDev2)
+		roleUser.addToPeople(userDev3)
 		
 		// Initialize priorities
 		Priority low = new Priority(name: "low", color: Color.GRAY)
@@ -88,43 +92,49 @@ class BootStrap {
 		immediate.save()
 		
 		// Initialize dates
-		Date date0 = Today.getInstance() + 15
+		Date date0 = Today.getInstance() + 25
 		Date date1 = date0 - 10
 		Date date2 = date1 - 10
 		Date date3 = date2 - 10
+		Date date4 = date3 - 10
 		
 		// Sprint 1.0
-		Sprint sprint1_0 = new Sprint(name: "1.0", goal: "Login System", startDate: date3, endDate: date2, tasks: [])
-		createTask(sprint1_0, "Mantis 1812", 2.0, urlPuzzle, taskStateDone, normal, date3 + 1)
-		createTask(sprint1_0, "Mantis 1798", 4.0, urlPuzzle, taskStateDone, normal, date3 + 3)
-		createTask(sprint1_0, "Mantis 1765", 4.5, urlPuzzle, taskStateDone, high, date3 + 4)
-		createTask(sprint1_0, "Mantis 1705", 3.5, urlPuzzle, taskStateDone, normal, date3 + 5)
-		createTask(sprint1_0, "Mantis 1731", 2.0, urlPuzzle, taskStateDone, low, date3 + 6)
-		createTask(sprint1_0, "Mantis 1733", 2.5, urlPuzzle, taskStateDone, low, date3 + 8)
-		createTask(sprint1_0, "Mantis 1722", 0.5, urlPuzzle, taskStateDone, low, date3 + 9)
-		createTask(sprint1_0, "Mantis 1700", 4, urlPuzzle, taskStateDone, low, date3 + 10)
+		Sprint sprint1_0 = new Sprint(name: "1.0", goal: "Login System", startDate: date4, endDate: date3, tasks: [])
+		createTask(userDev1, sprint1_0, "Mantis 1812", 2.0, urlPuzzle, taskStateDone, normal, date4 + 1)
+		createTask(userDev3, sprint1_0, "Mantis 1798", 4.0, urlPuzzle, taskStateDone, normal, date4 + 3)
+		createTask(userDev1, sprint1_0, "Mantis 1765", 4.5, urlPuzzle, taskStateDone, high, date4 + 4)
+		createTask(userDev3, sprint1_0, "Mantis 1705", 3.5, urlPuzzle, taskStateDone, normal, date4 + 5)
+		createTask(userDev3, sprint1_0, "Mantis 1731", 2.0, urlPuzzle, taskStateDone, low, date4 + 6)
+		createTask(userDev1, sprint1_0, "Mantis 1733", 2.5, urlPuzzle, taskStateDone, low, date4 + 8)
+		createTask(userDev2, sprint1_0, "Mantis 1722", 0.5, urlPuzzle, taskStateDone, low, date4 + 9)
+		createTask(userDev2, sprint1_0, "Mantis 1700", 4, urlPuzzle, taskStateDone, low, date4 + 10)
 		
 		// Sprint 1.1
-		Sprint sprint1_1 = new Sprint(name: "1.1", goal: "Drag'n'Drop Functionality", startDate: date2, endDate: date1, tasks: [])
-		createTask(sprint1_1, "Mantis 1980", 5.5, urlPuzzle, taskStateDone, normal, date2 + 2)
-		createTask(sprint1_1, "Mantis 2100", 2.0, urlPuzzle, taskStateDone, immediate, date2 + 4)
-		createTask(sprint1_1, "Mantis 2001", 2.0, urlPuzzle, taskStateOpen, normal, null)
-		createTask(sprint1_1, "Mantis 2015", 3.5, urlPuzzle, taskStateOpen, urgent, null)
-		createTask(sprint1_1, "Mantis 1987", 0.5, urlPuzzle, taskStateOpen, high, null)
-		createTask(sprint1_1, "Mantis 1950", 2.5, urlPuzzle, taskStateOpen, normal, null)
-		createTask(sprint1_1, "Mantis 1999", 1.0, urlPuzzle, taskStateChecked, immediate, null)
-		createTask(sprint1_1, "Mantis 2012", 1.5, urlPuzzle, taskStateNext, normal, null)
-		createTask(sprint1_1, "Mantis 2014", 5.0, urlPuzzle, taskStateNext, low, null)
+		Sprint sprint1_1 = new Sprint(name: "1.1", goal: "Drag'n'Drop Functionality", startDate: date3, endDate: date2, tasks: [])
+		createTask(userDev2, sprint1_1, "Mantis 1980", 5.5, urlPuzzle, taskStateDone, normal, date3 + 2)
+		createTask(userDev3, sprint1_1, "Mantis 2100", 2.0, urlPuzzle, taskStateDone, immediate, date3 + 4)
+		createTask(null, sprint1_1, "Mantis 2001", 2.0, urlPuzzle, taskStateOpen, normal, null)
+		createTask(null, sprint1_1, "Mantis 2015", 3.5, urlPuzzle, taskStateOpen, urgent, null)
+		createTask(null, sprint1_1, "Mantis 1987", 0.5, urlPuzzle, taskStateOpen, high, null)
+		createTask(null, sprint1_1, "Mantis 1950", 2.5, urlPuzzle, taskStateOpen, normal, null)
+		createTask(userDev1, sprint1_1, "Mantis 1999", 1.0, urlPuzzle, taskStateChecked, immediate, null)
+		createTask(null, sprint1_1, "Mantis 2012", 1.5, urlPuzzle, taskStateNext, normal, null)
+		createTask(null, sprint1_1, "Mantis 2014", 5.0, urlPuzzle, taskStateNext, low, null)
 		
 		// Sprint 1.2
-		Sprint sprint1_2 = new Sprint(name: "1.2", goal: "Email Warning System", startDate: date1, endDate: date0, tasks: [])
+		Sprint sprint1_2 = new Sprint(name: "1.2", goal: "Email Warning System", startDate: date2, endDate: date1, tasks: [])
 		sprint1_2.save()
+		
+		// Sprint 1.3
+		Sprint sprint1_3 = new Sprint(name: "1.3", goal: "Usability Improvements", startDate: date1, endDate: date0, tasks: [])
+		sprint1_3.save()
 		
 		// Initialize Project skramboord
 		Project skramboord = new Project(name: "skramboord")
 		skramboord.addToSprints(sprint1_0)
 		skramboord.addToSprints(sprint1_1)
 		skramboord.addToSprints(sprint1_2)
+		skramboord.addToSprints(sprint1_3)
 		skramboord.save()
 		
 		// Initialize Project Grails
@@ -145,8 +155,8 @@ class BootStrap {
 	 * @param priority
 	 * @param finished
 	 */
-	def createTask(Sprint sprint, String name, Double effort, String url, StateTask state, Priority priority, Date finished) {
-		Task task = new Task(name: name, effort: effort, url: url, state: state, priority: priority, finishedDate: finished)
+	def createTask(User user, Sprint sprint, String name, Double effort, String url, StateTask state, Priority priority, Date finished) {
+		Task task = new Task(user: user, name: name, effort: effort, url: url, state: state, priority: priority, finishedDate: finished)
 		task.save()
 		sprint.addToTasks(task)
 		sprint.save()

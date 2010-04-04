@@ -73,21 +73,23 @@
 					<g:renderErrors bean="${flash.project}" as="list"/>
 				</div>
 			</g:hasErrors>
-			<table>
-				<tr>
-					<th>Project</th>
-					<th style="text-align:center;">Number of Sprints</th>
-				</tr>
-				<g:each var="project" in="${session.projectList}" status="i">
-					<g:def var="projectId" value="${project.id}"/>
+			<div class="list">
+				<table>
 					<tr>
-						<td>
-							<g:link controller="sprint" action="list" params="[project: projectId]"><span id="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit" border="0"/></span><span id="icon">${project.name}</span></g:link>
-						</td>
-						<td style="text-align:center;">${project.sprints.size()}</td>
+						<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
+						<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints"/>
 					</tr>
-				</g:each>
-			</table>
+					<g:each var="project" in="${session.projectList}" status="i">
+						<g:def var="projectId" value="${project.id}"/>
+						<tr>
+							<td>
+								<g:link controller="sprint" action="list" params="[project: projectId]"><span id="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit" border="0"/></span><span id="icon">${project.name}</span></g:link>
+							</td>
+							<td style="text-align:center;">${project.sprints.size()}</td>
+						</tr>
+					</g:each>
+				</table>
+			</div>
 		</div>
 	</body>
 </html>

@@ -20,13 +20,22 @@ package ch.ping.scrumboard
 import org.grails.plugins.springsecurity.service.AuthenticateService;
 
 class ProjectController extends BaseControllerController {
-
+	
 	def index = { redirect(controller:'project', action:'list')
 	}
 	
 	def list = {
+		if (!params.sort) {
+			params.sort = 'name'
+			params.order = 'asc'
+		}
 		session.projectList = Project.withCriteria {
-			order('name','asc')
+			if (params.sort != 'sprints') {
+				order(params.sort, params.order)
+			}
+		}
+		if(params.sort == 'sprints'){
+			session.projectList.sort{it.sprints.size() * (params?.order == "asc"? 1 : -1)}
 		}
 	}
 	
@@ -40,7 +49,7 @@ class ProjectController extends BaseControllerController {
 		if (!project.save()) {
 			flash.project=project
 		}
-
+		
 		redirect(controller:'project', action:'list')
 	}
 }

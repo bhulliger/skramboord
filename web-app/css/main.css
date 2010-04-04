@@ -220,7 +220,7 @@ th.desc a {
     border-left: 1px solid #ddd;
 }
 .list th:hover, .list tr:hover {
-    background: #b2d1ff;
+    background: #70f270;
 }
 
 /* PAGINATION */

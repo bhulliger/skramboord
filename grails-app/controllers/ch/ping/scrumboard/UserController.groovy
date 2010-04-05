@@ -78,7 +78,7 @@ class UserController extends BaseControllerController {
 				flash.message = "User not found with id $params.id"
 			}
 		} else {
-			
+			flash.message = "Only Super User can delete other users."
 		}
 		
 		redirect action: list
@@ -156,9 +156,14 @@ class UserController extends BaseControllerController {
 	private void addRoles(person) {
 		for (String key in params.keySet()) {
 			if (key.contains('ROLE') && 'on' == params.get(key)) {
-				Role.findByAuthority(key).addToPeople(person)
+				if (authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
+					// Only Super user can add all roles
+					Role.findByAuthority(key).addToPeople(person)
+				}
 			}
 		}
+		// Every user (USER, ADMIN and SUPERUSER) has the role ROLE_USER
+		Role.findByAuthority('ROLE_USER').addToPeople(person)
 	}
 	
 	private Map buildPersonModel(person) {

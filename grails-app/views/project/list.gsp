@@ -81,7 +81,7 @@
 					</tr>
 					<g:each var="project" in="${session.projectList}" status="i">
 						<g:def var="projectId" value="${project.id}"/>
-						<tr>
+						<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 							<td>
 								<g:link controller="sprint" action="list" params="[project: projectId]"><span id="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit" border="0"/></span><span id="icon">${project.name}</span></g:link>
 							</td>

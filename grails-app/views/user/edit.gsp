@@ -4,15 +4,15 @@
 </head>
 
 <body>
-
-	<div class="nav">
-		<span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-		<span class="menuButton"><g:link class="list" action="list">User List</g:link></span>
-		<span class="menuButton"><g:link class="create" action="create">New User</g:link></span>
-	</div>
-
 	<div class="body">
-		<h1>Edit User</h1>
+		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="user" action="list">> User List</g:link> <g:link controller="user" action="edit" params="[id: person.id]">> ${person.username?.encodeAsHTML()}</g:link></h1>
+		
+		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
+			<div class="nav">
+				<span class="menuButton"><g:link class="create" action="create">New User</g:link></span>
+			</div>
+		</g:ifAnyGranted>
+		<h3>Edit User</h3>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
@@ -21,12 +21,6 @@
 			<g:renderErrors bean="${person}" as="list" />
 		</div>
 		</g:hasErrors>
-
-		<div class="prop">
-			<span class="name">ID:</span>
-			<span class="value">${person.id}</span>
-		</div>
-
 		<g:form>
 			<input type="hidden" name="id" value="${person.id}" />
 			<input type="hidden" name="version" value="${person.version}" />

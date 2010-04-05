@@ -19,8 +19,7 @@
 	        	</div>
 	        	<div style="float: right;">
 	        		<g:isLoggedIn>
-	        			<g:def var="userId" value="${session.user.id}"/>
-	        			<g:link controller="user" action="edit" params="[id: userId]" style="padding-right: 10px;">
+	        			<g:link controller="user" action="show" params="[id: session.user.id]" style="padding-right: 10px;">
 	        				<span id="icon">
 		        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil" border="0"/>
 		        			</span>

@@ -5,13 +5,17 @@
 
 <body>
 
-	<div class="nav">
-		<span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-		<span class="menuButton"><g:link class="list" action="list">User List</g:link></span>
-	</div>
+
 
 	<div class="body">
-		<h1>Create User</h1>
+		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="user" action="list">> User List</g:link> <g:link controller="user" action="create">> Create User</g:link></h1>
+	
+		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
+			<div class="nav">
+				<span class="menuButton"><g:link class="create" action="create">New User</g:link></span>
+			</div>
+		</g:ifAnyGranted>
+		<h3>Create User</h3>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
@@ -49,7 +53,7 @@
 					<tr class="prop">
 						<td valign="top" class="name"><label for="enabled">Enabled:</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'enabled','errors')}">
-							<g:checkBox name="enabled" value="${person.enabled}" ></g:checkBox>
+							<g:checkBox name="enabled" value="true" ></g:checkBox>
 						</td>
 					</tr>
 
@@ -70,20 +74,22 @@
 					<tr class="prop">
 						<td valign="top" class="name"><label for="emailShow">Show Email:</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'emailShow','errors')}">
-							<g:checkBox name="emailShow" value="${person.emailShow}"/>
+							<g:checkBox name="emailShow" value="true"/>
 						</td>
 					</tr>
 
-					<tr class="prop">
-						<td valign="top" class="name" align="left">Assign Roles:</td>
-					</tr>
-
-					<g:each in="${authorityList}">
-					<tr>
-						<td valign="top" class="name" align="left">${it.authority.encodeAsHTML()}</td>
-						<td align="left"><g:checkBox name="${it.authority}"/></td>
-					</tr>
-					</g:each>
+					<g:ifAllGranted role="ROLE_SUPERUSER">
+						<tr class="prop">
+							<td valign="top" class="name" align="left">Assign Roles:</td>
+						</tr>
+					
+						<g:each in="${authorityList}">
+							<tr>
+								<td valign="top" class="name" align="left">${it.authority.encodeAsHTML()}</td>
+								<td align="left"><g:checkBox name="${it.authority}"/></td>
+							</tr>
+						</g:each>
+					</g:ifAllGranted>
 
 				</tbody>
 				</table>

@@ -116,7 +116,7 @@
 						</tr>
 						<g:each var="sprint" in="${session.sprintList}" status="i">
 							<g:def var="sprintId" value="${sprint.id}"/>
-							<tr>
+							<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 								<td>
 									<g:link controller="task" action="list" params="[sprint: sprintId]"><span id="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit" border="0"/></span><span id="icon">${sprint.name}</span></g:link>
 								</td>

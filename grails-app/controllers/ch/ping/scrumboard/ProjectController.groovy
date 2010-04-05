@@ -40,6 +40,41 @@ class ProjectController extends BaseControllerController {
 	}
 	
 	/**
+	 * Project delete action
+	 */
+	def delete = {
+		if (params.project) {
+			def project = Project.get(params.project)
+			project.delete()
+			
+			flash.message = "Project $project.name deleted."
+		}
+		
+		redirect(controller:'project', action:'list')
+	}
+	
+	def edit = {
+		if (params.project) {
+			flash.project = Project.get(params.project)
+		}
+		
+		redirect(controller:'project', action:'list')
+	}
+	
+	/**
+	 * Project edit action
+	 */
+	def editProject = {
+		if (params.projectName && params.projectId) {
+			def project = Project.get(params.projectId)
+			project.name = params.projectName
+			project.save()
+		}
+
+		redirect(controller:'project', action:'list')
+	}
+	
+	/**
 	 * Add new project
 	 */
 	def addProject = {

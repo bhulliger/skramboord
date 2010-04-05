@@ -25,6 +25,8 @@ class SprintController extends BaseControllerController {
 	def list = {
 		if (params.project) {
 			session.project = Project.get(params.project)
+		} else {
+			session.project.refresh()
 		}
 
 		session.sprintList = Sprint.withCriteria {

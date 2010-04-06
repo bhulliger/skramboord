@@ -2,7 +2,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="layout" content="main" />
-		<title>Skramboord</title>
 		
 		<style type="text/css">
 			label, input { display:block; }
@@ -38,7 +37,7 @@
 					modal: true,
 					buttons: {
 						'Save': function() {
-							document.forms["myform"].submit();
+							document.getElementById("myform").submit();
 							$(this).dialog('close');
 						},
 						Cancel: function() {
@@ -66,29 +65,28 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
+			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
 			<h3>Sprint List</h3>
 			<div id="dialog-form-sprint" title="Create new sprint">
-				<g:form name="myform" action="addSprint">
+				<g:form action="addSprint" name="myform">
 					<fieldset>
-						<label for="name">Sprint</label>
+						<label>Sprint</label>
 						<input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/>
-						<label for="goal">Goal</label>
+						<label>Goal</label>
 						<input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/>
 						<table>
 							<tr>
-								<td><label for="startDate">Start:</label></td>
-								<td><label for="endDate">End:</label></td>
+								<td><label>Start:</label></td>
+								<td><label>End:</label></td>
 							</tr>
 							<tr>
-								<td><div type="text" id="startDate"></div></td>
-								<td><div type="text" id="endDate"></div></td>
-								
+								<td><div id="startDate"></div></td>
+								<td><div id="endDate"></div></td>
 							</tr>
 						</table>
+						<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
+						<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
 					</fieldset>
-					<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"></input>
-					<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"></input>
 				</g:form>
 			</div>
 			<g:submitButton name="create-sprint" value="Create sprint"/>
@@ -118,7 +116,7 @@
 							<g:def var="sprintId" value="${sprint.id}"/>
 							<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 								<td>
-									<g:link controller="task" action="list" params="[sprint: sprintId]"><span id="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit" border="0"/></span><span id="icon">${sprint.name}</span></g:link>
+									<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
 								</td>
 								<td>${sprint.goal}</td>
 								<td><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>

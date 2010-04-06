@@ -5,7 +5,7 @@
 
 <body>
 	<div class="body">
-		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="user" action="list">> User List</g:link> <g:link controller="user" action="show" params="[id: person.id]">> ${person.username?.encodeAsHTML()}</g:link></h1>
+		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="user" action="list">> User List</g:link> <g:link controller="user" action="show" params="[id: person.id]">> ${person.username?.encodeAsHTML()}</g:link></h1>
 		
 		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
 			<div class="nav">
@@ -67,11 +67,13 @@
 		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
 			<div class="buttons">
 				<g:form>
-					<input type="hidden" name="id" value="${person.id}" />
-					<span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
-					<g:ifAnyGranted role="ROLE_SUPERUSER">
-						<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
-					</g:ifAnyGranted>
+					<fieldset style="border: none;">
+						<input type="hidden" name="id" value="${person.id}"/>
+						<span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
+						<g:ifAnyGranted role="ROLE_SUPERUSER">
+							<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+						</g:ifAnyGranted>
+					</fieldset>
 				</g:form>
 			</div>
 		</g:ifAnyGranted>

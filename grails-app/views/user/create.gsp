@@ -8,7 +8,7 @@
 
 
 	<div class="body">
-		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="user" action="list">> User List</g:link> <g:link controller="user" action="create">> Create User</g:link></h1>
+		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="user" action="list">> User List</g:link> <g:link controller="user" action="create">> Create User</g:link></h1>
 	
 		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
 			<div class="nav">

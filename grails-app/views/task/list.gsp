@@ -2,12 +2,11 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="layout" content="main" />
-		<title>Skramboord</title>
 		
 		<style type="text/css">
 			#open, #checkout, #done, #next, #standBy { list-style-type: none; margin: 0; padding: 0; float: left; width: 230px;}
 			#open li, #checkout li, #done li, #next li, #standBy li { margin: 1px; padding: 5px; font-size: 1.2em; width: 200px; }
-			#taskInfo { font-style:italic; font-weight: normal; font-size:x-small; color: black; }
+			.taskInfo { font-style:italic; font-weight: normal; font-size:x-small; color: black; }
 			
 			label, input { display:block; }
 			input.text { margin-bottom:12px; width:95%; padding: .4em; }
@@ -59,7 +58,7 @@
 					modal: true,
 					buttons: {
 						'Save': function() {
-							document.forms["myform"].submit();
+							document.getElementById("myform").submit();
 							$(this).dialog('close');
 						},
 						Cancel: function() {
@@ -114,7 +113,7 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: session.sprint.id]">> ${session.sprint.name}</g:link></h1>
+			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: session.sprint.id]">> ${session.sprint.name}</g:link></h1>
 			<h3>Sprint informations</h3>
 			<table>
 				<tr>
@@ -158,15 +157,15 @@
 					<div>
 						<h3>Tasks</h3>
 						<div id="dialog-form" title="Create new task">
-							<g:form name="myform" action="addTask">
+							<g:form action="addTask" name="myform">
 								<fieldset>
-									<label for="name">Name</label>
+									<label>Name</label>
 									<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
-									<label for="effort">Effort</label>
+									<label>Effort</label>
 									<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
-									<label for="link">Link</label>
+									<label>Link</label>
 									<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
-									<label for="link">Priority</label>
+									<label>Priority</label>
 									<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/>
 								</fieldset>
 							</g:form>
@@ -201,8 +200,8 @@
 											<g:else>
 												<li id="taskId_${task.id}" class="ui-state-default">
 											</g:else>
-												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div id="taskInfo">
+												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div class="taskInfo">
 													Effort: ${task.effort}<br/>
 													<g:if test="${task.user}">
 														Person: ${task.user.userRealName}
@@ -226,8 +225,8 @@
 											<g:else>
 												<li id="taskId_${task.id}" class="ui-state-default">
 											</g:else>
-												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div id="taskInfo">
+												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div class="taskInfo">
 													Effort: ${task.effort}<br/>
 													<g:if test="${task.user}">
 														Person: ${task.user.userRealName}
@@ -251,8 +250,8 @@
 											<g:else>
 												<li id="taskId_${task.id}" class="ui-state-default">
 											</g:else>
-												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div id="taskInfo">
+												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div class="taskInfo">
 													Effort: ${task.effort}<br/>
 													<g:if test="${task.user}">
 														Person: ${task.user.userRealName}
@@ -282,8 +281,8 @@
 											<g:else>
 												<li id="taskId_${task.id}" class="ui-state-default">
 											</g:else>
-												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div id="taskInfo">
+												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div class="taskInfo">
 													Effort: ${task.effort}<br/>
 													<g:if test="${task.user}">
 														Person: ${task.user.userRealName}
@@ -307,8 +306,8 @@
 											<g:else>
 												<li id="taskId_${task.id}" class="ui-state-default">
 											</g:else>
-												<g:link url="${task.url}" target="_blank" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div id="taskInfo">
+												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
+												<div class="taskInfo">
 													Effort: ${task.effort}<br/>
 													<g:if test="${task.user}">
 														Person: ${task.user.userRealName}

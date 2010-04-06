@@ -4,12 +4,16 @@ html * {
 }
 
 /* GENERAL */
-#icon {
+.icon {
   display: inline-block; /** important **/
   vertical-align:middle; /** important **/
   padding:0;
   margin: 0;
   margin-right:2px;
+}
+
+img {
+	border: 0px;	
 }
 
 .spinner {
@@ -23,17 +27,20 @@ body {
     color: #333;
     font: 11px verdana, arial, helvetica, sans-serif;
     font-size: 62.5%;
+    height: 100%;
 }
 
 #content {
-    display:		table;
 	width: 			992px;
-	height:			100%;
-	margin:         auto;
+	height:			768px;
+	margin-left:    auto;
+	margin-right:	auto;
+	margin-top:		0px;
+	margin-bottom:	0px;
     padding:        0px 16px 40px 16px;
-    background:     #fff;
-	border-left:	1px solid #E9E9E7;
-	border-right:	1px solid #E9E9E7;
+    background:     #ffffff;
+	border:			0px;
+	position: 		relative;
 }
 
 #tabs {

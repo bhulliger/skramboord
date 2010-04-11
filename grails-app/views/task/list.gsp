@@ -58,7 +58,7 @@
 					modal: true,
 					buttons: {
 						'Save': function() {
-							document.getElementById("myform").submit();
+							document.getElementById("formNewTask").submit();
 							$(this).dialog('close');
 						},
 						Cancel: function() {
@@ -157,7 +157,7 @@
 					<div>
 						<h3>Tasks</h3>
 						<div id="dialog-form" title="Create new task">
-							<g:form action="addTask" name="myform">
+							<g:form action="addTask" name="formNewTask">
 								<fieldset>
 									<label>Name</label>
 									<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />

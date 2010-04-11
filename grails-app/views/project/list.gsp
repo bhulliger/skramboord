@@ -36,7 +36,7 @@
 					modal: true,
 					buttons: {
 						'Save': function() {
-							document.forms["myform"].submit();
+							document.getElementById("formNewProject").submit();
 							$(this).dialog('close');
 						},
 						Cancel: function() {
@@ -53,7 +53,7 @@
 					modal: true,
 					buttons: {
 						'Save': function() {
-							document.getElementById("myform").submit();
+							document.getElementById("formEditProject").submit();
 							$(this).dialog('close');
 						},
 						Cancel: function() {
@@ -76,20 +76,20 @@
 		<div class="body">
 			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/></g:link></h1>
 			<h3>Project List</h3>
-			<g:if test="${flash.project}">
+			<g:if test="${flash.projectEdit}">
 				<div id="dialog-form-project-edit" title="Edit project">
-				<g:form action='editProject' name='myform'>
+				<g:form action='editProject' name='formEditProject'>
 					<fieldset>
 						<label>Project</label>
-						<input type="text" name="projectName" id="projectName" value="${flash.project.name}" class="text ui-widget-content ui-corner-all"/>
-						<input type="hidden" name="projectId" value="${flash.project.id}" style="border-style: none;"/>
+						<input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/>
+						<input type="hidden" name="projectId" value="${flash.projectEdit.id}" style="border-style: none;"/>
 					</fieldset>
 				</g:form>
 				</div>
 			</g:if>
 			<g:else>
 				<div id="dialog-form-project" title="Create new project">
-				<g:form action='addProject' name='myform'>
+				<g:form action='addProject' name='formNewProject'>
 					<fieldset>
 						<label>Project</label>
 						<input type="text" name="projectName" id="projectName" class="text ui-widget-content ui-corner-all"/>
@@ -108,31 +108,38 @@
 			<g:if test="${flash.message}">
 				<div class="message">${flash.message}</div>
 			</g:if>
-			<div class="list">
-				<table>
-					<tr>
-						<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
-						<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints" style="text-align:center; width: 50px;"/>
-						<th style="width: 50px;"></th>
-						<th style="width: 70px;"></th>
-					</tr>
-					<g:each var="project" in="${session.projectList}" status="i">
-						<g:def var="projectId" value="${project.id}"/>
-						<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-							<td>
-								<g:link controller="sprint" action="list" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="view"/></span><span class="icon">${project.name}</span></g:link>
-							</td>
-							<td style="text-align:center;">${project.sprints.size()}</td>
-							<td>
-								<g:link controller="project" action="edit" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
-							</td>
-							<td>
-								<g:link controller="project" action="delete" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
-							</td>
+			<g:if test="${session.projectList.isEmpty()}">
+				<div class="message">
+					No projects created yet.
+				</div>
+			</g:if>
+			<g:else>
+				<div class="list">
+					<table>
+						<tr>
+							<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
+							<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints" style="text-align:center; width: 50px;"/>
+							<th style="width: 50px;"></th>
+							<th style="width: 70px;"></th>
 						</tr>
-					</g:each>
-				</table>
+						<g:each var="project" in="${session.projectList}" status="i">
+							<g:def var="projectId" value="${project.id}"/>
+							<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+								<td>
+									<g:link controller="sprint" action="list" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="view"/></span><span class="icon">${project.name}</span></g:link>
+								</td>
+								<td style="text-align:center;">${project.sprints.size()}</td>
+								<td>
+									<g:link controller="project" action="edit" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+								</td>
+								<td>
+									<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
+								</td>
+							</tr>
+						</g:each>
+					</table>
+				</div>
 			</div>
-		</div>
+		</g:else>
 	</body>
 </html>

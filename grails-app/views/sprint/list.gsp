@@ -37,7 +37,24 @@
 					modal: true,
 					buttons: {
 						'Save': function() {
-							document.getElementById("myform").submit();
+							document.getElementById("formNewSprint").submit();
+							$(this).dialog('close');
+						},
+						Cancel: function() {
+							location.reload(true);
+							$(this).dialog('close');
+						}
+					}
+				});
+
+				$("#dialog-form-sprint-edit").dialog({
+					autoOpen: true,
+					height: 480,
+					width: 500,
+					modal: true,
+					buttons: {
+						'Save': function() {
+							document.getElementById("formEditSprint").submit();
 							$(this).dialog('close');
 						},
 						Cancel: function() {
@@ -53,13 +70,12 @@
 						$('#dialog-form-sprint').dialog('open');
 				});
 
-				$("#startDate").datepicker({onSelect: function(dateStr) {
-			         	document.getElementById('startDateHidden').value=$.datepicker.parseDate('mm/dd/yy', dateStr);
-					}});
-				$("#endDate").datepicker({onSelect: function(dateStr) {
-						document.getElementById('endDateHidden').value=$.datepicker.parseDate('mm/dd/yy', dateStr);
-					}});
-				
+				$("#startDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
+			    	document.getElementById('startDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
+				}});
+				$("#endDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
+					document.getElementById('endDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
+				}});
 			});
 		</script>
 	</head>
@@ -67,28 +83,61 @@
 		<div class="body">
 			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
 			<h3>Sprint List</h3>
-			<div id="dialog-form-sprint" title="Create new sprint">
-				<g:form action="addSprint" name="myform">
-					<fieldset>
-						<label>Sprint</label>
-						<input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/>
-						<label>Goal</label>
-						<input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/>
-						<table>
-							<tr>
-								<td><label>Start:</label></td>
-								<td><label>End:</label></td>
-							</tr>
-							<tr>
-								<td><div id="startDate"></div></td>
-								<td><div id="endDate"></div></td>
-							</tr>
-						</table>
-						<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
-						<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
-					</fieldset>
-				</g:form>
-			</div>
+			<g:if test="${flash.sprintEdit}">
+				<script type="text/javascript">
+					$(function() {
+						$('#startDate').datepicker("setDate", "${flash.sprintEdit.startDate}");
+						$('#endDate').datepicker("setDate", "${flash.sprintEdit.endDate}");
+					});
+				</script>
+				<div id="dialog-form-sprint-edit" title="Edit sprint">
+					<g:form action="editSprint" name="formEditSprint">
+						<fieldset>
+							<label>Sprint</label>
+							<input type="text" name="sprintName" id="sprintName" value="${flash.sprintEdit.name}" class="text ui-widget-content ui-corner-all"/>
+							<label>Goal</label>
+							<input type="text" name="sprintGoal" id="sprintGoal" value="${flash.sprintEdit.goal}" class="text ui-widget-content ui-corner-all"/>
+							<table>
+								<tr>
+									<td><label>Start:</label></td>
+									<td><label>End:</label></td>
+								</tr>
+								<tr>
+									<td><div id="startDate"></div></td>
+									<td><div id="endDate"></div></td>
+								</tr>
+							</table>
+							<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
+							<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
+							<input type="hidden" name="sprintId" value="${flash.sprintEdit.id}" style="border-style: none;"/>
+						</fieldset>
+					</g:form>
+				</div>
+			</g:if>
+			<g:else>
+				<div id="dialog-form-sprint" title="Create new sprint">
+					<g:form action="addSprint" name="formNewSprint">
+						<fieldset>
+							<label>Sprint</label>
+							<input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/>
+							<label>Goal</label>
+							<input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/>
+							<table>
+								<tr>
+									<td><label>Start:</label></td>
+									<td><label>End:</label></td>
+								</tr>
+								<tr>
+									<td><div id="startDate"></div></td>
+									<td><div id="endDate"></div></td>
+								</tr>
+							</table>
+							<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
+							<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
+						</fieldset>
+					</g:form>
+				</div>
+			</g:else>
 			<g:submitButton name="create-sprint" value="Create sprint"/>
 			
 			<g:hasErrors bean="${flash.sprint}">
@@ -96,6 +145,9 @@
 					<g:renderErrors bean="${flash.sprint}" as="list"/>
 				</div>
 			</g:hasErrors>
+			<g:if test="${flash.message}">
+				<div class="message">${flash.message}</div>
+			</g:if>
 			<g:if test="${session.project.sprints.isEmpty()}">
 				<div class="message">
 					No sprints created yet.
@@ -111,6 +163,8 @@
 							<th>End</th>
 							<th style="text-align:center;">Tasks</th>
 							<th style="text-align:center; width: 20px;">Active</th>
+							<th style="width: 50px;"></th>
+							<th style="width: 70px;"></th>
 						</tr>
 						<g:each var="sprint" in="${session.sprintList}" status="i">
 							<g:def var="sprintId" value="${sprint.id}"/>
@@ -132,6 +186,12 @@
 									<g:else>
 										<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
 									</g:else>
+								</td>
+								<td>
+									<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+								</td>
+								<td>
+									<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm(unescape('Are you sure to delete sprint %22${sprint.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
 								</td>
 							</tr>
 						</g:each>

@@ -55,7 +55,7 @@ class ProjectController extends BaseControllerController {
 	
 	def edit = {
 		if (params.project) {
-			flash.project = Project.get(params.project)
+			flash.projectEdit = Project.get(params.project)
 		}
 		
 		redirect(controller:'project', action:'list')
@@ -65,10 +65,12 @@ class ProjectController extends BaseControllerController {
 	 * Project edit action
 	 */
 	def editProject = {
-		if (params.projectName && params.projectId) {
+		if (params.projectId) {
 			def project = Project.get(params.projectId)
 			project.name = params.projectName
-			project.save()
+			if (!project.save()) {
+				flash.project=project
+			}
 		}
 
 		redirect(controller:'project', action:'list')

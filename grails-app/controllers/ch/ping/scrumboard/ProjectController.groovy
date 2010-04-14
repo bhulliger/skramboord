@@ -43,11 +43,15 @@ class ProjectController extends BaseControllerController {
 	 * Project delete action
 	 */
 	def delete = {
-		if (params.project) {
-			def project = Project.get(params.project)
-			project.delete()
-			
-			flash.message = "Project $project.name deleted."
+		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (params.project) {
+				def project = Project.get(params.project)
+				project.delete()
+				
+				flash.message = "Project $project.name deleted."
+			}
+		} else {
+			flash.message = "Only Super User and admins can delete projects."
 		}
 		
 		redirect(controller:'project', action:'list')
@@ -55,7 +59,13 @@ class ProjectController extends BaseControllerController {
 	
 	def edit = {
 		if (params.project) {
-			flash.projectEdit = Project.get(params.project)
+			def project = Project.get(params.project)
+		
+			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
+				flash.projectEdit = project
+			} else {
+				flash.message = "Only Super User and admins can edit projects."
+			}
 		}
 		
 		redirect(controller:'project', action:'list')
@@ -67,9 +77,13 @@ class ProjectController extends BaseControllerController {
 	def editProject = {
 		if (params.projectId) {
 			def project = Project.get(params.projectId)
-			project.name = params.projectName
-			if (!project.save()) {
-				flash.project=project
+			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
+				project.name = params.projectName
+				if (!project.save()) {
+					flash.project=project
+				}
+			} else {
+				flash.message = "Only Super User and admins can edit projects."
 			}
 		}
 
@@ -82,7 +96,7 @@ class ProjectController extends BaseControllerController {
 	def addProject = {
 		def projectName = params.projectName
 		
-		Project project = new Project(name: projectName)
+		Project project = new Project(name: projectName, owner: session.user)
 		if (!project.save()) {
 			flash.project=project
 		}

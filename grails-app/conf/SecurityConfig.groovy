@@ -8,6 +8,7 @@ security {
 	authorityDomainClass = "Role"
 	
 	useRequestMapDomainClass = false
+	cacheUsers = false
 
 	requestMapString = '''
 	        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON

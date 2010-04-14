@@ -130,7 +130,7 @@ class BootStrap {
 		sprint1_3.save()
 		
 		// Initialize Project skramboord
-		Project skramboord = new Project(name: "skramboord")
+		Project skramboord = new Project(name: "skramboord", owner: userDevChief)
 		skramboord.addToSprints(sprint1_0)
 		skramboord.addToSprints(sprint1_1)
 		skramboord.addToSprints(sprint1_2)
@@ -138,7 +138,7 @@ class BootStrap {
 		skramboord.save()
 		
 		// Initialize Project Grails
-		Project grails = new Project(name: "grails")
+		Project grails = new Project(name: "grails", owner: userDevChief)
 		grails.save()
 	}
 	def destroy = {

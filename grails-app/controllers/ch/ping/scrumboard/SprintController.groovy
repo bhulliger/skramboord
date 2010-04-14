@@ -56,8 +56,12 @@ class SprintController extends BaseControllerController {
 	}
 	
 	def edit = {
-		if (params.sprint) {
-			flash.sprintEdit = Sprint.get(params.sprint)
+		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER,ROLE_ADMIN')) {
+			if (params.sprint) {
+				flash.sprintEdit = Sprint.get(params.sprint)
+			}
+		} else {
+			flash.message = "Only Super User and admins can edit sprints."
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -67,20 +71,24 @@ class SprintController extends BaseControllerController {
 	 * Sprint edit action
 	 */
 	def editSprint = {
-		if (params.sprintId) {
-			def sprint = Sprint.get(params.sprintId)
-			sprint.name = params.sprintName
-			sprint.goal = params.sprintGoal
-			
-			if (params.startDateHidden) {
-				sprint.startDate = new Date(params.startDateHidden)
+		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER,ROLE_ADMIN')) {
+			if (params.sprintId) {
+				def sprint = Sprint.get(params.sprintId)
+				sprint.name = params.sprintName
+				sprint.goal = params.sprintGoal
+				
+				if (params.startDateHidden) {
+					sprint.startDate = new Date(params.startDateHidden)
+				}
+				if (params.endDateHidden) {
+					sprint.endDate = new Date(params.endDateHidden)
+				}
+				if (!sprint.save()) {
+					flash.sprint=sprint
+				}
 			}
-			if (params.endDateHidden) {
-				sprint.endDate = new Date(params.endDateHidden)
-			}
-			if (!sprint.save()) {
-				flash.sprint=sprint
-			}
+		} else {
+			flash.message = "Only Super User and admins can edit sprints."
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -90,11 +98,15 @@ class SprintController extends BaseControllerController {
 	 * Sprint delete action
 	 */
 	def delete = {
-		if (params.sprint) {
-			def sprint = Sprint.get(params.sprint)
-			sprint.delete()
-			
-			flash.message = "Sprint $sprint.name deleted."
+		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER,ROLE_ADMIN')) {
+			if (params.sprint) {
+				def sprint = Sprint.get(params.sprint)
+				sprint.delete()
+				
+				flash.message = "Sprint $sprint.name deleted."
+			}
+		} else {
+			flash.message = "Only Super User and admins can delete sprints."
 		}
 		
 		redirect(controller:'sprint', action:'list')

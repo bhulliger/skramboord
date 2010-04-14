@@ -83,6 +83,7 @@
 		<div class="body">
 			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
 			<h3>Sprint List</h3>
+			
 			<g:if test="${flash.sprintEdit}">
 				<script type="text/javascript">
 					$(function() {
@@ -113,33 +114,36 @@
 						</fieldset>
 					</g:form>
 				</div>
+				<g:submitButton name="create-sprint" value="Create sprint"/>
 			</g:if>
 			<g:else>
-				<div id="dialog-form-sprint" title="Create new sprint">
-					<g:form action="addSprint" name="formNewSprint">
-						<fieldset>
-							<label>Sprint</label>
-							<input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/>
-							<label>Goal</label>
-							<input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/>
-							<table>
-								<tr>
-									<td><label>Start:</label></td>
-									<td><label>End:</label></td>
-								</tr>
-								<tr>
-									<td><div id="startDate"></div></td>
-									<td><div id="endDate"></div></td>
-								</tr>
-							</table>
-							<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
-							<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
-						</fieldset>
-					</g:form>
-				</div>
+				<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+					<div id="dialog-form-sprint" title="Create new sprint">
+						<g:form action="addSprint" name="formNewSprint">
+							<fieldset>
+								<label>Sprint</label>
+								<input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/>
+								<label>Goal</label>
+								<input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/>
+								<table>
+									<tr>
+										<td><label>Start:</label></td>
+										<td><label>End:</label></td>
+									</tr>
+									<tr>
+										<td><div id="startDate"></div></td>
+										<td><div id="endDate"></div></td>
+									</tr>
+								</table>
+								<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
+								<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
+							</fieldset>
+						</g:form>
+					</div>
+					<g:submitButton name="create-sprint" value="Create sprint"/>
+				</g:ifAnyGranted>
 			</g:else>
-			<g:submitButton name="create-sprint" value="Create sprint"/>
-			
+
 			<g:hasErrors bean="${flash.sprint}">
 				<div class="errors">
 					<g:renderErrors bean="${flash.sprint}" as="list"/>
@@ -163,8 +167,10 @@
 							<th>End</th>
 							<th style="text-align:center;">Tasks</th>
 							<th style="text-align:center; width: 20px;">Active</th>
-							<th style="width: 50px;"></th>
-							<th style="width: 70px;"></th>
+							<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+								<th style="width: 50px;"></th>
+								<th style="width: 70px;"></th>
+							</g:ifAnyGranted>
 						</tr>
 						<g:each var="sprint" in="${session.sprintList}" status="i">
 							<g:def var="sprintId" value="${sprint.id}"/>
@@ -187,12 +193,14 @@
 										<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
 									</g:else>
 								</td>
-								<td>
-									<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
-								</td>
-								<td>
-									<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm(unescape('Are you sure to delete sprint %22${sprint.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
-								</td>
+								<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+									<td>
+										<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+									</td>
+									<td>
+										<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm(unescape('Are you sure to delete sprint %22${sprint.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
+									</td>
+								</g:ifAnyGranted>
 							</tr>
 						</g:each>
 					</table>

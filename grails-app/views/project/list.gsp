@@ -86,19 +86,21 @@
 					</fieldset>
 				</g:form>
 				</div>
+				<g:submitButton name="create-project" value="Create project"/>
 			</g:if>
 			<g:else>
-				<div id="dialog-form-project" title="Create new project">
-				<g:form action='addProject' name='formNewProject'>
-					<fieldset>
-						<label>Project</label>
-						<input type="text" name="projectName" id="projectName" class="text ui-widget-content ui-corner-all"/>
-					</fieldset>
-				</g:form>
-				</div>
+				<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+					<div id="dialog-form-project" title="Create new project">
+					<g:form action='addProject' name='formNewProject'>
+						<fieldset>
+							<label>Project</label>
+							<input type="text" name="projectName" id="projectName" class="text ui-widget-content ui-corner-all"/>
+						</fieldset>
+					</g:form>
+					</div>
+					<g:submitButton name="create-project" value="Create project"/>
+				</g:ifAnyGranted>
 			</g:else>
-			
-			<g:submitButton name="create-project" value="Create project"/>
 			
 			<g:hasErrors bean="${flash.project}">
 				<div class="errors">
@@ -118,9 +120,14 @@
 					<table>
 						<tr>
 							<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
+							<g:sortableColumn property="owner" defaultOrder="asc" title="Project Owner"/>
 							<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints" style="text-align:center; width: 50px;"/>
-							<th style="width: 50px;"></th>
-							<th style="width: 70px;"></th>
+							<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+								<th style="width: 50px;"></th>
+							</g:ifAnyGranted>
+							<g:ifAllGranted role="ROLE_SUPERUSER">
+								<th style="width: 70px;"></th>
+							</g:ifAllGranted>
 						</tr>
 						<g:each var="project" in="${session.projectList}" status="i">
 							<g:def var="projectId" value="${project.id}"/>
@@ -128,13 +135,24 @@
 								<td>
 									<g:link controller="sprint" action="list" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="view"/></span><span class="icon">${project.name}</span></g:link>
 								</td>
-								<td style="text-align:center;">${project.sprints.size()}</td>
-								<td>
-									<g:link controller="project" action="edit" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
-								</td>
-								<td>
-									<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
-								</td>
+								<td style="vertical-align: middle;">${project.owner.userRealName}</td>
+								<td style="vertical-align: middle; text-align:center;">${project.sprints.size()}</td>
+
+								<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+									<g:ifAnyGranted role="ROLE_SUPERUSER,${if (session.user.equals(project.owner)) 'ROLE_ADMIN'}">
+										<td>
+											<g:link controller="project" action="edit" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+										</td>
+									</g:ifAnyGranted>
+									<g:ifNotGranted role="ROLE_SUPERUSER,${if (session.user.equals(project.owner)) 'ROLE_ADMIN'}">
+										<td style="vertical-align: middle; text-align:center;">-</td>
+									</g:ifNotGranted>
+									<g:ifAllGranted role="ROLE_SUPERUSER">
+										<td>
+											<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
+										</td>
+									</g:ifAllGranted>
+								</g:ifAnyGranted>
 							</tr>
 						</g:each>
 					</table>

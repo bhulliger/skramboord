@@ -48,7 +48,7 @@
 
 				$("#dialog-form-project-edit").dialog({
 					autoOpen: true,
-					height: 200,
+					height: 250,
 					width: 500,
 					modal: true,
 					buttons: {
@@ -74,7 +74,7 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/></g:link></h1>
+			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/></g:link></h1>          
 			<h3>Project List</h3>
 			<g:if test="${flash.projectEdit}">
 				<div id="dialog-form-project-edit" title="Edit project">
@@ -82,6 +82,8 @@
 					<fieldset>
 						<label>Project</label>
 						<input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/>
+						<label>Project Owner</label>
+						<g:select name="projectOwner" from="${flash.users}" value="${flash.projectEdit.owner.id}" optionValue="userRealName" optionKey="id" />
 						<input type="hidden" name="projectId" value="${flash.projectEdit.id}" style="border-style: none;"/>
 					</fieldset>
 				</g:form>

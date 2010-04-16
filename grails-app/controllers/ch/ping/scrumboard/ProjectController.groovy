@@ -63,6 +63,13 @@ class ProjectController extends BaseControllerController {
 		
 			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
 				flash.projectEdit = project
+
+				def criteria = User.createCriteria()
+				flash.users = criteria.list {
+						authorities {
+				            eq('authority','ROLE_ADMIN')
+				       }
+				}
 			} else {
 				flash.message = "Only Super User and admins can edit projects."
 			}
@@ -78,7 +85,9 @@ class ProjectController extends BaseControllerController {
 		if (params.projectId) {
 			def project = Project.get(params.projectId)
 			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
+				project.owner = User.get(params.projectOwner)
 				project.name = params.projectName
+				
 				if (!project.save()) {
 					flash.project=project
 				}

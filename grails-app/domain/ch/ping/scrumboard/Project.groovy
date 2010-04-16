@@ -20,10 +20,11 @@ package ch.ping.scrumboard
 class Project {
 	String name
 	static hasMany = [sprints:Sprint]
-	static belongsTo = [owner:User]
+	static belongsTo = [owner:User, master:User]
 	
     static constraints = {
 		name(nullable:false, blank:false, unique: true)
 		owner(nullable:false)
+		master(nullable:false)
     }
 }

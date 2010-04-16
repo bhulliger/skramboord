@@ -25,6 +25,8 @@ class ProjectController extends BaseControllerController {
 	}
 	
 	def list = {
+		flash.allUsers = User.list()
+			
 		if (!params.sort) {
 			params.sort = 'name'
 			params.order = 'asc'
@@ -86,6 +88,7 @@ class ProjectController extends BaseControllerController {
 			def project = Project.get(params.projectId)
 			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
 				project.owner = User.get(params.projectOwner)
+				project.master = User.get(params.projectMaster)
 				project.name = params.projectName
 				
 				if (!project.save()) {
@@ -105,7 +108,7 @@ class ProjectController extends BaseControllerController {
 	def addProject = {
 		def projectName = params.projectName
 		
-		Project project = new Project(name: projectName, owner: session.user)
+		Project project = new Project(name: projectName, owner: session.user, master: User.get(params.projectMaster))
 		if (!project.save()) {
 			flash.project=project
 		}

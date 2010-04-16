@@ -6,6 +6,7 @@
 		<style type="text/css">
 			label, input { display:block; }
 			input.text { margin-bottom:12px; width:95%; padding: .4em; }
+			select { margin-bottom:12px; width:97%; padding: .3em; }
 			fieldset { padding:0; border:0; margin-top:25px; }
 			div#users-contain { width: 350px; margin: 20px 0; }
 			div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
@@ -31,7 +32,7 @@
 			$(function() {
 				$("#dialog-form-project").dialog({
 					autoOpen: false,
-					height: 200,
+					height: 250,
 					width: 500,
 					modal: true,
 					buttons: {
@@ -48,7 +49,7 @@
 
 				$("#dialog-form-project-edit").dialog({
 					autoOpen: true,
-					height: 250,
+					height: 320,
 					width: 500,
 					modal: true,
 					buttons: {
@@ -84,6 +85,8 @@
 						<input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/>
 						<label>Project Owner</label>
 						<g:select name="projectOwner" from="${flash.users}" value="${flash.projectEdit.owner.id}" optionValue="userRealName" optionKey="id" />
+						<label>Project Master</label>
+						<g:select name="projectMaster" from="${flash.allUsers}" value="${flash.projectEdit.master.id}" optionValue="userRealName" optionKey="id" />
 						<input type="hidden" name="projectId" value="${flash.projectEdit.id}" style="border-style: none;"/>
 					</fieldset>
 				</g:form>
@@ -97,6 +100,8 @@
 						<fieldset>
 							<label>Project</label>
 							<input type="text" name="projectName" id="projectName" class="text ui-widget-content ui-corner-all"/>
+							<label>Project Master</label>
+							<g:select name="projectMaster" from="${flash.allUsers}" value="${session.user.id}" optionValue="userRealName" optionKey="id" />
 						</fieldset>
 					</g:form>
 					</div>
@@ -123,6 +128,7 @@
 						<tr>
 							<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
 							<g:sortableColumn property="owner" defaultOrder="asc" title="Project Owner"/>
+							<g:sortableColumn property="master" defaultOrder="asc" title="Project Master"/>
 							<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints" style="text-align:center; width: 50px;"/>
 							<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
 								<th style="width: 50px;"></th>
@@ -138,6 +144,7 @@
 									<g:link controller="sprint" action="list" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="view"/></span><span class="icon">${project.name}</span></g:link>
 								</td>
 								<td style="vertical-align: middle;">${project.owner.userRealName}</td>
+								<td style="vertical-align: middle;">${project.master.userRealName}</td>
 								<td style="vertical-align: middle; text-align:center;">${project.sprints.size()}</td>
 
 								<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">

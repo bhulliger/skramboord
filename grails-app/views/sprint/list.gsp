@@ -82,8 +82,9 @@
 	<body>
 		<div class="body">
 			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
+			<g:render template="projectInformation"/>
+			<br/>
 			<h3>Sprint List</h3>
-			
 			<g:if test="${flash.sprintEdit}">
 				<g:render template="formEditSprint"/>
 			</g:if>

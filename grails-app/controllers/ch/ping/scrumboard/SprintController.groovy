@@ -56,7 +56,7 @@ class SprintController extends BaseControllerController {
 	}
 	
 	def edit = {
-		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER,ROLE_ADMIN')) {
+		if (sprintWritePermission(session.user, session.project)) {
 			if (params.sprint) {
 				flash.sprintEdit = Sprint.get(params.sprint)
 			}
@@ -71,7 +71,7 @@ class SprintController extends BaseControllerController {
 	 * Sprint edit action
 	 */
 	def editSprint = {
-		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER,ROLE_ADMIN')) {
+		if (sprintWritePermission(session.user, session.project)) {
 			if (params.sprintId) {
 				def sprint = Sprint.get(params.sprintId)
 				sprint.name = params.sprintName
@@ -98,7 +98,7 @@ class SprintController extends BaseControllerController {
 	 * Sprint delete action
 	 */
 	def delete = {
-		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER,ROLE_ADMIN')) {
+		if (sprintWritePermission(session.user, session.project)) {
 			if (params.sprint) {
 				def sprint = Sprint.get(params.sprint)
 				sprint.delete()
@@ -110,5 +110,9 @@ class SprintController extends BaseControllerController {
 		}
 		
 		redirect(controller:'sprint', action:'list')
+	}
+	
+	private boolean sprintWritePermission(User user, Project project) {
+		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
 	}
 }

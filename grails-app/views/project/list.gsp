@@ -147,21 +147,19 @@
 								<td style="vertical-align: middle;">${project.master.userRealName}</td>
 								<td style="vertical-align: middle; text-align:center;">${project.sprints.size()}</td>
 
-								<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
-									<g:ifAnyGranted role="ROLE_SUPERUSER,${if (session.user.equals(project.owner)) 'ROLE_ADMIN'}">
-										<td>
-											<g:link controller="project" action="edit" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
-										</td>
-									</g:ifAnyGranted>
-									<g:ifNotGranted role="ROLE_SUPERUSER,${if (session.user.equals(project.owner)) 'ROLE_ADMIN'}">
-										<td style="vertical-align: middle; text-align:center;">-</td>
-									</g:ifNotGranted>
-									<g:ifAllGranted role="ROLE_SUPERUSER">
-										<td>
-											<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
-										</td>
-									</g:ifAllGranted>
-								</g:ifAnyGranted>
+								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
+									<td>
+										<g:link controller="project" action="edit" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+									</td>
+								</g:if>
+								<g:elseif test="${authenticateService.ifAnyGranted('ROLE_ADMIN')}">
+									<td style="vertical-align: middle; text-align:center;">-</td>
+								</g:elseif>
+								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER')}">
+									<td>
+										<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
+									</td>
+								</g:if>
 							</tr>
 						</g:each>
 					</table>

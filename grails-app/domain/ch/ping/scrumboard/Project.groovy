@@ -21,6 +21,11 @@ class Project {
 	String name
 	static hasMany = [sprints:Sprint]
 	static belongsTo = [owner:User, master:User]
+
+	static mapping = {
+		owner lazy:false
+		master lazy:false
+	}
 	
     static constraints = {
 		name(nullable:false, blank:false, unique: true)

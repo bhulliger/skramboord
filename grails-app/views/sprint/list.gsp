@@ -32,7 +32,7 @@
 			$(function() {
 				$("#dialog-form-sprint").dialog({
 					autoOpen: false,
-					height: 480,
+					height: 500,
 					width: 500,
 					modal: true,
 					buttons: {
@@ -49,7 +49,7 @@
 
 				$("#dialog-form-sprint-edit").dialog({
 					autoOpen: true,
-					height: 480,
+					height: 500,
 					width: 500,
 					modal: true,
 					buttons: {
@@ -114,10 +114,11 @@
 						</fieldset>
 					</g:form>
 				</div>
+				
 				<g:submitButton name="create-sprint" value="Create sprint"/>
 			</g:if>
 			<g:else>
-				<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+				<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 					<div id="dialog-form-sprint" title="Create new sprint">
 						<g:form action="addSprint" name="formNewSprint">
 							<fieldset>
@@ -140,8 +141,9 @@
 							</fieldset>
 						</g:form>
 					</div>
+				
 					<g:submitButton name="create-sprint" value="Create sprint"/>
-				</g:ifAnyGranted>
+				</g:if>
 			</g:else>
 
 			<g:hasErrors bean="${flash.sprint}">
@@ -193,14 +195,14 @@
 										<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
 									</g:else>
 								</td>
-								<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 									<td>
 										<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
 									</td>
 									<td>
 										<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm(unescape('Are you sure to delete sprint %22${sprint.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
 									</td>
-								</g:ifAnyGranted>
+								</g:if>
 							</tr>
 						</g:each>
 					</table>

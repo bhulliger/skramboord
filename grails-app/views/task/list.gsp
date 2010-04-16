@@ -156,23 +156,10 @@
 				<div id="tab-task">
 					<div>
 						<h3>Tasks</h3>
-						<div id="dialog-form" title="Create new task">
-							<g:form action="addTask" name="formNewTask">
-								<fieldset>
-									<label>Name</label>
-									<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
-									<label>Effort</label>
-									<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
-									<label>Link</label>
-									<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
-									<label>Priority</label>
-									<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/>
-								</fieldset>
-							</g:form>
-						</div>
 						<g:if test="${session.sprint.isSprintActive()}">
-							<g:submitButton name="create-task" value="Create task"/>
+							<g:render template="formNewTask"/>
 						</g:if>
+						
 						<g:hasErrors bean="${flash.task}">
 							<div class="errors">
 								<g:renderErrors bean="${flash.task}" as="list"/>
@@ -194,20 +181,7 @@
 										<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListOpen}" status="i">
-											<g:if test="${task.user && task.user.equals(session.user)}">
-												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
-											</g:if>
-											<g:else>
-												<li id="taskId_${task.id}" class="ui-state-default">
-											</g:else>
-												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div class="taskInfo">
-													Effort: ${task.effort}<br/>
-													<g:if test="${task.user}">
-														Person: ${task.user.userRealName}
-													</g:if>
-												</div>
-											</li>
+											<g:render template="task" model="['task':task]"/>
 										</g:each>
 									</ul>
 								</td>
@@ -219,20 +193,7 @@
 										<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListCheckout}" status="i">
-											<g:if test="${task.user && task.user.equals(session.user)}">
-												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
-											</g:if>
-											<g:else>
-												<li id="taskId_${task.id}" class="ui-state-default">
-											</g:else>
-												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div class="taskInfo">
-													Effort: ${task.effort}<br/>
-													<g:if test="${task.user}">
-														Person: ${task.user.userRealName}
-													</g:if>
-												</div>
-											</li>
+											<g:render template="task" model="['task':task]"/>
 										</g:each>
 									</ul>
 								</td>
@@ -244,20 +205,7 @@
 										<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListDone}" status="i">
-											<g:if test="${task.user && task.user.equals(session.user)}">
-												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
-											</g:if>
-											<g:else>
-												<li id="taskId_${task.id}" class="ui-state-default">
-											</g:else>
-												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div class="taskInfo">
-													Effort: ${task.effort}<br/>
-													<g:if test="${task.user}">
-														Person: ${task.user.userRealName}
-													</g:if>
-												</div>
-											</li>
+											<g:render template="task" model="['task':task]"/>
 										</g:each>
 									</ul>
 								</td>
@@ -275,20 +223,7 @@
 										<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListStandBy}" status="i">
-											<g:if test="${task.user && task.user.equals(session.user)}">
-												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
-											</g:if>
-											<g:else>
-												<li id="taskId_${task.id}" class="ui-state-default">
-											</g:else>
-												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div class="taskInfo">
-													Effort: ${task.effort}<br/>
-													<g:if test="${task.user}">
-														Person: ${task.user.userRealName}
-													</g:if>
-												</div>
-											</li>
+											<g:render template="task" model="['task':task]"/>
 										</g:each>
 									</ul>
 								</td>
@@ -300,20 +235,7 @@
 										<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
 									</g:else>
 										<g:each var="task" in="${session.taskListNext}" status="i">
-											<g:if test="${task.user && task.user.equals(session.user)}">
-												<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
-											</g:if>
-											<g:else>
-												<li id="taskId_${task.id}" class="ui-state-default">
-											</g:else>
-												<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
-												<div class="taskInfo">
-													Effort: ${task.effort}<br/>
-													<g:if test="${task.user}">
-														Person: ${task.user.userRealName}
-													</g:if>
-												</div>
-											</li>
+											<g:render template="task" model="['task':task]"/>
 										</g:each>
 									</ul>
 								</td>

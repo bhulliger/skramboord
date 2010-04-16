@@ -7,15 +7,6 @@
 			#open, #checkout, #done, #next, #standBy { list-style-type: none; margin: 0; padding: 0; float: left; width: 230px;}
 			#open li, #checkout li, #done li, #next li, #standBy li { margin: 1px; padding: 5px; font-size: 1.2em; width: 200px; }
 			.taskInfo { font-style:italic; font-weight: normal; font-size:x-small; color: black; }
-			
-			label, input { display:block; }
-			input.text { margin-bottom:12px; width:95%; padding: .4em; }
-			fieldset { padding:0; border:0; margin-top:25px; }
-			div#users-contain { width: 350px; margin: 20px 0; }
-			div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-			div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-			.ui-dialog .ui-state-error { padding: .3em; }
-			.validateTips { border: 1px solid transparent; padding: 0.3em; }
 		</style>
 		
 		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
@@ -50,24 +41,7 @@
 				location.href="${resource(dir:'task',file:'changeTaskStateToStandBy')}" + "?taskId=" + $(ui.item).attr("id");
 			}
 		
-			$(function() {
-				$("#dialog-form").dialog({
-					autoOpen: false,
-					height: 340,
-					width: 300,
-					modal: true,
-					buttons: {
-						'Save': function() {
-							document.getElementById("formNewTask").submit();
-							$(this).dialog('close');
-						},
-						Cancel: function() {
-							location.reload(true);
-							$(this).dialog('close');
-						}
-					}
-				});
-	
+			$(function() {	
 				$('#create-task')
 					.button()
 					.click(function() {

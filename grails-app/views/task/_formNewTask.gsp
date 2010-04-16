@@ -1,4 +1,25 @@
-<div id="dialog-form" title="Create new task">
+<script type="text/javascript">
+	$(function() {
+		$("#dialog-form").dialog({
+			autoOpen: false,
+			height: 360,
+			width: 300,
+			modal: true,
+			buttons: {
+				'Save': function() {
+					document.getElementById("formNewTask").submit();
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					location.reload(true);
+					$(this).dialog('close');
+				}
+			}
+		});
+	});							
+</script>
+
+<div id="dialog-form" title="Create new task" class="form">
 	<g:form action="addTask" name="formNewTask">
 		<fieldset>
 			<label>Name</label>

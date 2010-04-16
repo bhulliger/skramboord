@@ -19,7 +19,7 @@
 	});
 </script>
 
-<div id="dialog-form-project" title="Create new project">
+<div id="dialog-form-project" title="Create new project" class="form">
 	<g:form action='addProject' name='formNewProject'>
 		<fieldset>
 			<label>Project</label>

@@ -3,18 +3,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="layout" content="main" />
 		
-		<style type="text/css">
-			label, input { display:block; }
-			input.text { margin-bottom:12px; width:95%; padding: .4em; }
-			select { margin-bottom:12px; width:97%; padding: .3em; }
-			fieldset { padding:0; border:0; margin-top:25px; }
-			div#users-contain { width: 350px; margin: 20px 0; }
-			div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-			div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-			.ui-dialog .ui-state-error { padding: .3em; }
-			.validateTips { border: 1px solid transparent; padding: 0.3em; }
-		</style>
-		
 		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>

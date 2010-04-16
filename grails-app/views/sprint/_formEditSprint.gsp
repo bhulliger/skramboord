@@ -28,7 +28,7 @@
 		$('#endDate').datepicker("setDate", "${flash.sprintEdit.endDate}");
 	});
 </script>
-<div id="dialog-form-sprint-edit" title="Edit sprint">
+<div id="dialog-form-sprint-edit" title="Edit sprint" class="form">
 	<g:form action="editSprint" name="formEditSprint">
 		<fieldset>
 			<label>Sprint</label>

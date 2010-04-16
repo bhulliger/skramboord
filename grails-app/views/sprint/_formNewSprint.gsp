@@ -26,7 +26,7 @@
 	});
 </script>
 
-<div id="dialog-form-sprint" title="Create new sprint">
+<div id="dialog-form-sprint" title="Create new sprint" class="form">
 	<g:form action="addSprint" name="formNewSprint">
 		<fieldset>
 			<label>Sprint</label>

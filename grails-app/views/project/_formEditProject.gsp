@@ -19,7 +19,7 @@
 	});
 </script>
 
-<div id="dialog-form-project-edit" title="Edit project">
+<div id="dialog-form-project-edit" title="Edit project" class="form">
 	<g:form url="[ controller: 'project', action: 'editProject', params: [ fwdTo: fwdTo ]]" name='formEditProject'>
 		<fieldset>
 			<label>Project</label>

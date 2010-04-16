@@ -1,5 +1,29 @@
 <script type="text/javascript">
 	$(function() {
+		$("#dialog-form-sprint-edit").dialog({
+			autoOpen: true,
+			height: 500,
+			width: 500,
+			modal: true,
+			buttons: {
+				'Save': function() {
+					document.getElementById("formEditSprint").submit();
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					location.reload(true);
+					$(this).dialog('close');
+				}
+			}
+		});
+
+		$("#startDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
+	    	document.getElementById('startDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
+		}});
+		$("#endDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
+			document.getElementById('endDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
+		}});
+		
 		$('#startDate').datepicker("setDate", "${flash.sprintEdit.startDate}");
 		$('#endDate').datepicker("setDate", "${flash.sprintEdit.endDate}");
 	});

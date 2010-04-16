@@ -6,6 +6,7 @@
 		<style type="text/css">
 			label, input { display:block; }
 			input.text { margin-bottom:12px; width:95%; padding: .4em; }
+			select { margin-bottom:12px; width:97%; padding: .3em; }
 			fieldset { padding:0; border:0; margin-top:25px; }
 			div#users-contain { width: 350px; margin: 20px 0; }
 			div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
@@ -18,9 +19,6 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.mouse.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.draggable.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.sortable.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.droppable.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.dialog.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.position.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.resizable.js')}"></script>
@@ -30,52 +28,11 @@
 		
 		<script type="text/javascript">
 			$(function() {
-				$("#dialog-form-sprint").dialog({
-					autoOpen: false,
-					height: 500,
-					width: 500,
-					modal: true,
-					buttons: {
-						'Save': function() {
-							document.getElementById("formNewSprint").submit();
-							$(this).dialog('close');
-						},
-						Cancel: function() {
-							location.reload(true);
-							$(this).dialog('close');
-						}
-					}
-				});
-
-				$("#dialog-form-sprint-edit").dialog({
-					autoOpen: true,
-					height: 500,
-					width: 500,
-					modal: true,
-					buttons: {
-						'Save': function() {
-							document.getElementById("formEditSprint").submit();
-							$(this).dialog('close');
-						},
-						Cancel: function() {
-							location.reload(true);
-							$(this).dialog('close');
-						}
-					}
-				});
-			
 				$('#create-sprint')
 					.button()
 					.click(function() {
 						$('#dialog-form-sprint').dialog('open');
 				});
-
-				$("#startDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
-			    	document.getElementById('startDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
-				}});
-				$("#endDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
-					document.getElementById('endDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
-				}});
 			});
 		</script>
 	</head>

@@ -1,5 +1,26 @@
+<script type="text/javascript">
+	$(function() {
+		$("#dialog-form-project-edit").dialog({
+			autoOpen: true,
+			height: 320,
+			width: 500,
+			modal: true,
+			buttons: {
+				'Save': function() {
+					document.getElementById("formEditProject").submit();
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					location.reload(true);
+					$(this).dialog('close');
+				}
+			}
+		});
+	});
+</script>
+
 <div id="dialog-form-project-edit" title="Edit project">
-	<g:form action='editProject' name='formEditProject'>
+	<g:form url="[ controller: 'project', action: 'editProject', params: [ fwdTo: fwdTo ]]" name='formEditProject'>
 		<fieldset>
 			<label>Project</label>
 			<input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/>
@@ -11,4 +32,3 @@
 		</fieldset>
 	</g:form>
 </div>
-<g:submitButton name="create-project" value="Create project"/>

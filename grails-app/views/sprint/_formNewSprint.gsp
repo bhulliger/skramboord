@@ -1,3 +1,31 @@
+<script type="text/javascript">
+	$(function() {
+		$("#dialog-form-sprint").dialog({
+			autoOpen: false,
+			height: 500,
+			width: 500,
+			modal: true,
+			buttons: {
+				'Save': function() {
+					document.getElementById("formNewSprint").submit();
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					location.reload(true);
+					$(this).dialog('close');
+				}
+			}
+		});
+
+		$("#startDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
+	    	document.getElementById('startDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
+		}});
+		$("#endDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
+			document.getElementById('endDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
+		}});
+	});
+</script>
+
 <div id="dialog-form-sprint" title="Create new sprint">
 	<g:form action="addSprint" name="formNewSprint">
 		<fieldset>
@@ -20,5 +48,4 @@
 		</fieldset>
 	</g:form>
 </div>
-
 <g:submitButton name="create-sprint" value="Create sprint"/>

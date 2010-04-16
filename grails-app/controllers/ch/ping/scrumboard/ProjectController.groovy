@@ -65,7 +65,7 @@ class ProjectController extends BaseControllerController {
 		
 			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
 				flash.projectEdit = project
-
+				flash.allUsers = User.list()
 				def criteria = User.createCriteria()
 				flash.users = criteria.list {
 						authorities {
@@ -77,7 +77,7 @@ class ProjectController extends BaseControllerController {
 			}
 		}
 		
-		redirect(controller:'project', action:'list')
+		redirect(controller:params.fwdTo, action:'list')
 	}
 	
 	/**
@@ -99,7 +99,7 @@ class ProjectController extends BaseControllerController {
 			}
 		}
 
-		redirect(controller:'project', action:'list')
+		redirect(controller:params.fwdTo, action:'list')
 	}
 	
 	/**

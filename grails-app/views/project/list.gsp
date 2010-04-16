@@ -19,9 +19,6 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.mouse.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.draggable.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.sortable.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.droppable.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.dialog.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.position.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.resizable.js')}"></script>
@@ -30,41 +27,6 @@
 		
 		<script type="text/javascript">
 			$(function() {
-				$("#dialog-form-project").dialog({
-					autoOpen: false,
-					height: 250,
-					width: 500,
-					modal: true,
-					buttons: {
-						'Save': function() {
-							document.getElementById("formNewProject").submit();
-							$(this).dialog('close');
-						},
-						Cancel: function() {
-							location.reload(true);
-							$(this).dialog('close');
-						}
-					}
-				});
-
-				$("#dialog-form-project-edit").dialog({
-					autoOpen: true,
-					height: 320,
-					width: 500,
-					modal: true,
-					buttons: {
-						'Save': function() {
-							document.getElementById("formEditProject").submit();
-							$(this).dialog('close');
-						},
-						Cancel: function() {
-							location.reload(true);
-							$(this).dialog('close');
-						}
-					}
-				});
-
-
 				$('#create-project')
 					.button()
 					.click(function() {
@@ -78,7 +40,8 @@
 			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/></g:link></h1>          
 			<h3>Project List</h3>
 			<g:if test="${flash.projectEdit}">
-				<g:render template="formEditProject"/>
+				<g:render template="formEditProject" model="['fwdTo':'project']"/>
+				<g:submitButton name="create-project" value="Create project"/>
 			</g:if>
 			<g:else>
 				<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
@@ -126,7 +89,7 @@
 
 								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
 									<td>
-										<g:link controller="project" action="edit" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+										<g:link controller="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
 									</td>
 								</g:if>
 								<g:elseif test="${authenticateService.ifAnyGranted('ROLE_ADMIN')}">

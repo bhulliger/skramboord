@@ -1,3 +1,24 @@
+<script type="text/javascript">
+	$(function() {
+		$("#dialog-form-project").dialog({
+			autoOpen: false,
+			height: 250,
+			width: 500,
+			modal: true,
+			buttons: {
+				'Save': function() {
+					document.getElementById("formNewProject").submit();
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					location.reload(true);
+					$(this).dialog('close');
+				}
+			}
+		});
+	});
+</script>
+
 <div id="dialog-form-project" title="Create new project">
 	<g:form action='addProject' name='formNewProject'>
 		<fieldset>

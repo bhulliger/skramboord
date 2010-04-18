@@ -20,6 +20,14 @@
 	        	</div>
 	        	<div style="float: right;">
 	        		<g:isLoggedIn>
+	        			<g:ifAnyGranted role="ROLE_SUPERUSER">
+							<g:link controller="administration" action="list" style="padding-right: 10px;">
+		        				<span class="icon">
+			        				<img src="${resource(dir:'images/icons',file:'bullet_wrench.png')}" alt="profil"/>
+			        			</span>
+			        			<span class="icon">System Preferences</span>
+		        			</g:link>
+						</g:ifAnyGranted>
 	        			<g:link controller="user" action="show" params="[id: session.user.id]" style="padding-right: 10px;">
 	        				<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil"/>

@@ -21,6 +21,7 @@ security {
 			/plugins/**=IS_AUTHENTICATED_ANONYMOUSLY
 			/captcha/**=IS_AUTHENTICATED_ANONYMOUSLY
 			/register/**=IS_AUTHENTICATED_ANONYMOUSLY
+			/administration/**=ROLE_SUPERUSER
 			/**=IS_AUTHENTICATED_FULLY
 		  	'''
 }

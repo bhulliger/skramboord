@@ -63,29 +63,25 @@
 			</tbody>
 			</table>
 		</div>
-
-		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
-			<div class="buttons">
-				<g:form>
-					<fieldset style="border: none;">
-						<input type="hidden" name="id" value="${person.id}"/>
-						<span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
-						<g:ifAnyGranted role="ROLE_SUPERUSER">
-							<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
-						</g:ifAnyGranted>
-					</fieldset>
-				</g:form>
-			</div>
-		</g:ifAnyGranted>
-		<g:ifNotGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
-			<g:if test="${person.id == session.user.id}">
+		
+		<g:form>
+			<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
+				<input type="hidden" name="id" value="${person.id}"/>
 				<div class="buttons">
-					<g:form>
+					<span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
+					<g:ifAnyGranted role="ROLE_SUPERUSER">
+						<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+					</g:ifAnyGranted>
+				</div>
+			</g:ifAnyGranted>
+			<g:ifNotGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
+				<g:if test="${person.id == session.user.id}">
+					<div class="buttons">
 						<input type="hidden" name="id" value="${person.id}" />
 						<span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
-					</g:form>
-				</div>
-			</g:if>
-		</g:ifNotGranted>
+					</div>
+				</g:if>
+			</g:ifNotGranted>
+		</g:form>
 	</div>
 </body>

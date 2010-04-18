@@ -12,7 +12,8 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.resizable.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.button.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.core.js')}"></script>
-		
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.tabs.js')}"></script>
+
 		<script type="text/javascript">
 			$(function() {
 				$('#create-project')
@@ -25,8 +26,7 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/></g:link></h1>          
-			<h3>Project List</h3>
+			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/></g:link></h1>
 			<g:if test="${flash.projectEdit}">
 				<g:render template="formEditProject" model="['fwdTo':'project']"/>
 				<g:submitButton name="create-project" value="Create project"/>
@@ -92,7 +92,7 @@
 						</g:each>
 					</table>
 				</div>
-			</div>
-		</g:else>
+			</g:else>
+		</div>
 	</body>
 </html>

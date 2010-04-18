@@ -337,11 +337,12 @@ th.desc a {
 	padding-left: 28px;
 }
 
-/* FORMS */
-.form label,input {
-	display: block;
+.buttons input.cancel {
+	background: transparent url(../images/icons/cancel.png) 5px 50% no-repeat;
+	padding-left: 28px;
 }
 
+/* FORMS */
 .form input.text {
 	margin-bottom: 12px;
 	width: 95%;

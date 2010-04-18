@@ -20,21 +20,21 @@ import java.util.Calendar;
 
 import org.apache.catalina.connector.ResponseFacade.DateHeaderPrivilegedAction;
 
-import ch.ping.scrumboard.StateTask;
-import ch.ping.scrumboard.StateTaskCheckedOut;
-import ch.ping.scrumboard.StateTaskDone;
-import ch.ping.scrumboard.StateTaskNext;
-import ch.ping.scrumboard.StateTaskOpen;
-import ch.ping.scrumboard.StateTaskStandBy;
-import ch.ping.scrumboard.Task;
-import ch.ping.scrumboard.Today;
-import ch.ping.scrumboard.Url;
-import ch.ping.scrumboard.Priority;
-import ch.ping.scrumboard.Sprint;
-import ch.ping.scrumboard.Project;
-import ch.ping.scrumboard.User;
-import ch.ping.scrumboard.Role;
-import ch.ping.scrumboard.Requestmap;
+import ch.ping.skramboord.StateTask;
+import ch.ping.skramboord.StateTaskCheckedOut;
+import ch.ping.skramboord.StateTaskDone;
+import ch.ping.skramboord.StateTaskNext;
+import ch.ping.skramboord.StateTaskOpen;
+import ch.ping.skramboord.StateTaskStandBy;
+import ch.ping.skramboord.Task;
+import ch.ping.skramboord.Today;
+import ch.ping.skramboord.Url;
+import ch.ping.skramboord.Priority;
+import ch.ping.skramboord.Sprint;
+import ch.ping.skramboord.Project;
+import ch.ping.skramboord.User;
+import ch.ping.skramboord.Role;
+import ch.ping.skramboord.Requestmap;
 import org.apache.commons.codec.digest.DigestUtils
 
 class BootStrap {

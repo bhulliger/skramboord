@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+import grails.util.GrailsUtil;
+
 import java.awt.Color;
 import java.util.Calendar;
 
@@ -42,6 +44,20 @@ class BootStrap {
 	def authenticateService
 	
 	def init = { servletContext ->
+		
+		switch (GrailsUtil.environment) {
+			case "development":
+			initDevelopment()
+			break
+			case "production":
+			// TODO
+			break 
+		}
+	}
+	def destroy = {
+	}
+	
+	def initDevelopment() {
 		// Create some test data
 		String urlPuzzle = "http://www.puzzle.ch"
 		
@@ -140,8 +156,6 @@ class BootStrap {
 		// Initialize Project Grails
 		Project grails = new Project(name: "grails", owner: userAdmin, master: userDevChief)
 		grails.save()
-	}
-	def destroy = {
 	}
 	
 	/**

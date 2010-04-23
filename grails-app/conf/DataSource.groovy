@@ -42,8 +42,12 @@ environments {
 	}
 	production {
 		dataSource {
-			dbCreate = "update"
-			url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+			pooled = true
+			driverClassName = "com.mysql.jdbc.Driver"
+			username = "changeme"
+			password = "changeme"
+			dbCreate = "update" // one of 'create', 'create-drop','update'
+			url = "jdbc:mysql://localhost:3306/skramboord"
 		}
 	}
 }

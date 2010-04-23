@@ -79,6 +79,7 @@ class TaskController extends BaseController {
 		def burnDownEffort = session.totalEffort
 		session.burndownReal = []
 		session.burndownReal.add([session.sprint.startDate.getTime(), burnDownEffort])
+		def lastEffort = 0
 		for (Date startDate = session.sprint.startDate; startDate <= session.sprint.endDate; startDate++) {
 			datesXTarget.add(startDate.getTime())
 			
@@ -92,8 +93,13 @@ class TaskController extends BaseController {
 				tmpEffort += task.effort
 			}
 			burnDownEffort -= tmpEffort
+
 			if (tmpEffort > 0) {
+				lastEffort = burnDownEffort
 				session.burndownReal.add([startDate.getTime(), burnDownEffort])
+			} else if (Today.isDateToday(startDate)) {
+				// if there is no task done yet today, paint a horizontal line for the rest.
+				session.burndownReal.add([Today.getInstance().getTime(), lastEffort])
 			}
 		}
 		session.burndownTargetXSize = datesXTarget.size()-1

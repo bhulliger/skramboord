@@ -25,4 +25,27 @@ abstract class Today {
 		Calendar calendar = Calendar.getInstance()
 		Date today = Date.parse("dd.MM.yyyy", "${calendar.get(Calendar.DATE)}.${calendar.get(Calendar.MONTH)+1}.${calendar.get(Calendar.YEAR)}")
 	}
+	
+	/**
+	 * @param date
+	 * @return true, if date is today
+	 */
+	static boolean isDateToday(Date date)
+	{
+		Calendar dateToCheck = Calendar.getInstance();
+		dateToCheck.setTime(date);
+		dateToCheck.clear(Calendar.HOUR);
+		dateToCheck.clear(Calendar.MINUTE);
+		dateToCheck.clear(Calendar.SECOND);
+		dateToCheck.clear(Calendar.MILLISECOND);
+		
+		Calendar today = Calendar.getInstance();
+		today.setTime(Today.getInstance());
+		today.clear(Calendar.HOUR);
+		today.clear(Calendar.MINUTE);
+		today.clear(Calendar.SECOND);
+		today.clear(Calendar.MILLISECOND);
+		
+		return dateToCheck.equals(today);
+	}
 }

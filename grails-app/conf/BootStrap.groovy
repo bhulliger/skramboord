@@ -22,21 +22,21 @@ import java.util.Calendar;
 
 import org.apache.catalina.connector.ResponseFacade.DateHeaderPrivilegedAction;
 
-import ch.ping.skramboord.StateTask;
-import ch.ping.skramboord.StateTaskCheckedOut;
-import ch.ping.skramboord.StateTaskDone;
-import ch.ping.skramboord.StateTaskNext;
-import ch.ping.skramboord.StateTaskOpen;
-import ch.ping.skramboord.StateTaskStandBy;
-import ch.ping.skramboord.Task;
-import ch.ping.skramboord.Today;
-import ch.ping.skramboord.Url;
-import ch.ping.skramboord.Priority;
-import ch.ping.skramboord.Sprint;
-import ch.ping.skramboord.Project;
-import ch.ping.skramboord.User;
-import ch.ping.skramboord.Role;
-import ch.ping.skramboord.Requestmap;
+import org.skramboord.StateTask;
+import org.skramboord.StateTaskCheckedOut;
+import org.skramboord.StateTaskDone;
+import org.skramboord.StateTaskNext;
+import org.skramboord.StateTaskOpen;
+import org.skramboord.StateTaskStandBy;
+import org.skramboord.Task;
+import org.skramboord.Today;
+import org.skramboord.Url;
+import org.skramboord.Priority;
+import org.skramboord.Sprint;
+import org.skramboord.Project;
+import org.skramboord.User;
+import org.skramboord.Role;
+import org.skramboord.Requestmap;
 import org.apache.commons.codec.digest.DigestUtils
 
 class BootStrap {

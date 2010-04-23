@@ -26,14 +26,15 @@ class UserController extends BaseController {
 	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 	
 	def index = {
-		redirect action: list, params: params
+		redirect(controller:'user', action:'list')
+		//redirect action: list, params: params
 	}
 	
 	def list = {
 		if (!params.max) {
 			params.max = 10
 		}
-		[personList: User.list(params)]
+		flash.personList = User.list(params)
 	}
 	
 	def show = {
@@ -50,7 +51,8 @@ class UserController extends BaseController {
 		roleNames.sort { n1, n2 ->
 			n1 <=> n2
 		}
-		[person: person, roleNames: roleNames]
+		flash.roleNames = roleNames
+		flash.person = person
 	}
 	
 	/**

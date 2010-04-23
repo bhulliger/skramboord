@@ -32,7 +32,7 @@
 					</tr>
 				</thead>
 					<tbody>
-						<g:each in="${personList}" status="i" var="person">
+						<g:each in="${flash.personList}" status="i" var="person">
 							<g:def var="userId" value="${person.id}"/>
 							<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 								<td>
@@ -41,20 +41,13 @@
 								<td style="vertical-align: middle;">${person.userRealName?.encodeAsHTML()}</td>
 								<td style="vertical-align: middle;">${person.enabled?.encodeAsHTML()}</td>
 								<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
-								<g:if test="${person.id == session.user.id}">
+								<g:if test="${authenticateService.ifAnyGranted('ROLE_ADMIN,ROLE_SUPERUSER') || person.id == session.user.id}">
 									<td>
 										<g:link controller="user" action="edit" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
 									</td>
 								</g:if>
 								<g:else>
-									<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
-										<td>
-											<g:link controller="user" action="edit" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
-										</td>
-									</g:ifAnyGranted>
-									<g:ifNotGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
-										<td></td>
-									</g:ifNotGranted>
+									<td></td>
 								</g:else>
 								<g:ifAnyGranted role="ROLE_SUPERUSER">
 									<td>

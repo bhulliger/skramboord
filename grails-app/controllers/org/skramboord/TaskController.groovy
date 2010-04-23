@@ -105,18 +105,7 @@ class TaskController extends BaseControllerController {
 	 * Add task
 	 */
 	def addTask = {
-		def taskName = params.taskName
-		def taskEffort = params.taskEffort
-		def taskLink = params.taskLink
-		def taskPriority = params.taskPriority
-		
-		Priority priority = Priority.withCriteria(uniqueResult:true) {
-			eq('name', taskPriority)
-		}
-		
-		Sprint sprint = Sprint.find(session.sprint)
-		
-		Task task = new Task(name: taskName, effort: taskEffort, url: taskLink, state: StateTask.getStateOpen(), priority: priority, sprint: sprint)
+		Task task = new Task(name: params.taskName, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.get(params.taskPriority), sprint: Sprint.find(session.sprint))
 		if (!task.save()) {
 			flash.task = task
 		}
@@ -137,6 +126,42 @@ class TaskController extends BaseControllerController {
 			}
 		} else {
 			flash.message = "Only Super User and admins can delete tasks."
+		}
+		
+		redirect(controller:'task', action:'list')
+	}
+	
+	def edit = {
+		if (taskWritePermission(session.user, session.project)) {
+			if (params.task) {
+				flash.taskEdit = Task.get(params.task)
+			}
+		} else {
+			flash.message = "Only Super User and admins can edit tasks."
+		}
+		
+		redirect(controller:'task', action:'list')
+	}
+	
+	/**
+	 * Task edit action
+	 */
+	def editTask = {
+		if (taskWritePermission(session.user, session.project)) {
+			if (params.taskId) {
+				def task = Task.get(params.taskId)
+				
+				task.name = params.taskName
+				task.effort = params.taskEffort?.toDouble()
+				task.url = params.taskLink
+				task.priority = Priority.get(params.taskPriority)
+
+				if (!task.save()) {
+					flash.task=task
+				}
+			}
+		} else {
+			flash.message = "Only Super User and admins can edit tasks."
 		}
 		
 		redirect(controller:'task', action:'list')

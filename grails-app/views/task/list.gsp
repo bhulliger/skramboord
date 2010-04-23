@@ -98,9 +98,12 @@
 				<div id="tab-task">
 					<div>
 						<h3>Tasks</h3>
-						<g:if test="${session.sprint.isSprintActive()}">
-							<g:render template="formNewTask"/>
+						<g:if test="${flash.taskEdit}">
+							<g:render template="formEditTask"/>
 						</g:if>
+						<g:elseif test="${session.sprint.isSprintActive()}">
+							<g:render template="formNewTask"/>
+						</g:elseif>
 						
 						<g:hasErrors bean="${flash.task}">
 							<div class="errors">

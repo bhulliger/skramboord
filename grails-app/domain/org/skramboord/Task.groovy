@@ -28,6 +28,10 @@ class Task {
 	Date finishedDate
 	static belongsTo = [sprint:Sprint, user:User]
 	
+	static mapping = {
+		priority lazy:false
+	}
+	                    
 	static constraints = {
 		name(nullable:false)
 		effort(nullable:false)

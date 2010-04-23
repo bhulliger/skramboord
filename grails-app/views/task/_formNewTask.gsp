@@ -29,7 +29,7 @@
 			<label>Link</label>
 			<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
 			<label>Priority</label>
-			<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="name"/>
+			<g:select name="taskPriority" from="${session.priorityList}" optionValue="name" optionKey="id"/>
 		</fieldset>
 	</g:form>
 </div>

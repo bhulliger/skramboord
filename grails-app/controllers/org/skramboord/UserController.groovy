@@ -67,9 +67,14 @@ class UserController extends BaseControllerController {
 					flash.message = "You can not delete yourself, please login as another admin and try again"
 				}
 				else {
-					//first, delete this person from People_Authorities table.
+					// first, delete this person from People_Authorities table.
 					Role.findAll().each { it.removeFromPeople(person)
 					}
+					// second, remove all tasks from person
+					person.tasks.each {it.user = null}
+					person.tasks.clear()
+					
+					// Now delete this person...
 					person.delete()
 					flash.message = "User $params.id deleted."
 				}

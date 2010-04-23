@@ -20,7 +20,7 @@ package org.skramboord
 /**
  * User controller.
  */
-class UserController extends BaseControllerController {
+class UserController extends BaseController {
 	
 	// the delete, save and update actions only accept POST requests
 	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']

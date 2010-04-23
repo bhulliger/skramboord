@@ -19,7 +19,7 @@ package org.skramboord
 /**
  * Logout Controller (Example).
  */
-class LogoutController extends BaseControllerController {
+class LogoutController extends BaseController {
 	
 	/**
 	 * Index action. Redirects to the Spring security logout uri.

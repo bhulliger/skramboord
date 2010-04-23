@@ -19,7 +19,7 @@ package org.skramboord
 
 import org.grails.plugins.springsecurity.service.AuthenticateService;
 
-class ProjectController extends BaseControllerController {
+class ProjectController extends BaseController {
 	
 	def index = { redirect(controller:'project', action:'list')
 	}

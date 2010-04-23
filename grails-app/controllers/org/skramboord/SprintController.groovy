@@ -17,7 +17,7 @@
 
 package org.skramboord
 
-class SprintController extends BaseControllerController {
+class SprintController extends BaseController {
 	
 	def index = { redirect(controller:'sprint', action:'list')
 	}

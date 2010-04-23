@@ -24,7 +24,7 @@ import org.springframework.security.context.SecurityContextHolder as SCH
 /**
  * Registration controller.
  */
-class RegisterController extends BaseControllerController {
+class RegisterController extends BaseController {
 	
 	def authenticateService
 	def daoAuthenticationProvider

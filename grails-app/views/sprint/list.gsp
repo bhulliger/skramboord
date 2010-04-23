@@ -71,10 +71,10 @@
 								<td>
 									<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
 								</td>
-								<td>${sprint.goal}</td>
-								<td><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
-								<td><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
-								<td style="text-align:center;">${sprint.tasks.size()}</td>
+								<td style="vertical-align: middle;">${sprint.goal}</td>
+								<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
+								<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
+								<td style="vertical-align: middle;text-align:center;">${sprint.tasks.size()}</td>
 								<td style="text-align:center;">
 									<g:if test="${sprint.isSprintRunning()}">
 										<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>

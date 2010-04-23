@@ -63,7 +63,6 @@
 			</tbody>
 			</table>
 		</div>
-		
 		<g:form>
 			<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
 				<input type="hidden" name="id" value="${person.id}"/>

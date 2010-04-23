@@ -17,7 +17,7 @@
 
 package org.skramboord
 
-class TaskController extends BaseControllerController {
+class TaskController extends BaseController {
 	
 	def index = { redirect(controller:'task', action:'list')
 	}

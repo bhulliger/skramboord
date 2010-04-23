@@ -107,6 +107,9 @@
 								<g:renderErrors bean="${flash.task}" as="list"/>
 							</div>
 						</g:hasErrors>
+						<g:if test="${flash.message}">
+							<div class="message">${flash.message}</div>
+						</g:if>
 		
 						<table>
 							<tr>

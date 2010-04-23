@@ -125,16 +125,18 @@ class TaskController extends BaseControllerController {
 	}
 	
 	/**
-	 * remove Task
+	 * Task delete action
 	 */
-	def removeTask = {
-		def taskId = params?.TaskId
-		
-		if(taskId) {
-			Task task = Task.withCriteria(uniqueResult:true) {
-				eq('id', Long.valueOf(taskId))
+	def delete = {
+		if (taskWritePermission(session.user, session.project)) {
+			if (params.task) {
+				def task = Task.get(params.task)
+				task.delete()
+				
+				flash.message = "Task $task.name deleted."
 			}
-			task.delete()
+		} else {
+			flash.message = "Only Super User and admins can delete tasks."
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -204,5 +206,9 @@ class TaskController extends BaseControllerController {
 	 */
 	private String removeTaskPrefix(String taskId) {
 		return taskId.replaceFirst("taskId_", "")
+	}
+	
+	private boolean taskWritePermission(User user, Project project) {
+		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
 	}
 }

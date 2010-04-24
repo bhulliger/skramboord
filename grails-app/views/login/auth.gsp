@@ -43,7 +43,7 @@
 			<g:if test='${flash.message}'>
 			<div class='login_message'>${flash.message}</div>
 			</g:if>
-			<div class='fheader'>Please Login..</div>
+			<div class='fheader'>Please Login...</div>
 			<form action='${postUrl}' method="post" id='loginForm' class='cssform'>
 				<p>
 					<label for='j_username'>Login ID</label>

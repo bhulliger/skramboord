@@ -41,7 +41,7 @@
 								<td style="vertical-align: middle;">${person.userRealName?.encodeAsHTML()}</td>
 								<td style="vertical-align: middle;">${person.enabled?.encodeAsHTML()}</td>
 								<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
-								<g:if test="${authenticateService.ifAnyGranted('ROLE_ADMIN,ROLE_SUPERUSER') || person.id == session.user.id}">
+								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || person.id == session.user.id}">
 									<td>
 										<g:link controller="user" action="edit" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
 									</td>

@@ -23,8 +23,13 @@
 			</tr>
 
 			<tr class="prop">
-				<td valign="top" class="name">Full Name:</td>
-				<td valign="top" class="value">${person.userRealName?.encodeAsHTML()}</td>
+				<td valign="top" class="name">First Name:</td>
+				<td valign="top" class="value">${person.prename?.encodeAsHTML()}</td>
+			</tr>
+			
+			<tr class="prop">
+				<td valign="top" class="name">Name:</td>
+				<td valign="top" class="value">${person.name?.encodeAsHTML()}</td>
 			</tr>
 
 			<tr class="prop">

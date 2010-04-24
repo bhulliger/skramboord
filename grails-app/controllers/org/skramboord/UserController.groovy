@@ -21,13 +21,9 @@ package org.skramboord
  * User controller.
  */
 class UserController extends BaseController {
-	
-	// the delete, save and update actions only accept POST requests
-	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
-	
+
 	def index = {
-		redirect(controller:'user', action:'list')
-		//redirect action: list, params: params
+		redirect action: list, params: params
 	}
 	
 	def list = {
@@ -92,10 +88,14 @@ class UserController extends BaseController {
 	}
 	
 	def edit = {
-		
 		def person = User.get(params.id)
 		if (!person) {
 			flash.message = "User not found with id $params.id"
+			redirect action: list
+			return
+		}
+		if (authenticateService.ifNotGranted('ROLE_SUPERUSER') && person.id != session.user.id) {
+			flash.message = "You have no permission to edit this user."
 			redirect action: list
 			return
 		}

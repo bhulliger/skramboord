@@ -30,21 +30,28 @@
 				<tbody>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="username">Login Name:</label></td>
+						<td valign="top" class="name"><label for="username">Login Name: *</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'username','errors')}">
 							<input type="text" id="username" name="username" value="${person.username?.encodeAsHTML()}"/>
 						</td>
 					</tr>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="userRealName">Full Name:</label></td>
-						<td valign="top" class="value ${hasErrors(bean:person,field:'userRealName','errors')}">
-							<input type="text" id="userRealName" name="userRealName" value="${person.userRealName?.encodeAsHTML()}"/>
+						<td valign="top" class="name"><label for="prename">Frist Name: *</label></td>
+						<td valign="top" class="value ${hasErrors(bean:person,field:'prename','errors')}">
+							<input type="text" id="prename" name="prename" value="${person.prename?.encodeAsHTML()}"/>
+						</td>
+					</tr>
+					
+					<tr class="prop">
+						<td valign="top" class="name"><label for="name">Name: *</label></td>
+						<td valign="top" class="value ${hasErrors(bean:person,field:'name','errors')}">
+							<input type="text" id="name" name="name" value="${person.name?.encodeAsHTML()}"/>
 						</td>
 					</tr>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd">Password:</label></td>
+						<td valign="top" class="name"><label for="passwd">Password: *</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'passwd','errors')}">
 							<input type="password" id="passwd" name="passwd" value="${person.passwd?.encodeAsHTML()}"/>
 						</td>
@@ -90,7 +97,10 @@
 							</tr>
 						</g:each>
 					</g:ifAllGranted>
-
+					
+					<tr class="prop">
+						<td class="name">* mandatory</td>
+					</tr>
 				</tbody>
 				</table>
 			</div>

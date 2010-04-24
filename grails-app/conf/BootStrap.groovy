@@ -79,11 +79,11 @@ class BootStrap {
 		def roleUser = new Role(authority:'ROLE_USER', description:'role user').save()
 		
 		// Adding Users
-		def userAdmin = new User(username:'admin', userRealName:'Pablo Hess', enabled: true, emailShow: true, email: 'admin@skramboord.ch', passwd: authenticateService.encodePassword("admin")).save()
-		def userDevChief = new User(username:'wmozart', userRealName:'Wolfgang Mozart', enabled: true, emailShow: true, email: 'wolfgang.mozart@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
-		def userDev1 = new User(username:'lbeethoven', userRealName:'Ludwig Beethoven', enabled: true, emailShow: true, email: 'ludwig.beethoven@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
-		def userDev2 = new User(username:'asalieri', userRealName:'Antonio Salieri', enabled: true, emailShow: true, email: 'antonio.salieri@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
-		def userDev3 = new User(username:'jbach', userRealName:'Johann Bach', enabled: true, emailShow: true, email: 'johann.bach@skramboord.ch', passwd: authenticateService.encodePassword("1234")).save()
+		def userAdmin = new User(username:'admin', prename:'Pablo', name:'Hess', enabled: true, emailShow: true, email: 'admin@skramboord.org', passwd: authenticateService.encodePassword("admin")).save()
+		def userDevChief = new User(username:'wmozart', prename:'Wolfgang', name:'Mozart', enabled: true, emailShow: true, email: 'wolfgang.mozart@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
+		def userDev1 = new User(username:'lbeethoven', prename:'Ludwig', name:'Beethoven', enabled: true, emailShow: true, email: 'ludwig.beethoven@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
+		def userDev2 = new User(username:'asalieri', prename:'Antonio', name:'Salieri', enabled: true, emailShow: true, email: 'antonio.salieri@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
+		def userDev3 = new User(username:'jbach', prename:'Johann', name:'Bach', enabled: true, emailShow: true, email: 'johann.bach@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
 		
 		// Adding user to roles
 		roleSuperUser.addToPeople(userAdmin)

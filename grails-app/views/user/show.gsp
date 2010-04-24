@@ -25,8 +25,13 @@
 				</tr>
 
 				<tr class="prop">
-					<td valign="top" class="name">Full Name:</td>
-					<td valign="top" class="value">${flash.person.userRealName?.encodeAsHTML()}</td>
+					<td valign="top" class="name">First Name:</td>
+					<td valign="top" class="value">${flash.person.prename?.encodeAsHTML()}</td>
+				</tr>
+				
+				<tr class="prop">
+					<td valign="top" class="name">Name:</td>
+					<td valign="top" class="value">${flash.person.name?.encodeAsHTML()}</td>
 				</tr>
 
 				<tr class="prop">
@@ -64,7 +69,7 @@
 			</table>
 		</div>
 		<g:form>
-			<g:if test="${authenticateService.ifAnyGranted('ROLE_ADMIN,ROLE_SUPERUSER') || flash.person.id == session.user.id}">
+			<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || flash.person.id == session.user.id}">
 				<div class="buttons">
 					<input type="hidden" name="id" value="${flash.person.id}"/>
 					<span class="button"><g:actionSubmit class="edit" value="Edit" /></span>

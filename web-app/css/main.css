@@ -284,11 +284,13 @@ th.desc a {
 	text-align: left;
 	width: 15%;
 	white-space: nowrap;
+	vertical-align: middle;
 }
 
 .prop .value {
 	text-align: left;
 	width: 85%;
+	vertical-align: middle;
 }
 
 /* ACTION BUTTONS */

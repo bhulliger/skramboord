@@ -33,9 +33,16 @@
 			</tr>
 
 			<tr class='prop'>
-				<td valign='top' class='name'><label for='userRealName'>Full Name:</label></td>
-				<td valign='top' class='value ${hasErrors(bean:person,field:'userRealName','errors')}'>
-					<input type="text" name='userRealName' value="${person?.userRealName?.encodeAsHTML()}"/>
+				<td valign='top' class='name'><label for='prename'>First Name:</label></td>
+				<td valign='top' class='value ${hasErrors(bean:person,field:'prename','errors')}'>
+					<input type="text" name='prename' value="${person?.prename?.encodeAsHTML()}"/>
+				</td>
+			</tr>
+			
+			<tr class='prop'>
+				<td valign='top' class='name'><label for='name'>Name:</label></td>
+				<td valign='top' class='value ${hasErrors(bean:person,field:'name','errors')}'>
+					<input type="text" name='name' value="${person?.name?.encodeAsHTML()}"/>
 				</td>
 			</tr>
 

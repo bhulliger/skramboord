@@ -27,8 +27,10 @@ class User {
 
 	/** Username */
 	String username
-	/** User Real Name*/
-	String userRealName
+	/** Frist Name */
+	String prename
+	/** Name */
+	String name
 	/** MD5 Password */
 	String passwd
 	/** enabled */
@@ -45,8 +47,13 @@ class User {
 		
 	static constraints = {
 		username(blank: false, unique: true)
-		userRealName(blank: false)
+		prename(blank: false)
+		name(blank: false)
 		passwd(blank: false)
 		enabled()
+	}
+	
+	def getUserRealName() {
+		return "${prename} ${name}"
 	}
 }

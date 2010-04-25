@@ -53,6 +53,11 @@
 					<td valign="top" class="name">Show Email:</td>
 					<td valign="top" class="value">${flash.person.emailShow}</td>
 				</tr>
+				
+				<tr class="prop">
+					<td valign="top" class="name">Task Color:</td>
+					<td valign="top" class="value"><span style="padding: 2px; border: 4px solid #${flash.person.taskColor};">${flash.person.taskColor}</span></td>
+				</tr>
 
 				<tr class="prop">
 					<td valign="top" class="name">Roles:</td>

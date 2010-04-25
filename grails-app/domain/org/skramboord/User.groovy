@@ -17,9 +17,8 @@
 
 package org.skramboord
 
-/**
- * User domain class.
- */
+import java.awt.Color;
+
 class User {
 	static transients = ['pass']
 	static hasMany = [authorities:Role, tasks:Task]
@@ -41,6 +40,9 @@ class User {
 
 	/** description */
 	String description = ''
+		
+	/** task color */
+	Color color
 
 	/** plain password to create a MD5 password */
 	String pass = '[secret]'
@@ -52,9 +54,23 @@ class User {
 		passwd(blank: false)
 		email(blank: false, email: true)
 		enabled()
+		color(nullable:true)
 	}
 	
 	def getUserRealName() {
 		return "${prename} ${name}"
+	}
+	
+	def getTaskColor() {
+		if (color) {
+			String hex = Integer.toHexString(color.getRGB() & 0x00ffffff)
+			// add leading zeros if necessary
+			while(hex.length() < 6) {
+				hex = "0" + hex
+			}
+			return hex
+		}
+		// return default
+		return "009700"
 	}
 }

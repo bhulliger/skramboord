@@ -17,6 +17,8 @@
 
 package org.skramboord
 
+import java.awt.Color;
+
 /**
  * User controller.
  */
@@ -128,6 +130,8 @@ class UserController extends BaseController {
 		if (!params.passwd.equals(oldPassword)) {
 			person.passwd = authenticateService.encodePassword(params.passwd)
 		}
+		person.color = Color.decode("0x" + params["taskColor"])
+		
 		if (person.save() && authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
 			Role.findAll().each { it.removeFromPeople(person)
 			}

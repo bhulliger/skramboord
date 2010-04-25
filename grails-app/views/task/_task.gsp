@@ -1,5 +1,5 @@
 <g:if test="${session.user.equals(task.user)}">
-	<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #009700;">
+	<li id="taskId_${task.id}" class="ui-state-default" style=" border: 2px solid #${task.user.taskColor};">
 </g:if>
 <g:else>
 	<li id="taskId_${task.id}" class="ui-state-default">

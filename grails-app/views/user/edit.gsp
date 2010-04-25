@@ -1,6 +1,12 @@
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="layout" content="main" />
-	<title>Edit User</title>
+
+	<link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
+
+	<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
+	<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
+	<script type="text/javascript" src="${resource(dir:'js/jquery/colorpicker',file:'colorpicker.js')}"></script>
 </head>
 
 <body>
@@ -31,7 +37,7 @@
 	
 						<tr class="prop">
 							<td class="name"><label for="username">Login Name: *</label></td>
-							<td class="value" ${hasErrors(bean:person,field:'username','errors')}">
+							<td class="value ${hasErrors(bean:person,field:'username','errors')}">
 								<input type="text" id="username" name="username" value="${person.username?.encodeAsHTML()}"/>
 							</td>
 						</tr>
@@ -84,9 +90,36 @@
 								<g:checkBox name="emailShow" value="${person.emailShow}"/>
 							</td>
 						</tr>
-	
+						
 						<tr class="prop">
-							<td valign="top" class="name"><label for="authorities">Roles:</label></td>
+							<td valign="top" class="name"><label for="emailShow">Task Color:</label></td>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'color','errors')}">
+								<span id="spanTaskColor" style="padding: 6px; background: #${person.taskColor};">
+									<input type="text" maxlength="6" size="6" name="taskColor" id="colorpickerTaskColor" value="${person.taskColor}"/>
+								</span>
+								<script type="text/javascript">
+									$(function() {
+										$('#colorpickerTaskColor').ColorPicker({
+											onSubmit: function(hsb, hex, rgb, el) {
+												$(el).val(hex);
+												$(el).ColorPickerHide();
+												document.getElementById("spanTaskColor").style.backgroundColor = '#' + hex;
+											},
+											onBeforeShow: function () {
+												$(this).ColorPickerSetColor(this.value);
+											}
+										})
+										.bind('keyup', function(){
+											$(this).ColorPickerSetColor(this.value);
+										});
+									});
+								</script>
+							</td>
+							<td valign="top" class="value"></td>
+						</tr>
+						
+						<tr class="prop">
+							<td valign="top" class="name">>Roles:</td>
 							<td valign="top" class="value ${hasErrors(bean:person,field:'authorities','errors')}">
 								<ul>
 								<g:each var="entry" in="${roleMap}">

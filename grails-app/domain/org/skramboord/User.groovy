@@ -50,6 +50,7 @@ class User {
 		prename(blank: false)
 		name(blank: false)
 		passwd(blank: false)
+		email(blank: false, email: true)
 		enabled()
 	}
 	

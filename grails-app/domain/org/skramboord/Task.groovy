@@ -26,7 +26,7 @@ class Task {
 	StateTask state
 	Priority priority
 	Date finishedDate
-	static belongsTo = [sprint:Sprint, user:User]
+	static belongsTo = [sprint:Sprint, project:Project, user:User]
 	
 	static mapping = {
 		priority lazy:false
@@ -40,5 +40,7 @@ class Task {
 		priority(nullable:false)
 		finishedDate(nullable:true)
 		user(nullable:true)
+		sprint(nullable:true)
+		project(nullable:true)
     }
 }

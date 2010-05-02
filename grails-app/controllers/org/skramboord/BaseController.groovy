@@ -17,10 +17,8 @@
 
 package org.skramboord
 
-import org.grails.plugins.springsecurity.service.AuthenticateService;
-
 abstract class BaseController {
-	AuthenticateService authenticateService
+	def authenticateService
 	
 	def beforeInterceptor = [action:this.&doBefore]
 	

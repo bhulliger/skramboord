@@ -29,6 +29,12 @@ class TaskController extends BaseController {
 			session.sprint = Sprint.get(params.sprint)
 		}
 		
+		Project project = Project.get(session.project.id)
+		session.projectBacklog = Task.withCriteria {
+			eq('project', project)
+			order('priority',"desc")
+		}
+		
 		session.taskListOpen = Task.withCriteria {
 			eq('state', StateTask.getStateOpen())
 			eq('sprint', session.sprint)
@@ -178,7 +184,16 @@ class TaskController extends BaseController {
 	 */
 	def changeTaskStateToOpen = {
 		Task task = Task.get(removeTaskPrefix(params.taskId))
-		task.state.open(task)
+		if (task.project) {
+			// task from backlog -> set state to open
+			task.state = StateTask.getStateOpen()
+			task.project = null
+			task.sprint = Sprint.get(session.sprint.id)
+			task.save()
+		} else {
+			// Change to state open
+			task.state.open(task)
+		}
 		task.save()
 		
 		redirect(controller:'task', action:'list')
@@ -224,6 +239,19 @@ class TaskController extends BaseController {
 	def changeTaskStateToStandBy = {
 		Task task = Task.get(removeTaskPrefix(params.taskId))
 		task.state.standBy(task)
+		task.save()
+		
+		redirect(controller:'task', action:'list')
+	}
+	
+	/**
+	 * Copy Task to Backlog
+	 */
+	def copyTaskToBacklog = {
+		Task task = Task.get(removeTaskPrefix(params.taskId))
+
+		task.sprint = null
+		task.project = Project.get(session.project.id)
 		task.save()
 		
 		redirect(controller:'task', action:'list')

@@ -16,8 +16,6 @@
  *******************************************************************************/
 
 package org.skramboord
-import org.codehaus.groovy.grails.plugins.springsecurity.RedirectUtils
-import org.grails.plugins.springsecurity.service.AuthenticateService
 
 import org.springframework.security.AuthenticationTrustResolverImpl
 import org.springframework.security.DisabledException

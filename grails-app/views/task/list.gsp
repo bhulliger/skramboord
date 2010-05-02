@@ -4,8 +4,8 @@
 		<meta name="layout" content="main" />
 		
 		<style type="text/css">
-			#open, #checkout, #done, #next, #standBy { list-style-type: none; margin: 0; padding: 0; float: left; width: 230px;}
-			#open li, #checkout li, #done li, #next li, #standBy li { margin: 1px; padding: 5px; font-size: 1.2em; width: 200px; }
+			#open, #checkout, #done, #next, #standBy, #backlog { list-style-type: none; margin: 0; padding: 0; float: left; width: 230px;}
+			#open li, #checkout li, #done li, #next li, #standBy li, #backlog li { margin: 1px; padding: 5px; font-size: 1.2em; width: 200px; }
 			.taskInfo { font-style:italic; font-weight: normal; font-size:x-small; color: black; }
 		</style>
 		
@@ -40,6 +40,9 @@
 			function changeToStandBy(event, ui){
 				location.href="${resource(dir:'task',file:'changeTaskStateToStandBy')}" + "?taskId=" + $(ui.item).attr("id");
 			}
+			function copyToBacklog(event, ui){
+				location.href="${resource(dir:'task',file:'copyTaskToBacklog')}" + "?taskId=" + $(ui.item).attr("id");
+			}
 		
 			$(function() {	
 				$('#create-task')
@@ -48,6 +51,11 @@
 						$('#dialog-form').dialog('open');
 				});
 
+				$("#backlog").sortable({
+					connectWith: '.connectedSortable',
+					dropOnEmpty: true,
+					receive: copyToBacklog
+				}).disableSelection();
 				$("#open").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
@@ -114,6 +122,26 @@
 							<div class="message">${flash.message}</div>
 						</g:if>
 		
+						<table>
+							<tr>
+							    <th>Project Backlog</th>
+							</tr>
+							<tr>
+								<td>
+									<g:if test="${session.projectBacklog.size() > 0}">
+										<ul id="backlog" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${session.projectBacklog}" status="i">
+											<g:render template="task" model="['task':task]"/>
+										</g:each>
+									</ul>
+								</td>
+							</tr>
+						</table>
+
 						<table>
 							<tr>
 							    <th>Open</th>

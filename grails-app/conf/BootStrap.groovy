@@ -20,8 +20,6 @@ import grails.util.GrailsUtil;
 import java.awt.Color;
 import java.util.Calendar;
 
-import org.apache.catalina.connector.ResponseFacade.DateHeaderPrivilegedAction;
-
 import org.skramboord.StateTask;
 import org.skramboord.StateTaskCheckedOut;
 import org.skramboord.StateTaskDone;
@@ -50,7 +48,7 @@ class BootStrap {
 			initDevelopment()
 			break
 			case "production":
-			// TODO
+			initDevelopment()
 			break 
 		}
 	}
@@ -170,9 +168,7 @@ class BootStrap {
 	 * @param finished
 	 */
 	def createTask(User user, Sprint sprint, String name, Double effort, String url, StateTask state, Priority priority, Date finished) {
-		Task task = new Task(user: user, name: name, effort: effort, url: url, state: state, priority: priority, finishedDate: finished)
+		Task task = new Task(user: user, name: name, effort: effort, url: url, state: state, priority: priority, finishedDate: finished, sprint: sprint, project: null)
 		task.save()
-		sprint.addToTasks(task)
-		sprint.save()
 	}
 } 

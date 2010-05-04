@@ -42,8 +42,8 @@ class SprintController extends BaseController {
 	def addSprint = {
 		def sprintName = params.sprintName
 		def sprintGoal = params.sprintGoal
-		def endDate = params.startDateHidden ? new Date(params.startDateHidden) : null
-		def startDate = params.endDateHidden ? new Date(params.endDateHidden) : null
+		def startDate = params.startDateHidden ? new Date(params.startDateHidden) : null
+		def endDate = params.endDateHidden ? new Date(params.endDateHidden) : null
 		
 		Project project = Project.find(session.project)
 		

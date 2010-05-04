@@ -8,7 +8,7 @@
         <g:layoutHead />
     </head>
     <body>
-    	<div id="content">
+    	<div class="content">
 	        <div id="spinner" class="spinner" style="display:none;">
 	            <img src="${resource(dir:'images',file:'spinner.gif')}" alt="Spinner"/>
 	        </div>
@@ -44,8 +44,8 @@
 	        	</div>
 	        	<div style="clear: both;"/>
 	        </div>
-        	<g:layoutBody />
         </div>
+       	<g:layoutBody />
         <div style="margin-top: 10px; text-align: center;">
        		<a href="http://github.com/pablohess/skramboord" onclick="return ! window.open(this.href);">
         		<g:meta name="app.name"/>, Version <g:meta name="app.version"/>, built with Grails <g:meta name="app.grails.version"/>

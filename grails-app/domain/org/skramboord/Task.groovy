@@ -30,6 +30,7 @@ class Task {
 	
 	static mapping = {
 		priority lazy:false
+		sprint lazy:false
 	}
 	                    
 	static constraints = {

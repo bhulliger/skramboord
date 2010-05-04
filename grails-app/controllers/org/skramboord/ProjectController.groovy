@@ -29,13 +29,25 @@ class ProjectController extends BaseController {
 			params.sort = 'name'
 			params.order = 'asc'
 		}
-		session.projectList = Project.withCriteria {
+		Date today = Today.getInstance()
+		flash.runningSprintsList = Sprint.withCriteria {
+			le('startDate', today)
+			ge('endDate', today)
+		}
+		flash.projectList = Project.withCriteria {
 			if (params.sort != 'sprints') {
 				order(params.sort, params.order)
 			}
 		}
+		flash.myTasks = Task.withCriteria {
+			eq('user', session.user)
+			eq('state', StateTask.getStateCheckedOut())
+			order('priority',"desc")
+			order('project',"asc")
+			order('name',"asc")
+		}
 		if(params.sort == 'sprints'){
-			session.projectList.sort{it.sprints.size() * (params?.order == "asc"? 1 : -1)}
+			flash.projectList.sort{it.sprints.size() * (params?.order == "asc"? 1 : -1)}
 		}
 	}
 	

@@ -30,7 +30,7 @@ body {
 	height: 100%;
 }
 
-#content {
+.content {
 	width: 992px;
 	height: 768px;
 	margin-left: auto;

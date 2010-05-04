@@ -29,4 +29,3 @@
 		</fieldset>
 	</g:form>
 </div>
-<g:submitButton name="create-project" value="Create project"/>

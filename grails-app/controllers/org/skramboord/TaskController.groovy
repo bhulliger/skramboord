@@ -24,9 +24,13 @@ class TaskController extends BaseController {
 	
 	def list = {
 		session.priorityList=Priority.list()
-		
+				
 		if (params.sprint) {
 			session.sprint = Sprint.get(params.sprint)
+		}
+		
+		if(!session.project) {
+			session.project = session.sprint.project
 		}
 		
 		Project project = Project.get(session.project.id)

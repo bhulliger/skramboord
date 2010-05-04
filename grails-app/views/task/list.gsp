@@ -4,8 +4,8 @@
 		<meta name="layout" content="main" />
 		
 		<style type="text/css">
-			#open, #checkout, #done, #next, #standBy, #backlog { list-style-type: none; margin: 0; padding: 0; float: left; width: 230px;}
-			#open li, #checkout li, #done li, #next li, #standBy li, #backlog li { margin: 1px; padding: 5px; font-size: 1.2em; width: 200px; }
+			#open, #checkout, #done, #next, #standBy, #backlog { list-style-type: none; margin: 0; padding: 0; float: left; width: 200px;}
+			#open li, #checkout li, #done li, #next li, #standBy li, #backlog li { margin: 1px; padding: 4px; font-size: 1.2em; width: 190px; }
 			.taskInfo { font-style:italic; font-weight: normal; font-size:x-small; color: black; }
 		</style>
 		
@@ -23,28 +23,31 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.tabs.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/flot',file:'jquery.flot.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
 		
 		<script type="text/javascript">
-			function changeToOpen(event, ui){
-				location.href="${resource(dir:'task',file:'changeTaskStateToOpen')}" + "?taskId=" + $(ui.item).attr("id");
+			function changeTo(event, ui, stateMethod){
+				location.href="/${meta(name: "app.name")}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
 			}
-			function changeToCheckout(event, ui){
-				location.href="${resource(dir:'task',file:'changeTaskStateToCheckOut')}" + "?taskId=" + $(ui.item).attr("id");
-			}
-			function changeToDone(event, ui){
-				location.href="${resource(dir:'task',file:'changeTaskStateToDone')}" + "?taskId=" + $(ui.item).attr("id");
-			}
-			function changeToNext(event, ui){
-				location.href="${resource(dir:'task',file:'changeTaskStateToNext')}" + "?taskId=" + $(ui.item).attr("id");
-			}
-			function changeToStandBy(event, ui){
-				location.href="${resource(dir:'task',file:'changeTaskStateToStandBy')}" + "?taskId=" + $(ui.item).attr("id");
-			}
-			function copyToBacklog(event, ui){
-				location.href="${resource(dir:'task',file:'copyTaskToBacklog')}" + "?taskId=" + $(ui.item).attr("id");
-			}
-		
-			$(function() {	
+
+			$(function() {
+				var showProductBacklog = $.cookie('showProductBacklog'); 
+				if (showProductBacklog != 'show') {
+					$("#productBacklog").hide();
+				}
+				
+				$('#toggleProductBacklog')
+					.button()
+					.click(function() {
+				    	if ($("#productBacklog").is(":hidden")) {
+				    		$.cookie('showProductBacklog', 'show')
+				    	} else {
+				    		$.cookie('showProductBacklog', 'hide')
+				    	}
+						
+						$("#productBacklog").toggle("fast");
+				});
+				
 				$('#create-task')
 					.button()
 					.click(function() {
@@ -54,32 +57,32 @@
 				$("#backlog").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
-					receive: copyToBacklog
+					receive: function(event, ui) { changeTo(event, ui, 'copyTaskToBacklog') }
 				}).disableSelection();
 				$("#open").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
-					receive: changeToOpen
+					receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToOpen') }
 				}).disableSelection();
 				$("#checkout").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
-					receive: changeToCheckout
+					receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToCheckOut') }
 				}).disableSelection();
 				$("#done").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
-					receive: changeToDone
+					receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToDone') }
 				}).disableSelection();
 				$("#next").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
-					receive: changeToNext
+					receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToNext') }
 				}).disableSelection();
 				$("#standBy").sortable({
 					connectWith: '.connectedSortable',
 					dropOnEmpty: true,
-					receive: changeToStandBy
+					receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToStandBy') }
 				}).disableSelection();
 
 				$("#tabs").tabs({
@@ -100,7 +103,7 @@
 				
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-task">Tasks</a></li>
+					<li><a href="#tab-task">Scrum Board</a></li>
 					<li><a href="burndown.gsp">Burn Down</a></li>
 				</ul>
 				<div id="tab-task">
@@ -112,6 +115,7 @@
 						<g:elseif test="${session.sprint.isSprintActive()}">
 							<g:render template="formNewTask"/>
 						</g:elseif>
+						<g:submitButton name="toggleProductBacklog" value="Product Backlog (${session.projectBacklog.size()} tasks)"/>
 						
 						<g:hasErrors bean="${flash.task}">
 							<div class="errors">
@@ -121,99 +125,108 @@
 						<g:if test="${flash.message}">
 							<div class="message">${flash.message}</div>
 						</g:if>
-		
+					
 						<table>
 							<tr>
-							    <th>Project Backlog</th>
-							</tr>
-							<tr>
-								<td>
-									<g:if test="${session.projectBacklog.size() > 0}">
-										<ul id="backlog" class="connectedSortable">
-									</g:if>
-									<g:else>
-										<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
-									</g:else>
-										<g:each var="task" in="${session.projectBacklog}" status="i">
-											<g:render template="task" model="['task':task]"/>
-										</g:each>
-									</ul>
+								<td id="productBacklog" style="padding: 0px; margin: 0px;">
+									<table style="border: none;">
+										<tr>
+										    <th>Product Backlog</th>
+										</tr>
+										<tr>
+											<td>
+												<div style="height: 400px; overflow: auto; padding-right: 10px;"> 
+													<g:if test="${session.projectBacklog.size() > 0}">
+														<ul id="backlog" class="connectedSortable">
+													</g:if>
+													<g:else>
+														<ul id="backlog" class="connectedSortable" style="padding-bottom: 30px;">
+													</g:else>
+														<g:each var="task" in="${session.projectBacklog}" status="i">
+															<g:render template="task" model="['task':task]"/>
+														</g:each>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									</table>
 								</td>
-							</tr>
-						</table>
-
-						<table>
-							<tr>
-							    <th>Open</th>
-							    <th>Checkout</th>
-							    <th>Done</th>
-							</tr>
-							<tr>
-								<td>
-									<g:if test="${session.taskListOpen.size() > 0}">
-										<ul id="open" class="connectedSortable">
-									</g:if>
-									<g:else>
-										<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
-									</g:else>
-										<g:each var="task" in="${session.taskListOpen}" status="i">
-											<g:render template="task" model="['task':task]"/>
-										</g:each>
-									</ul>
-								</td>
-								<td>
-									<g:if test="${session.taskListCheckout.size() > 0}">
-										<ul id="checkout" class="connectedSortable">
-									</g:if>
-									<g:else>
-										<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
-									</g:else>
-										<g:each var="task" in="${session.taskListCheckout}" status="i">
-											<g:render template="task" model="['task':task]"/>
-										</g:each>
-									</ul>
-								</td>
-								<td>
-									<g:if test="${session.taskListDone.size() > 0}">
-										<ul id="done" class="connectedSortable">
-									</g:if>
-									<g:else>
-										<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
-									</g:else>
-										<g:each var="task" in="${session.taskListDone}" status="i">
-											<g:render template="task" model="['task':task]"/>
-										</g:each>
-									</ul>
-								</td>
-							</tr>
-							<tr>
-								<th colspan="2">Stand by</th>
-								<th>Next</th>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<g:if test="${session.taskListStandBy.size() > 0}">
-										<ul id="standBy" class="connectedSortable">
-									</g:if>
-									<g:else>
-										<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
-									</g:else>
-										<g:each var="task" in="${session.taskListStandBy}" status="i">
-											<g:render template="task" model="['task':task]"/>
-										</g:each>
-									</ul>
-								</td>
-								<td>
-									<g:if test="${session.taskListNext.size() > 0}">
-										<ul id="next" class="connectedSortable">
-									</g:if>
-									<g:else>
-										<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
-									</g:else>
-										<g:each var="task" in="${session.taskListNext}" status="i">
-											<g:render template="task" model="['task':task]"/>
-										</g:each>
-									</ul>
+								<td style="padding: 0px; margin: 0px;">
+									<table style="border: none;">
+										<tr>
+										    <th>Open</th>
+										    <th>Checkout</th>
+										    <th>Done</th>
+										</tr>
+										<tr>
+											<td>
+												<g:if test="${session.taskListOpen.size() > 0}">
+													<ul id="open" class="connectedSortable">
+												</g:if>
+												<g:else>
+													<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
+												</g:else>
+													<g:each var="task" in="${session.taskListOpen}" status="i">
+														<g:render template="task" model="['task':task]"/>
+													</g:each>
+												</ul>
+											</td>
+											<td>
+												<g:if test="${session.taskListCheckout.size() > 0}">
+													<ul id="checkout" class="connectedSortable">
+												</g:if>
+												<g:else>
+													<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
+												</g:else>
+													<g:each var="task" in="${session.taskListCheckout}" status="i">
+														<g:render template="task" model="['task':task]"/>
+													</g:each>
+												</ul>
+											</td>
+											<td>
+												<g:if test="${session.taskListDone.size() > 0}">
+													<ul id="done" class="connectedSortable">
+												</g:if>
+												<g:else>
+													<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
+												</g:else>
+													<g:each var="task" in="${session.taskListDone}" status="i">
+														<g:render template="task" model="['task':task]"/>
+													</g:each>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<th colspan="2">Stand by</th>
+											<th>Next</th>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<g:if test="${session.taskListStandBy.size() > 0}">
+													<ul id="standBy" class="connectedSortable">
+												</g:if>
+												<g:else>
+													<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
+												</g:else>
+													<g:each var="task" in="${session.taskListStandBy}" status="i">
+														<g:render template="task" model="['task':task]"/>
+													</g:each>
+												</ul>
+											</td>
+											<td>
+												<g:if test="${session.taskListNext.size() > 0}">
+													<ul id="next" class="connectedSortable">
+												</g:if>
+												<g:else>
+													<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
+												</g:else>
+													<g:each var="task" in="${session.taskListNext}" status="i">
+														<g:render template="task" model="['task':task]"/>
+													</g:each>
+												</ul>
+											</td>
+										</tr>
+									</table>
 								</td>
 							</tr>
 						</table>

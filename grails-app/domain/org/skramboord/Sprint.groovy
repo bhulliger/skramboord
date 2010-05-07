@@ -29,7 +29,12 @@ class Sprint {
 		name(nullable:false, blank:false, unique: ['project'])
 		goal(nullable:true)
 		startDate(nullable:false)
-		endDate(nullable:false)
+		endDate(nullable:false, validator: {val, obj ->
+			if (val && val.before(obj.startDate)) {
+				return 'endDateshouldbegreater'
+			}
+
+		})
 		project(nullable:false)
     }
 	

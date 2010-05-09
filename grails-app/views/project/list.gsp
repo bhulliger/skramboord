@@ -25,21 +25,100 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.sortable.js')}"></script>
 
 		<script type="text/javascript">
+			// set the list selector
+			var setSelector = ".column";
+
+			function getOrder() {
+		        location.href="/${meta(name: "app.name")}/project/saveDashboardOrder?dashboard=" + $(setSelector).sortable("toArray");
+			}
+
+			function restoreOrder() {
+		        var list = $(setSelector);
+		        if (list == null) return
+
+		        var dashboard = document.getElementById("dashboard").value;
+		        if (!dashboard) return;
+
+		        // make array from saved order
+		        var IDs = dashboard.split(",");
+		       
+		        // fetch current order
+		        var items = list.sortable("toArray");
+		        // make array from current order
+		        var rebuild = new Array();
+		        for ( var v=0, len=items.length; v<len; v++ ){
+	                rebuild[items[v]] = items[v];
+		        }
+		       
+		        for (var i = 0, n = IDs.length; i < n; i++) {
+	                // item id from saved order
+	                var itemID = IDs[i];
+	               
+	                if (itemID in rebuild) {
+                        // select item id from current order
+                        var item = rebuild[itemID];
+                       
+                        // select the item according to current order
+                        var child = $("div.ui-sortable").children("#" + item);
+                       
+                        // select the item according to the saved order
+                        var savedOrd = $("div.ui-sortable").children("#" + itemID);
+                       
+                        // remove all the items
+                        child.remove();
+                       
+                        // add the items in turn according to saved order we need to filter here since the "ui-sortable"
+                        // class is applied to all ul elements and we only want the very first!
+                        $("div.ui-sortable").filter(":first").append(savedOrd);
+	                }
+		        } 
+			}
+
+			function restorePortletState() {
+				var dashboard = document.getElementById("dashboard").value;
+		        if (!dashboard) return;
+
+		        var portletStates = document.getElementById("portletStates").value;
+		        if (!portletStates) return;
+
+		        var IDs = dashboard.split(",");
+		        var states = portletStates.split(",");
+
+		        for (var i = 0, n = IDs.length; i < n; i++) {
+		        	var itemID = IDs[i];
+		        	var itemState = states[i];
+
+			        if (itemState == "false") {
+			        	$("#" + itemID).addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+			        		.find(".portlet-header")
+			        			.addClass("ui-widget-header ui-corner-all")
+								.prepend('<span class="ui-icon ui-icon-minusthick"><\/span>')
+								.end()
+							.find(".portlet-content").toggle();
+		        	} else {
+			        	$("#" + itemID).addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+		        		.find(".portlet-header")
+		        			.addClass("ui-widget-header ui-corner-all")
+							.prepend('<span class="ui-icon ui-icon-plusthick"><\/span>')
+							.end()
+						.find(".portlet-content");
+		        	}
+		        }
+			}
+		
 			$(function() {
 				$(".column").sortable({
-					connectWith: '.column'
+					connectWith: '.column',
+					stop: function() {getOrder();}
 				});
-	
-				$(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-					.find(".portlet-header")
-						.addClass("ui-widget-header ui-corner-all")
-						.prepend('<span class="ui-icon ui-icon-plusthick"><\/span>')
-						.end()
-					.find(".portlet-content");
+				restoreOrder();
+				restorePortletState();
 	
 				$(".portlet-header .ui-icon").click(function() {
 					$(this).toggleClass("ui-icon-minusthick");
 					$(this).parents(".portlet:first").find(".portlet-content").toggle();
+					
+					location.href="/${meta(name: "app.name")}/project/savePortletState?portlet=" + this.parentNode.parentNode.id;
 				});
 	
 				$(".column").disableSelection();
@@ -53,7 +132,8 @@
 			});
 		</script>
 	</head>
-	<body>		
+	<body>
+		<div class="body">
 			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/></g:link></h1>
 			<g:if test="${flash.projectEdit}">
 				<g:render template="formEditProject" model="['fwdTo':'project']"/>
@@ -68,151 +148,155 @@
 				<div class="message">${flash.message}</div>
 			</g:if>
 			
-			<div style="padding-top: 10px;">
-			<div class="column">
-				<div class="portlet">
-					<div class="portlet-header">My Tasks</div>
-					<div class="portlet-content">
-						<g:if test="${flash.myTasks.isEmpty()}">
-							<div class="message">
-								No tasks checked out. What are you paid for?
-							</div>
-						</g:if>
-						<g:else>
-							<div class="list">
-								<table>
-									<tr>
-										<th>Task</th>
-										<th>Project</th>
-										<th>Sprint</th>
-										<th style="text-align:center; width: 50px;">Effort</th>
-										<th>Priority</th>
-									</tr>
-									<g:each var="task" in="${flash.myTasks}" status="i">
-										<g:def var="sprintId" value="${task.sprint.id}"/>
-										<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-											<td style="vertical-align: middle;">
-												<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.name}</span></g:link>
-											</td>
-											<td style="vertical-align: middle;">${task.sprint.project.name}</td>
-											<td style="vertical-align: middle;">${task.sprint.name}</td>
-											<td style="vertical-align: middle;text-align:center;">${task.effort}</td>
-											<td style="vertical-align: middle; font-weight: bold; color: #${task.priority};">${task.priority.name}</td>
-										</tr>
-									</g:each>
-								</table>
-							</div>
-						</g:else>
-					</div>
-				</div>
-				
-				<div class="portlet">
-					<div class="portlet-header">Active Spints</div>
-					<div class="portlet-content">
-						<g:if test="${flash.runningSprintsList.isEmpty()}">
-							<div class="message">
-								No active sprints found.
-							</div>
-						</g:if>
-						<g:else>
-							<div class="list">
-								<table>
-									<tr>
-										<th>Sprint</th>
-										<th>Goal</th>
-										<th>Start</th>
-										<th>End</th>
-										<th style="text-align:center; width: 20px;">Tasks</th>
-										<th style="text-align:center; width: 20px;">Active</th>
-									</tr>
-									<g:each var="sprint" in="${flash.runningSprintsList}" status="i">
-										<g:def var="sprintId" value="${sprint.id}"/>
-										<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-											<td>
-												<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
-											</td>
-											<td style="vertical-align: middle;">${sprint.goal}</td>
-											<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
-											<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
-											<td style="vertical-align: middle;text-align:center;">${sprint.tasks.size()}</td>
-											<td style="text-align:center;">
-												<g:if test="${sprint.isSprintRunning()}">
-													<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>
-												</g:if>
-												<g:elseif test="${!sprint.isSprintRunning() && sprint.isSprintActive()}">
-													<img src="${resource(dir:'images/icons',file:'flag_blue.png')}" alt="Sprint not started yet"/>
-												</g:elseif>
-												<g:else>
-													<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
-												</g:else>
-											</td>
-										</tr>
-									</g:each>
-								</table>
-							</div>
-						</g:else>
-					</div>
-				</div>
-				
-				<div class="portlet">
-					<div class="portlet-header">Projects</div>
-					<div class="portlet-content">
-						<g:if test="${flash.projectList.isEmpty()}">
-							<div class="message">
-								No projects created yet.
-							</div>
-						</g:if>
-						<g:else>
-							<div class="list">
-								<table>
-									<tr>
-										<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
-										<g:sortableColumn property="owner" defaultOrder="asc" title="Project Owner"/>
-										<g:sortableColumn property="master" defaultOrder="asc" title="Project Master"/>
-										<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints" style="text-align:center; width: 50px;"/>
-										<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
-											<th style="width: 50px;"></th>
-										</g:ifAnyGranted>
-										<g:ifAllGranted role="ROLE_SUPERUSER">
-											<th style="width: 70px;"></th>
-										</g:ifAllGranted>
-									</tr>
-									<g:each var="project" in="${flash.projectList}" status="i">
-										<g:def var="projectId" value="${project.id}"/>
-										<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-											<td>
-												<g:link controller="sprint" action="list" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="view"/></span><span class="icon">${project.name}</span></g:link>
-											</td>
-											<td style="vertical-align: middle;">${project.owner.userRealName}</td>
-											<td style="vertical-align: middle;">${project.master.userRealName}</td>
-											<td style="vertical-align: middle; text-align:center;">${project.sprints.size()}</td>
+			<input type="hidden" id="dashboard" name="dashboard" style="border-style: none;" value="${session.user.userDashboard}"/>
+			<input type="hidden" id="portletStates" name="dashboard" style="border-style: none;" value="${session.user.portletStates}"/>
 			
-											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
-												<td>
-													<g:link controller="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
-												</td>
-											</g:if>
-											<g:elseif test="${authenticateService.ifAnyGranted('ROLE_ADMIN')}">
-												<td style="vertical-align: middle; text-align:center;">-</td>
-											</g:elseif>
-											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER')}">
-												<td>
-													<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
-												</td>
-											</g:if>
-										</tr>
-									</g:each>
-									<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+			<div style="padding-top: 10px;">
+				<div class="column">
+					<div class="portlet" id="tasks">
+						<div class="portlet-header">My Tasks</div>
+						<div class="portlet-content">
+							<g:if test="${flash.myTasks.isEmpty()}">
+								<div class="message">
+									No tasks checked out. What are you paid for?
+								</div>
+							</g:if>
+							<g:else>
+								<div class="list">
+									<table>
 										<tr>
-										<td>
-										<g:render template="formNewProject"/>
-										<g:submitButton name="create-project" value="Create project"/>
-										</td>
+											<th>Task</th>
+											<th>Project</th>
+											<th>Sprint</th>
+											<th style="text-align:center; width: 50px;">Effort</th>
+											<th>Priority</th>
 										</tr>
-									</g:ifAnyGranted>
-								</table>
-							</div>
-						</g:else>
+										<g:each var="task" in="${flash.myTasks}" status="i">
+											<g:def var="sprintId" value="${task.sprint.id}"/>
+											<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+												<td style="vertical-align: middle;">
+													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.name}</span></g:link>
+												</td>
+												<td style="vertical-align: middle;">${task.sprint.project.name}</td>
+												<td style="vertical-align: middle;">${task.sprint.name}</td>
+												<td style="vertical-align: middle;text-align:center;">${task.effort}</td>
+												<td style="vertical-align: middle; font-weight: bold; color: #${task.priority};">${task.priority.name}</td>
+											</tr>
+										</g:each>
+									</table>
+								</div>
+							</g:else>
+						</div>
+					</div>
+					
+					<div class="portlet" id="sprints">
+						<div class="portlet-header">Active Spints</div>
+						<div class="portlet-content">
+							<g:if test="${flash.runningSprintsList.isEmpty()}">
+								<div class="message">
+									No active sprints found.
+								</div>
+							</g:if>
+							<g:else>
+								<div class="list">
+									<table>
+										<tr>
+											<th>Sprint</th>
+											<th>Goal</th>
+											<th>Start</th>
+											<th>End</th>
+											<th style="text-align:center; width: 20px;">Tasks</th>
+											<th style="text-align:center; width: 20px;">Active</th>
+										</tr>
+										<g:each var="sprint" in="${flash.runningSprintsList}" status="i">
+											<g:def var="sprintId" value="${sprint.id}"/>
+											<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+												<td>
+													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
+												</td>
+												<td style="vertical-align: middle;">${sprint.goal}</td>
+												<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
+												<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
+												<td style="vertical-align: middle;text-align:center;">${sprint.tasks.size()}</td>
+												<td style="text-align:center;">
+													<g:if test="${sprint.isSprintRunning()}">
+														<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>
+													</g:if>
+													<g:elseif test="${!sprint.isSprintRunning() && sprint.isSprintActive()}">
+														<img src="${resource(dir:'images/icons',file:'flag_blue.png')}" alt="Sprint not started yet"/>
+													</g:elseif>
+													<g:else>
+														<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
+													</g:else>
+												</td>
+											</tr>
+										</g:each>
+									</table>
+								</div>
+							</g:else>
+						</div>
+					</div>
+					
+					<div class="portlet" id="projects">
+						<div class="portlet-header">Projects</div>
+						<div class="portlet-content">
+							<g:if test="${flash.projectList.isEmpty()}">
+								<div class="message">
+									No projects created yet.
+								</div>
+							</g:if>
+							<g:else>
+								<div class="list">
+									<table>
+										<tr>
+											<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
+											<g:sortableColumn property="owner" defaultOrder="asc" title="Project Owner"/>
+											<g:sortableColumn property="master" defaultOrder="asc" title="Project Master"/>
+											<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints" style="text-align:center; width: 50px;"/>
+											<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+												<th style="width: 50px;"></th>
+											</g:ifAnyGranted>
+											<g:ifAllGranted role="ROLE_SUPERUSER">
+												<th style="width: 70px;"></th>
+											</g:ifAllGranted>
+										</tr>
+										<g:each var="project" in="${flash.projectList}" status="i">
+											<g:def var="projectId" value="${project.id}"/>
+											<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+												<td>
+													<g:link controller="sprint" action="list" params="[project: projectId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="view"/></span><span class="icon">${project.name}</span></g:link>
+												</td>
+												<td style="vertical-align: middle;">${project.owner.userRealName}</td>
+												<td style="vertical-align: middle;">${project.master.userRealName}</td>
+												<td style="vertical-align: middle; text-align:center;">${project.sprints.size()}</td>
+				
+												<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
+													<td>
+														<g:link controller="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+													</td>
+												</g:if>
+												<g:elseif test="${authenticateService.ifAnyGranted('ROLE_ADMIN')}">
+													<td style="vertical-align: middle; text-align:center;">-</td>
+												</g:elseif>
+												<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER')}">
+													<td>
+														<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
+													</td>
+												</g:if>
+											</tr>
+										</g:each>
+										<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+											<tr style="border: 1px solid #ccc;">
+												<td colspan="6">
+													<g:render template="formNewProject"/>
+													<g:submitButton name="create-project" value="Create project"/>
+												</td>
+											</tr>
+										</g:ifAnyGranted>
+									</table>
+								</div>
+							</g:else>
+						</div>
 					</div>
 				</div>
 			</div>

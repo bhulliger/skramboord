@@ -125,4 +125,44 @@ class ProjectController extends BaseController {
 		
 		redirect(controller:'project', action:'list')
 	}
+	
+	/**
+	 * Saving dashboard elements order
+	 */
+	def saveDashboardOrder = {
+		int index = 0
+		session.user.refresh()
+		for (String portletName : params.dashboard.split(",")) {
+			DashboardPortlet portlet = DashboardPortlet.withCriteria(uniqueResult:true) {
+				eq('name', portletName)
+				eq('owner', session.user)
+			}
+			if (portlet) {
+				// edit portlet
+				portlet.portletsOrder = index
+				portlet.save()
+			} else {
+				// create new portlet
+				new DashboardPortlet(name: portletName, portletsOrder: index, owner: session.user).save()
+			}
+			++index
+		}
+		
+		redirect(controller:'project', action:'list')
+	}
+	
+	/**
+	 * Save portlet state (enabled/disabled)
+	 */
+	def savePortletState = {
+		DashboardPortlet portlet = DashboardPortlet.withCriteria(uniqueResult:true) {
+			eq('name', params.portlet)
+			eq('owner', session.user)
+		}
+		
+		portlet.enabled = !portlet.enabled
+		portlet.save()
+
+		redirect(controller:'project', action:'list')
+	}
 }

@@ -21,7 +21,7 @@ import java.awt.Color;
 
 class User {
 	static transients = ['pass']
-	static hasMany = [authorities:Role, tasks:Task]
+	static hasMany = [authorities:Role, tasks:Task, portlets:DashboardPortlet]
 	static belongsTo = Role
 
 	/** Username */
@@ -40,6 +40,9 @@ class User {
 
 	/** description */
 	String description = ''
+
+	/** Dashboard */
+	SortedSet portlets
 		
 	/** task color */
 	Color color
@@ -54,7 +57,56 @@ class User {
 		passwd(blank: false)
 		email(blank: false, email: true)
 		enabled()
-		color(nullable:true)
+		color(nullable: true)
+	}
+	
+	def initDashboard() {
+//		new DashboardPortlet(name: "tasks", portletsOrder: 0, owner: this).save()
+//		new DashboardPortlet(name: "sprints", portletsOrder: 1, owner: this).save()
+//		new DashboardPortlet(name: "projects", portletsOrder: 2, owner: this).save()
+		addToPortlets(new DashboardPortlet(name: "tasks", portletsOrder: 0, owner: this))
+		addToPortlets(new DashboardPortlet(name: "sprints", portletsOrder: 1, owner: this))
+		addToPortlets(new DashboardPortlet(name: "projects", portletsOrder: 2, owner: this))
+	}
+	
+	def getUserDashboard() {
+		if (portlets.size() == 0) {
+			// init dashboard first
+			initDashboard()
+		}
+		
+		String portletString = ""
+		boolean first = true
+		for (DashboardPortlet portlet : portlets) {
+			if (!first) {
+				portletString += ","
+			} else {
+				first = false
+			}
+			portletString += "${portlet.name}"
+		}
+
+		return portletString
+	}
+	
+	def getPortletStates() {
+		if (portlets.size() == 0) {
+			// init dashboard first
+			initDashboard()
+		}
+		
+		String state = ""
+		boolean first = true
+		for (DashboardPortlet portlet : portlets) {
+			if (!first) {
+				state += ","
+			} else {
+				first = false
+			}
+			state += "${portlet.enabled}"
+		}
+
+		return state
 	}
 	
 	def getUserRealName() {

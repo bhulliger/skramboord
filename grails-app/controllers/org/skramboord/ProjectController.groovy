@@ -39,13 +39,7 @@ class ProjectController extends BaseController {
 				order(params.sort, params.order)
 			}
 		}
-		flash.myTasks = Task.withCriteria {
-			eq('user', session.user)
-			eq('state', StateTask.getStateCheckedOut())
-			order('priority',"desc")
-			order('project',"asc")
-			order('name',"asc")
-		}
+		flash.myTasks = Task.fromUser(session.user).list()
 		if(params.sort == 'sprints'){
 			flash.projectList.sort{it.sprints.size() * (params?.order == "asc"? 1 : -1)}
 		}

@@ -33,56 +33,21 @@ class TaskController extends BaseController {
 			session.project = session.sprint.project
 		}
 		
-		Project project = Project.get(session.project.id)
-		session.projectBacklog = Task.withCriteria {
-			eq('project', project)
-			order('priority',"desc")
-		}
+		session.projectBacklog = Task.projectBacklog(session.project).list()
 		
-		session.taskListOpen = Task.withCriteria {
-			eq('state', StateTask.getStateOpen())
-			eq('sprint', session.sprint)
-			order('priority',"desc")
-		}
-		session.taskListCheckout = Task.withCriteria {
-			eq('state', StateTask.getStateCheckedOut())
-			eq('sprint', session.sprint)
-			order('priority',"desc")
-		}
-		session.taskListDone = Task.withCriteria {
-			eq('state', StateTask.getStateDone())
-			eq('sprint', session.sprint)
-			order('priority',"desc")
-		}
-		session.taskListStandBy = Task.withCriteria {
-			eq('state', StateTask.getStateStandBy())
-			eq('sprint', session.sprint)
-			order('priority',"desc")
-		}
-		session.taskListNext = Task.withCriteria {
-			eq('state', StateTask.getStateNext())
-			eq('sprint', session.sprint)
-			order('priority',"desc")
-		}
+		session.taskListOpen = Task.fromSprint(session.sprint, StateTask.getStateOpen()).list()
+		session.taskListCheckout = Task.fromSprint(session.sprint, StateTask.getStateCheckedOut()).list()
+		session.taskListDone = Task.fromSprint(session.sprint, StateTask.getStateDone()).list()
+		session.taskListStandBy = Task.fromSprint(session.sprint, StateTask.getStateStandBy()).list()
+		session.taskListNext = Task.fromSprint(session.sprint, StateTask.getStateNext()).list()
 		
 		session.numberOfTasks = session.taskListOpen.size() + session.taskListCheckout.size() + session.taskListDone.size() + session.taskListStandBy.size()
-		Double totalEffort = 0
-		Double totalEffortDone = 0
-		for (Task task : session.taskListOpen) {
-			totalEffort += task.effort
-		}
-		for (Task task : session.taskListCheckout) {
-			totalEffort += task.effort
-		}
-		for (Task task : session.taskListDone) {
-			totalEffort += task.effort
-			totalEffortDone += task.effort
-		}
-		for (Task task : session.taskListStandBy) {
-			totalEffort += task.effort
-		}
-		session.totalEffort = totalEffort
-		session.totalEffortDone = totalEffortDone
+
+		def totalEffort = Task.effortTasksTotal(session.sprint).list()
+		def totalEffortDone = Task.effortTasksDone(session.sprint).list()
+		
+		session.totalEffort = totalEffort ? totalEffort : 0
+		session.totalEffortDone = totalEffortDone ? totalEffortDone : 0
 		
 		// Burn down target
 		def datesXTarget = []

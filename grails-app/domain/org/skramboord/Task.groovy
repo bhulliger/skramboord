@@ -44,4 +44,39 @@ class Task {
 		sprint(nullable:true)
 		project(nullable:true)
     }
+	
+	static namedQueries = {
+		fromSprint { fromSprint, taskState ->
+			eq('state', taskState)
+			eq('sprint', fromSprint)
+			order('priority',"desc")
+		}
+		projectBacklog { fromProject ->
+			eq('project', fromProject)
+			order('priority',"desc")
+		}
+		fromUser { fromUser ->
+			eq('user', fromUser)
+			eq('state', StateTask.getStateCheckedOut())
+			order('priority',"desc")
+			order('project',"asc")
+			order('name',"asc")
+		}
+		effortTasksDone { fromSprint ->
+			uniqueResult = true
+			eq('state', StateTask.getStateDone())
+			eq('sprint', fromSprint)
+			projections {
+				sum("effort")
+			}
+		}
+		effortTasksTotal { fromSprint ->
+			uniqueResult = true
+			'in'('state', [StateTask.getStateOpen(), StateTask.getStateCheckedOut(), StateTask.getStateDone(), StateTask.getStateStandBy()])
+			eq('sprint', fromSprint)
+			projections {
+				sum("effort")
+			}
+		}
+	}
 }

@@ -61,9 +61,6 @@ class User {
 	}
 	
 	def initDashboard() {
-//		new DashboardPortlet(name: "tasks", portletsOrder: 0, owner: this).save()
-//		new DashboardPortlet(name: "sprints", portletsOrder: 1, owner: this).save()
-//		new DashboardPortlet(name: "projects", portletsOrder: 2, owner: this).save()
 		addToPortlets(new DashboardPortlet(name: "tasks", portletsOrder: 0, owner: this))
 		addToPortlets(new DashboardPortlet(name: "sprints", portletsOrder: 1, owner: this))
 		addToPortlets(new DashboardPortlet(name: "projects", portletsOrder: 2, owner: this))

@@ -149,6 +149,8 @@ class BootStrap {
 		skramboord.addToSprints(sprint1_1)
 		skramboord.addToSprints(sprint1_2)
 		skramboord.addToSprints(sprint1_3)
+		skramboord.addToTeam(userDev2)
+		skramboord.addToTeam(userDev3)
 		skramboord.save()
 		
 		// Initialize Project Grails

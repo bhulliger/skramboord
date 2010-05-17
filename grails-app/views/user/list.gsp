@@ -19,18 +19,18 @@
 			</g:if>
 			<div class="list">
 				<table>
-				<thead>
-					<tr>
-						<g:sortableColumn property="username" title="Login Name" />
-						<g:sortableColumn property="userRealName" title="Full Name" />
-						<g:sortableColumn property="enabled" title="Enabled" />
-						<g:sortableColumn property="description" title="Description" />
-						<th style="width: 50px;"></th>
-						<g:ifAnyGranted role="ROLE_SUPERUSER">
-							<th style="width: 70px;"></th>
-						</g:ifAnyGranted>
-					</tr>
-				</thead>
+					<thead>
+						<tr>
+							<g:sortableColumn property="username" title="Login Name" />
+							<g:sortableColumn property="userRealName" title="Full Name" />
+							<g:sortableColumn property="enabled" title="Enabled" />
+							<g:sortableColumn property="description" title="Description" />
+							<th style="width: 50px;"></th>
+							<g:ifAnyGranted role="ROLE_SUPERUSER">
+								<th style="width: 70px;"></th>
+							</g:ifAnyGranted>
+						</tr>
+					</thead>
 					<tbody>
 						<g:each in="${flash.personList}" status="i" var="person">
 							<g:def var="userId" value="${person.id}"/>

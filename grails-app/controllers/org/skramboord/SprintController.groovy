@@ -29,7 +29,13 @@ class SprintController extends BaseController {
 			session.project = Project.get(session.project.id)
 		}
 		
-		session.sprintList = Sprint.withCriteria {
+		flash.teamList = session.project.team
+		flash.teamList.add(session.project.owner)
+		flash.teamList.add(session.project.master)
+		
+		flash.personList = User.list(params)
+		
+		flash.sprintList = Sprint.withCriteria {
 			eq('project', session.project)
 			order('endDate','desc')
 			order('startDate', 'desc')

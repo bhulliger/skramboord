@@ -19,7 +19,7 @@ package org.skramboord
 
 class Project {
 	String name
-	static hasMany = [sprints:Sprint, tasks:Task]
+	static hasMany = [sprints:Sprint, tasks:Task, team:User]
 	static belongsTo = [owner:User, master:User]
 
 	static mapping = {

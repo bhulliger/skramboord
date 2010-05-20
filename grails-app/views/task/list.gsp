@@ -85,10 +85,35 @@
 					receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToStandBy') }
 				}).disableSelection();
 
+				var tabId = parseInt($.cookie("taskTab")) || 0;
 				$("#tabs").tabs({
-					ajaxOptions: {
-						error: function(xhr, status, index, anchor) {
-							$(anchor.hash).html("Couldn't load this tab. We'll try to fix this as soon as possible.");
+					selected: tabId,
+					show:     function(junk,ui) {
+						var tabName = ui.tab.toString().split("#");
+						var ourl = tabName[1].split("-");
+						var tabId = ourl[1];
+						$.cookie("taskTab", tabId);
+
+						if (tabId == 1) { // Only render burn down if tab #1 is selected.
+							var target = [];
+							var today = ${session.today}
+							var dates = ${session.burndownTargetX};
+							var gradient = ${session.totalEffort}/${session.burndownTargetXSize};
+						    var markings = [{ color: '#ff0000', lineWidth: 1, xaxis: { from: today, to: today} }];
+						    
+						    for (var i = 0; i <= ${session.burndownTargetXSize}; i += 1) {
+						        target.push([dates[i], ${session.totalEffort} - gradient*i]);
+						    }
+						    
+						    $.plot($("#placeholder"), [ target, ${session.burndownReal} ],
+						    	    {
+					    	    		xaxis: {
+					    							mode: 'time',
+					    							min: ${(session.sprint.startDate).getTime()},
+					    							max: ${(session.sprint.endDate).getTime() + 10000000}
+										},
+						    			grid: { markings: markings }
+						    	    });
 						}
 					}
 				});
@@ -103,10 +128,10 @@
 				
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-task">Scrum Board</a></li>
-					<li><a href="burndown.gsp">Burn Down</a></li>
+					<li><a href="#tab-0">Scrum Board</a></li>
+					<li><a href="#tab-1">Burn Down</a></li>
 				</ul>
-				<div id="tab-task">
+				<div id="tab-0">
 					<div>
 						<h3>Tasks</h3>
 						<g:if test="${flash.taskEdit}">
@@ -231,6 +256,9 @@
 							</tr>
 						</table>
 					</div>
+				</div>
+				<div id="tab-1">
+					<div id="placeholder" style="width:920px;height:380px;"></div>
 				</div>
 			</div>
 		</div>

@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.tabs.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.datepicker.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
 		
 		<script type="text/javascript">
 			$(function() {
@@ -23,11 +24,14 @@
 						$('#dialog-form-sprint').dialog('open');
 				});
 
+				var tabId = parseInt($.cookie("sprintTab")) || 0;
 				$("#tabs").tabs({
-					ajaxOptions: {
-						error: function(xhr, status, index, anchor) {
-							$(anchor.hash).html("Couldn't load this tab. We'll try to fix this as soon as possible.");
-						}
+					selected: tabId,
+					show:     function(junk,ui) {
+						var tabName = ui.tab.toString().split("#");
+						var ourl = tabName[1].split("-");
+						var tabId = ourl[1];
+						$.cookie("sprintTab", tabId);
 					}
 				});
 			});
@@ -49,10 +53,10 @@
 			
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-sprint">Sprints</a></li>
-					<li><a href="#tab-team">Project Team</a></li>
+					<li><a href="#tab-0">Sprints</a></li>
+					<li><a href="#tab-1">Project Team</a></li>
 				</ul>
-				<div id="tab-sprint">
+				<div id="tab-0">
 					<g:if test="${flash.sprintEdit}">
 						<g:render template="formEditSprint"/>
 					</g:if>
@@ -115,7 +119,7 @@
 						</div>
 					</g:else>
 				</div>
-				<div id="tab-team">
+				<div id="tab-1">
 					<div class="list">
 						<h3>Team</h3>
 						<table>

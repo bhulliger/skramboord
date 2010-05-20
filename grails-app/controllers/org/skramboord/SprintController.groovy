@@ -49,13 +49,18 @@ class SprintController extends BaseController {
 	 * Add developer to project
 	 */
 	def addDeveloper = {
-		if (params.user) {
-			def user = User.get(params.user)
-			session.project.refresh()
-			
-			session.project.addToTeam(user)
-			session.project.save()
+		if (sprintWritePermission(session.user, session.project)) {
+			if (params.user) {
+				def user = User.get(params.user)
+				session.project.refresh()
+				
+				session.project.addToTeam(user)
+				session.project.save()
+			}
+		} else {
+			flash.message = "Only project owner, project master and super user can add a developer."
 		}
+		
 		redirect(controller:'sprint', action:'list')
 	}
 	
@@ -63,12 +68,16 @@ class SprintController extends BaseController {
 	 * Remove developer from project
 	 */
 	def removeDeveloper = {
-		if (params.user) {
-			def user = User.get(params.user)
-			session.project.refresh()
-			
-			session.project.removeFromTeam(user)
-			session.project.save()
+		if (sprintWritePermission(session.user, session.project)) {
+			if (params.user) {
+				def user = User.get(params.user)
+				session.project.refresh()
+				
+				session.project.removeFromTeam(user)
+				session.project.save()
+			}
+		} else {
+			flash.message = "Only project owner, project master and super user can remove a developer."
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -78,16 +87,20 @@ class SprintController extends BaseController {
 	 * Add new sprint
 	 */
 	def addSprint = {
-		def sprintName = params.sprintName
-		def sprintGoal = params.sprintGoal
-		def startDate = params.startDateHidden ? new Date(params.startDateHidden) : null
-		def endDate = params.endDateHidden ? new Date(params.endDateHidden) : null
-		
-		Project project = Project.find(session.project)
-		
-		Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, project: project)
-		if (!sprint.save()) {
-			flash.sprint=sprint
+		if (sprintWritePermission(session.user, session.project)) {
+			def sprintName = params.sprintName
+			def sprintGoal = params.sprintGoal
+			def startDate = params.startDateHidden ? new Date(params.startDateHidden) : null
+			def endDate = params.endDateHidden ? new Date(params.endDateHidden) : null
+			
+			Project project = Project.find(session.project)
+			
+			Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, project: project)
+			if (!sprint.save()) {
+				flash.sprint=sprint
+			}
+		} else {
+			flash.message = "Only project owner, project master and super user can create new sprints."
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -126,7 +139,7 @@ class SprintController extends BaseController {
 				}
 			}
 		} else {
-			flash.message = "Only Super User and admins can edit sprints."
+			flash.message = "Only project owner, project master and super user can edit sprints."
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -144,7 +157,7 @@ class SprintController extends BaseController {
 				flash.message = "Sprint $sprint.name deleted."
 			}
 		} else {
-			flash.message = "Only Super User and admins can delete sprints."
+			flash.message = "Only project owner, project master and super user can delete sprints."
 		}
 		
 		redirect(controller:'sprint', action:'list')

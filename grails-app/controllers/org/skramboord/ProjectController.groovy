@@ -57,7 +57,7 @@ class ProjectController extends BaseController {
 				flash.message = "Project $project.name deleted."
 			}
 		} else {
-			flash.message = "Only Super User and admins can delete projects."
+			flash.message = "Only Super User can delete projects."
 		}
 		
 		redirect(controller:'project', action:'list')
@@ -67,7 +67,7 @@ class ProjectController extends BaseController {
 		if (params.project) {
 			def project = Project.get(params.project)
 		
-			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
+			if (projectEditPermission(session.user, project)) {
 				flash.projectEdit = project
 				flash.allUsers = User.list()
 				def criteria = User.createCriteria()
@@ -90,7 +90,7 @@ class ProjectController extends BaseController {
 	def editProject = {
 		if (params.projectId) {
 			def project = Project.get(params.projectId)
-			if (authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)) {
+			if (projectEditPermission(session.user, project)) {
 				project.owner = User.get(params.projectOwner)
 				project.master = User.get(params.projectMaster)
 				project.name = params.projectName
@@ -110,11 +110,15 @@ class ProjectController extends BaseController {
 	 * Add new project
 	 */
 	def addProject = {
-		def projectName = params.projectName
-		
-		Project project = new Project(name: projectName, owner: session.user, master: User.get(params.projectMaster))
-		if (!project.save()) {
-			flash.project=project
+		if (projectNewPermission()) {
+			def projectName = params.projectName
+			
+			Project project = new Project(name: projectName, owner: session.user, master: User.get(params.projectMaster))
+			if (!project.save()) {
+				flash.project=project
+			}
+		} else {
+			flash.message = "Only Super User and admins can create new projects."
 		}
 		
 		redirect(controller:'project', action:'list')
@@ -158,5 +162,13 @@ class ProjectController extends BaseController {
 		portlet.save()
 
 		redirect(controller:'project', action:'list')
+	}
+	
+	private boolean projectNewPermission() {
+		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || authenticateService.ifAnyGranted('ROLE_ADMIN')
+	}
+	
+	private boolean projectEditPermission(User user, Project project) {
+		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner)
 	}
 }

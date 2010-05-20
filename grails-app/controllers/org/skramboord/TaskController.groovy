@@ -43,8 +43,8 @@ class TaskController extends BaseController {
 		
 		session.numberOfTasks = session.taskListOpen.size() + session.taskListCheckout.size() + session.taskListDone.size() + session.taskListStandBy.size()
 
-		def totalEffort = Task.effortTasksTotal(session.sprint).list()
-		def totalEffortDone = Task.effortTasksDone(session.sprint).list()
+		def totalEffort = Task.effortTasksTotal(session.sprint).list()?.first()
+		def totalEffortDone = Task.effortTasksDone(session.sprint).list()?.first()
 		
 		session.totalEffort = totalEffort ? totalEffort : 0
 		session.totalEffortDone = totalEffortDone ? totalEffortDone : 0

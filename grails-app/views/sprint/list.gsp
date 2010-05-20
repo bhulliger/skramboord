@@ -75,10 +75,10 @@
 									<th>End</th>
 									<th style="text-align:center;">Tasks</th>
 									<th style="text-align:center; width: 20px;">Active</th>
-									<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+									<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 										<th style="width: 50px;"></th>
 										<th style="width: 70px;"></th>
-									</g:ifAnyGranted>
+									</g:if>
 								</tr>
 								<g:each var="sprint" in="${flash.sprintList}" status="i">
 									<g:def var="sprintId" value="${sprint.id}"/>
@@ -122,11 +122,15 @@
 							<thead>
 								<tr>
 									<g:sortableColumn property="username" title="Login Name" />
-									<g:sortableColumn property="userRealName" title="Full Name" />
+									<g:sortableColumn property="name" title="Name" />
+									<g:sortableColumn property="prename" title="Prename" />
 									<g:sortableColumn property="description" title="Description" />
 									<th style="width: 90px; text-align: center;">Project Owner</th>
 									<th style="width: 90px; text-align: center;">Project Master</th>
 									<th style="width: 90px; text-align: center;">Developer</th>
+									<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+										<th style="width: 70px;"></th>
+									</g:if>
 								</tr>
 							</thead>
 							<tbody>
@@ -136,7 +140,8 @@
 										<td>
 											<g:link controller="user" action="show" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="show"/></span><span class="icon">${person.username?.encodeAsHTML()}</span></g:link>
 										</td>
-										<td style="vertical-align: middle;">${person.userRealName?.encodeAsHTML()}</td>
+										<td style="vertical-align: middle;">${person.name?.encodeAsHTML()}</td>
+										<td style="vertical-align: middle;">${person.prename?.encodeAsHTML()}</td>
 										<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
 										<td style="vertical-align: middle; text-align: center;">
 											<g:if test="${person.id == session.project.owner.id}">
@@ -148,11 +153,22 @@
 												<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
 											</g:if>
 										</td>
-										<td style="vertical-align: middle; text-align: center;">
-											<g:if test="${person.id != session.project.master.id && person.id != session.project.owner.id}">
+										<g:if test="${person.id != session.project.master.id && person.id != session.project.owner.id}">
+											<td style="vertical-align: middle; text-align: center;">
 												<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
+											</td>
+											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+												<td>
+													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon">Remove</span></g:link>
+												</td>
 											</g:if>
-										</td>
+										</g:if>
+										<g:else>
+											<td></td>
+											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+												<td></td>
+											</g:if>
+										</g:else>
 									</tr>
 								</g:each>
 							</tbody>
@@ -160,29 +176,46 @@
 					</div>
 					<br/>
 					<h3>Users</h3>
-					<div class="list">
-						<table>
-							<thead>
-								<tr>
-									<g:sortableColumn property="username" title="Login Name" />
-									<g:sortableColumn property="userRealName" title="Full Name" />
-									<g:sortableColumn property="description" title="Description" />
-								</tr>
-							</thead>
-							<tbody>
-								<g:each in="${flash.personList}" status="i" var="person">
-									<g:def var="userId" value="${person.id}"/>
-									<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-										<td>
-											<g:link controller="user" action="show" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="show"/></span><span class="icon">${person.username?.encodeAsHTML()}</span></g:link>
-										</td>
-										<td style="vertical-align: middle;">${person.userRealName?.encodeAsHTML()}</td>
-										<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
+					<g:if test="${flash.personList.isEmpty()}">
+						<div class="message">
+							No more users left to support this project.
+						</div>
+					</g:if>
+					<g:else>
+						<div class="list">
+							<table>
+								<thead>
+									<tr>
+										<g:sortableColumn property="username" title="Login Name" />
+										<g:sortableColumn property="name" title="Name" />
+										<g:sortableColumn property="prename" title="Prename" />
+										<g:sortableColumn property="description" title="Description" />
+										<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+											<th style="width: 50px;"></th>
+										</g:if>
 									</tr>
-								</g:each>
-							</tbody>
-						</table>
-					</div>
+								</thead>
+								<tbody>
+									<g:each in="${flash.personList}" status="i" var="person">
+										<g:def var="userId" value="${person.id}"/>
+										<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+											<td>
+												<g:link controller="user" action="show" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="show"/></span><span class="icon">${person.username?.encodeAsHTML()}</span></g:link>
+											</td>
+											<td style="vertical-align: middle;">${person.name?.encodeAsHTML()}</td>
+											<td style="vertical-align: middle;">${person.prename?.encodeAsHTML()}</td>
+											<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
+											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+												<td>
+													<g:link controller="sprint" action="addDeveloper" params="[user: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="add"/></span><span class="icon">Add</span></g:link>
+												</td>
+											</g:if>
+										</tr>
+									</g:each>
+								</tbody>
+							</table>
+						</div>
+					</g:else>
 				</div>
 			</div>
 		</div>

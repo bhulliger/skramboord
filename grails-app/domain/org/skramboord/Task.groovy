@@ -63,7 +63,6 @@ class Task {
 			order('name',"asc")
 		}
 		effortTasksDone { fromSprint ->
-			uniqueResult = true
 			eq('state', StateTask.getStateDone())
 			eq('sprint', fromSprint)
 			projections {
@@ -71,7 +70,6 @@ class Task {
 			}
 		}
 		effortTasksTotal { fromSprint ->
-			uniqueResult = true
 			'in'('state', [StateTask.getStateOpen(), StateTask.getStateCheckedOut(), StateTask.getStateDone(), StateTask.getStateStandBy()])
 			eq('sprint', fromSprint)
 			projections {

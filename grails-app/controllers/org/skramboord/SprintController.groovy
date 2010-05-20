@@ -33,13 +33,45 @@ class SprintController extends BaseController {
 		flash.teamList.add(session.project.owner)
 		flash.teamList.add(session.project.master)
 		
+		flash.teamList = flash.teamList.sort{it.username}
+		
 		flash.personList = User.list(params)
+		flash.personList.removeAll(flash.teamList)
 		
 		flash.sprintList = Sprint.withCriteria {
 			eq('project', session.project)
 			order('endDate','desc')
 			order('startDate', 'desc')
 		}
+	}
+	
+	/**
+	 * Add developer to project
+	 */
+	def addDeveloper = {
+		if (params.user) {
+			def user = User.get(params.user)
+			session.project.refresh()
+			
+			session.project.addToTeam(user)
+			session.project.save()
+		}
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Remove developer from project
+	 */
+	def removeDeveloper = {
+		if (params.user) {
+			def user = User.get(params.user)
+			session.project.refresh()
+			
+			session.project.removeFromTeam(user)
+			session.project.save()
+		}
+		
+		redirect(controller:'sprint', action:'list')
 	}
 	
 	/**

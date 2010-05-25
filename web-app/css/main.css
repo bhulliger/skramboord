@@ -392,3 +392,66 @@ th.desc a {
 	border: 1px solid transparent;
 	padding: 0.3em;
 }
+
+.taskInfo {
+	font-style:italic;
+	font-weight: normal;
+	font-size:x-small;
+	color: black;
+}
+
+.postit-left {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/skramboord/postit-right.png) no-repeat top right;
+}
+
+.postit {
+	height: 60px;
+	padding-top: 5px;
+	padding-left: 5px;
+	margin: 0;
+	background: transparent url(../images/skramboord/postit-fill.png) repeat-x top left;
+}
+
+.connectedSortable {
+	list-style-type: none;
+	margin: 0;
+	float: left;
+	width: 200px;
+	border-top: 2px solid gray;
+	padding: 2px 0 0 0;
+}
+
+.connectedSortable li {
+	margin: 1px;
+	padding: 4px;
+	font-size: 1.2em;
+	width: 190px;
+}
+
+div.backlog {
+	float: right;
+	width: 24%;
+}
+
+div.open, div.checkout, div.done, div.next {
+	float: left;
+	width: 24%;
+}
+
+div.standBy {
+	float: left;
+	margin-left: 24%;
+	width: 24%;
+}
+
+.boardheader {
+	font-size: 1.5em;
+	font-weight: bold;
+	font-style: italic;
+}
+div.clear {
+	clear: both;
+}

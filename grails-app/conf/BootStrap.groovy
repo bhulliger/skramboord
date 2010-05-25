@@ -94,15 +94,15 @@ class BootStrap {
 		roleUser.addToPeople(userDev3)
 		
 		// Initialize priorities
-		Priority low = new Priority(name: "low", color: Color.GRAY)
+		Priority low = new Priority(name: "low", color: Color.decode("0x808080"))
 		low.save()
-		Priority normal = new Priority(name: "normal", color: Color.GREEN)
+		Priority normal = new Priority(name: "normal", color: Color.decode("0x42a642"))
 		normal.save()
-		Priority high = new Priority(name: "high", color: Color.BLUE)
+		Priority high = new Priority(name: "high", color: Color.decode("0x3d3da8"))
 		high.save()
-		Priority urgent = new Priority(name: "urgent", color: Color.ORANGE)
+		Priority urgent = new Priority(name: "urgent", color: Color.decode("0x968136"))
 		urgent.save()
-		Priority immediate = new Priority(name: "immediate", color: Color.RED)
+		Priority immediate = new Priority(name: "immediate", color: Color.decode("0xad3e3e"))
 		immediate.save()
 		
 		// Initialize dates

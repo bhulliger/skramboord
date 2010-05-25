@@ -3,12 +3,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="layout" content="main" />
 		
-		<style type="text/css">
-			#open, #checkout, #done, #next, #standBy, #backlog { list-style-type: none; margin: 0; padding: 0; float: left; width: 200px;}
-			#open li, #checkout li, #done li, #next li, #standBy li, #backlog li { margin: 1px; padding: 4px; font-size: 1.2em; width: 190px; }
-			.taskInfo { font-style:italic; font-weight: normal; font-size:x-small; color: black; }
-		</style>
-		
 		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
@@ -44,8 +38,8 @@
 				    	} else {
 				    		$.cookie('showProductBacklog', 'hide')
 				    	}
-						
-						$("#productBacklog").toggle("fast");
+
+				    	$("#productBacklog").toggle("fast");
 				});
 				
 				$('#create-task')
@@ -105,7 +99,7 @@
 						        target.push([dates[i], ${session.totalEffort} - gradient*i]);
 						    }
 						    
-						    $.plot($("#placeholder"), [ target, ${session.burndownReal} ],
+						    $.plot($("#burndown"), [ target, ${session.burndownReal} ],
 						    	    {
 					    	    		xaxis: {
 					    							mode: 'time',
@@ -150,115 +144,102 @@
 						<g:if test="${flash.message}">
 							<div class="message">${flash.message}</div>
 						</g:if>
-					
-						<table>
-							<tr>
-								<td id="productBacklog" style="padding: 0px; margin: 0px;">
-									<table style="border: none;">
-										<tr>
-										    <th>Product Backlog</th>
-										</tr>
-										<tr>
-											<td>
-												<div style="height: 400px; overflow: auto; padding-right: 10px;"> 
-													<g:if test="${session.projectBacklog.size() > 0}">
-														<ul id="backlog" class="connectedSortable">
-													</g:if>
-													<g:else>
-														<ul id="backlog" class="connectedSortable" style="padding-bottom: 30px;">
-													</g:else>
-														<g:each var="task" in="${session.projectBacklog}" status="i">
-															<g:render template="task" model="['task':task]"/>
-														</g:each>
-													</ul>
-												</div>
-											</td>
-										</tr>
-									</table>
-								</td>
-								<td style="padding: 0px; margin: 0px;">
-									<table style="border: none;">
-										<tr>
-										    <th>Open</th>
-										    <th>Checkout</th>
-										    <th>Done</th>
-										</tr>
-										<tr>
-											<td>
-												<g:if test="${session.taskListOpen.size() > 0}">
-													<ul id="open" class="connectedSortable">
-												</g:if>
-												<g:else>
-													<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
-												</g:else>
-													<g:each var="task" in="${session.taskListOpen}" status="i">
-														<g:render template="task" model="['task':task]"/>
-													</g:each>
-												</ul>
-											</td>
-											<td>
-												<g:if test="${session.taskListCheckout.size() > 0}">
-													<ul id="checkout" class="connectedSortable">
-												</g:if>
-												<g:else>
-													<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
-												</g:else>
-													<g:each var="task" in="${session.taskListCheckout}" status="i">
-														<g:render template="task" model="['task':task]"/>
-													</g:each>
-												</ul>
-											</td>
-											<td>
-												<g:if test="${session.taskListDone.size() > 0}">
-													<ul id="done" class="connectedSortable">
-												</g:if>
-												<g:else>
-													<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
-												</g:else>
-													<g:each var="task" in="${session.taskListDone}" status="i">
-														<g:render template="task" model="['task':task]"/>
-													</g:each>
-												</ul>
-											</td>
-										</tr>
-										<tr>
-											<th colspan="2">Stand by</th>
-											<th>Next</th>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<g:if test="${session.taskListStandBy.size() > 0}">
-													<ul id="standBy" class="connectedSortable">
-												</g:if>
-												<g:else>
-													<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
-												</g:else>
-													<g:each var="task" in="${session.taskListStandBy}" status="i">
-														<g:render template="task" model="['task':task]"/>
-													</g:each>
-												</ul>
-											</td>
-											<td>
-												<g:if test="${session.taskListNext.size() > 0}">
-													<ul id="next" class="connectedSortable">
-												</g:if>
-												<g:else>
-													<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
-												</g:else>
-													<g:each var="task" in="${session.taskListNext}" status="i">
-														<g:render template="task" model="['task':task]"/>
-													</g:each>
-												</ul>
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
+						
+						<div class="clear"></div>
+						
+						<div style="margin: 5px; padding: 5px; border: 1px solid gray; height: 80%">
+							<div class="open" id="openDiv">
+								<span class="boardheader">Open</span>
+								<g:if test="${session.taskListOpen.size() > 0}">
+									<ul id="open" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.taskListOpen}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
+							
+							<div class="checkout">
+								<span class="boardheader">Checkout</span>
+								<g:if test="${session.taskListCheckout.size() > 0}">
+									<ul id="checkout" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.taskListCheckout}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
+							
+							<div class="done">
+								<span class="boardheader">Done</span>
+								<g:if test="${session.taskListDone.size() > 0}">
+									<ul id="done" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.taskListDone}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
+							
+							<div class="backlog" id="productBacklog" style="height: 500px; overflow: auto;">
+								<span class="boardheader">Backlog</span>
+								<g:if test="${session.projectBacklog.size() > 0}">
+									<ul id="backlog" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.projectBacklog}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
+							
+							<div style="clear: left;"></div>
+							
+							<div class="standBy">
+								<span class="boardheader">Stand by</span>
+								<g:if test="${session.taskListStandBy.size() > 0}">
+									<ul id="standBy" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.taskListStandBy}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
+							
+							<div class="next">
+								<span class="boardheader">Next</span>
+								<g:if test="${session.taskListNext.size() > 0}">
+									<ul id="next" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.taskListNext}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
+							
+							<div class="clear"></div>
+						</div>
 					</div>
 				</div>
 				<div id="tab-1">
-					<div id="placeholder" style="width:920px;height:380px;"></div>
+					<div id="burndown" style="width:920px;height:380px;"></div>
 				</div>
 			</div>
 		</div>

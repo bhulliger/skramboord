@@ -172,13 +172,13 @@
 											<th>Priority</th>
 										</tr>
 										<g:each var="task" in="${flash.myTasks}" status="i">
-											<g:def var="sprintId" value="${task.sprint.id}"/>
+											<g:def var="sprintId" value="${task.sprint?.id}"/>
 											<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 												<td style="vertical-align: middle;">
 													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.name}</span></g:link>
 												</td>
-												<td style="vertical-align: middle;">${task.sprint.project.name}</td>
-												<td style="vertical-align: middle;">${task.sprint.name}</td>
+												<td style="vertical-align: middle;">${task.sprint?.project?.name}</td>
+												<td style="vertical-align: middle;">${task.sprint?.name}</td>
 												<td style="vertical-align: middle;text-align:center;">${task.effort}</td>
 												<td style="vertical-align: middle; font-weight: bold; color: #${task.priority};">${task.priority.name}</td>
 											</tr>

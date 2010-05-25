@@ -147,8 +147,8 @@
 						
 						<div class="clear"></div>
 						
-						<div style="margin: 5px; padding: 5px; border: 1px solid gray; height: 80%">
-							<div class="open" id="openDiv">
+						<div class="scrumboard">
+							<div class="open">
 								<span class="boardheader">Open</span>
 								<g:if test="${session.taskListOpen.size() > 0}">
 									<ul id="open" class="connectedSortable">

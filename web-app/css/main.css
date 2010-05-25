@@ -447,11 +447,19 @@ div.standBy {
 	width: 24%;
 }
 
+.scrumboard {
+	margin: 5px;
+	padding: 5px;
+	border: 1px solid gray;
+	min-height: 500px;	
+}
+
 .boardheader {
 	font-size: 1.5em;
 	font-weight: bold;
 	font-style: italic;
 }
+
 div.clear {
 	clear: both;
 }

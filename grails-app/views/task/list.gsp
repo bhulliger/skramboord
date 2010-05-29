@@ -16,6 +16,8 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.button.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.tabs.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.core.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.slide.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.blind.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/flot',file:'jquery.flot.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
 		
@@ -28,6 +30,9 @@
 				var showProductBacklog = $.cookie('showProductBacklog'); 
 				if (showProductBacklog != 'show') {
 					$("#productBacklog").hide();
+					document.getElementById("scrumboard").style.width = "900px";
+				} else {
+					document.getElementById("scrumboard").style.width = "660px";
 				}
 				
 				$('#toggleProductBacklog')
@@ -35,11 +40,13 @@
 					.click(function() {
 				    	if ($("#productBacklog").is(":hidden")) {
 				    		$.cookie('showProductBacklog', 'show')
+				    		document.getElementById("scrumboard").style.width = "660px";
+				    		$("#productBacklog").toggle(500);
 				    	} else {
 				    		$.cookie('showProductBacklog', 'hide')
+				    		document.getElementById("scrumboard").style.width = "900px";
+				    		$("#productBacklog").toggle();
 				    	}
-
-				    	$("#productBacklog").toggle("fast");
 				});
 				
 				$('#create-task')
@@ -102,9 +109,9 @@
 						    $.plot($("#burndown"), [ target, ${session.burndownReal} ],
 						    	    {
 					    	    		xaxis: {
-					    							mode: 'time',
-					    							min: ${(session.sprint.startDate).getTime()},
-					    							max: ${(session.sprint.endDate).getTime() + 10000000}
+				    							mode: 'time',
+				    							min: ${(session.sprint.startDate).getTime()},
+				    							max: ${(session.sprint.endDate).getTime() + 10000000}
 										},
 						    			grid: { markings: markings }
 						    	    });
@@ -147,9 +154,25 @@
 						
 						<div class="clear"></div>
 						
-						<div class="scrumboard">
+						<div class="backlog" id="productBacklog">
+							<div class="boardheader">Backlog</div>
+							<div style="height: 500px; overflow: auto;">
+								<g:if test="${session.projectBacklog.size() > 0}">
+									<ul id="backlog" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.projectBacklog}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
+						</div>
+						
+						<div class="scrumboard" id="scrumboard">
 							<div class="open">
-								<span class="boardheader">Open</span>
+								<div class="boardheader">Open</div>
 								<g:if test="${session.taskListOpen.size() > 0}">
 									<ul id="open" class="connectedSortable">
 								</g:if>
@@ -163,7 +186,7 @@
 							</div>
 							
 							<div class="checkout">
-								<span class="boardheader">Checkout</span>
+								<div class="boardheader">Checkout</div>
 								<g:if test="${session.taskListCheckout.size() > 0}">
 									<ul id="checkout" class="connectedSortable">
 								</g:if>
@@ -177,7 +200,7 @@
 							</div>
 							
 							<div class="done">
-								<span class="boardheader">Done</span>
+								<div class="boardheader">Done</div>
 								<g:if test="${session.taskListDone.size() > 0}">
 									<ul id="done" class="connectedSortable">
 								</g:if>
@@ -190,38 +213,8 @@
 								</ul>
 							</div>
 							
-							<div class="backlog" id="productBacklog" style="height: 500px; overflow: auto;">
-								<span class="boardheader">Backlog</span>
-								<g:if test="${session.projectBacklog.size() > 0}">
-									<ul id="backlog" class="connectedSortable">
-								</g:if>
-								<g:else>
-									<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
-								</g:else>
-									<g:each var="task" in="${session.projectBacklog}" status="i">
-										<g:render template="task" model="['task':task]"/>
-									</g:each>
-								</ul>
-							</div>
-							
-							<div style="clear: left;"></div>
-							
-							<div class="standBy">
-								<span class="boardheader">Stand by</span>
-								<g:if test="${session.taskListStandBy.size() > 0}">
-									<ul id="standBy" class="connectedSortable">
-								</g:if>
-								<g:else>
-									<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
-								</g:else>
-									<g:each var="task" in="${session.taskListStandBy}" status="i">
-										<g:render template="task" model="['task':task]"/>
-									</g:each>
-								</ul>
-							</div>
-							
 							<div class="next">
-								<span class="boardheader">Next</span>
+								<div class="boardheader">Next</div>
 								<g:if test="${session.taskListNext.size() > 0}">
 									<ul id="next" class="connectedSortable">
 								</g:if>
@@ -234,8 +227,21 @@
 								</ul>
 							</div>
 							
-							<div class="clear"></div>
+							<div class="standBy">
+								<div class="boardheader">Stand by</div>
+								<g:if test="${session.taskListStandBy.size() > 0}">
+									<ul id="standBy" class="connectedSortable">
+								</g:if>
+								<g:else>
+									<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
+								</g:else>
+									<g:each var="task" in="${session.taskListStandBy}" status="i">
+										<g:render template="task" model="['task':task]"/>
+									</g:each>
+								</ul>
+							</div>
 						</div>
+						<div class="clear"></div>
 					</div>
 				</div>
 				<div id="tab-1">

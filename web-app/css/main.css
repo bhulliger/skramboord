@@ -400,7 +400,7 @@ th.desc a {
 	color: black;
 }
 
-.postit-left {
+.postit-right {
 	height: 60px;
 	margin: 0;
 	padding: 0;
@@ -420,7 +420,7 @@ th.desc a {
 	margin: 0;
 	float: left;
 	width: 200px;
-	border-top: 2px solid gray;
+	
 	padding: 2px 0 0 0;
 }
 
@@ -432,32 +432,46 @@ th.desc a {
 }
 
 div.backlog {
-	float: right;
-	width: 24%;
-}
-
-div.open, div.checkout, div.done, div.next {
 	float: left;
 	width: 24%;
+	margin-top: 16px;
+}
+
+div.open, div.checkout, div.done {
+	float: left;
+	width: 32%;
+	margin-top: 5px;
 }
 
 div.standBy {
-	float: left;
-	margin-left: 24%;
-	width: 24%;
+	float: right;
+	width: 32%;
+	margin-top: 5px;
+}
+
+div.next {
+	float: right;
+	width: 32%;
+	margin-right: 4%;
+	margin-top: 5px;
 }
 
 .scrumboard {
+	float: right;
 	margin: 5px;
-	padding: 5px;
+	padding: 5px 5px 5px 20px;
 	border: 1px solid gray;
-	min-height: 500px;	
+	min-height: 500px;
+	background-color: #eee;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 }
 
 .boardheader {
 	font-size: 1.5em;
 	font-weight: bold;
 	font-style: italic;
+	border-bottom: 2px solid gray;
 }
 
 div.clear {

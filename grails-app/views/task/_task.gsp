@@ -1,5 +1,5 @@
 <li id="taskId_${task.id}" style="margin: 0; padding: 0;">
-	<div class="postit-left">
+	<div class="postit-right">
 		<div class="postit">
 			<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
 			<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">

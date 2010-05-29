@@ -73,6 +73,22 @@ class SprintController extends BaseController {
 				def user = User.get(params.user)
 				session.project.refresh()
 				
+				// set checked out tasks from this user back to open.
+				def tasks = Task.withCriteria {
+					eq('user', user)
+					eq('state', StateTask.getStateCheckedOut())
+					sprint {
+						eq('project', session.project)
+					}
+				}
+				for (def task : tasks) {
+					task.user = null
+					task.state = StateTask.getStateOpen()
+					task.save()
+				}
+				
+				session.project.refresh()
+				
 				session.project.removeFromTeam(user)
 				session.project.save()
 			}

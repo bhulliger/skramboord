@@ -163,7 +163,7 @@
 											</td>
 											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 												<td>
-													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon">Remove</span></g:link>
+													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]" onclick="return confirm(unescape('Are you sure to remove this user from this project? All checked out tasks from this user will be released again.'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon">Remove</span></g:link>
 												</td>
 											</g:if>
 										</g:if>

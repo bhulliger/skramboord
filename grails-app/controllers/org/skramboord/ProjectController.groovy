@@ -17,6 +17,8 @@
 
 package org.skramboord
 
+import org.hibernate.criterion.Distinct;
+
 class ProjectController extends BaseController {
 	
 	def index = { redirect(controller:'project', action:'list')
@@ -30,15 +32,40 @@ class ProjectController extends BaseController {
 			params.order = 'asc'
 		}
 		Date today = Today.getInstance()
-		flash.runningSprintsList = Sprint.withCriteria {
-			le('startDate', today)
-			ge('endDate', today)
-		}
-		flash.projectList = Project.withCriteria {
+
+		// get all project the user belongs to
+		flash.projectList = Project.createCriteria().listDistinct {
+			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+				or {
+					team {
+						eq('id', session.user.id)
+					}
+					eq('master.id', session.user.id)
+					eq('owner.id', session.user.id)
+				}
+			}
 			if (params.sort != 'sprints') {
 				order(params.sort, params.order)
 			}
 		}
+		
+		// get all running sprints the user belongs to
+		flash.runningSprintsList = Sprint.createCriteria().listDistinct {
+			le('startDate', today)
+			ge('endDate', today)
+			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+				project {
+					or {
+						team {
+							eq('id', session.user.id)
+						}
+						eq('master.id', session.user.id)
+						eq('owner.id', session.user.id)
+					}
+				}
+			}
+		}
+		
 		flash.myTasks = Task.fromUser(session.user).list()
 		if(params.sort == 'sprints'){
 			flash.projectList.sort{it.sprints.size() * (params?.order == "asc"? 1 : -1)}

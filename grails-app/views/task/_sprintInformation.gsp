@@ -15,9 +15,9 @@
 		<td>${session.sprint.goal}</td>
 		<td><g:formatDate format="dd.MM.yyyy" date="${session.sprint.startDate}"/></td>
 		<td><g:formatDate format="dd.MM.yyyy" date="${session.sprint.endDate}"/></td>
-		<td style="text-align:center;">${session.numberOfTasks}</td>
-		<td style="text-align:center;">${session.totalEffort}</td>
-		<td style="text-align:center;">${session.totalEffortDone}</td>
+		<td style="text-align:center;">${flash.numberOfTasks}</td>
+		<td style="text-align:center;">${flash.totalEffort}</td>
+		<td style="text-align:center;">${flash.totalEffortDone}</td>
 		<td style="text-align:center;">
 			<g:if test="${session.sprint.isSprintRunning()}">
 				<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>

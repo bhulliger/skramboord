@@ -97,16 +97,16 @@
 
 						if (tabId == 1) { // Only render burn down if tab #1 is selected.
 							var target = [];
-							var today = ${session.today}
-							var dates = ${session.burndownTargetX};
-							var gradient = ${session.totalEffort}/${session.burndownTargetXSize};
+							var today = ${flash.today}
+							var dates = ${flash.burndownTargetX};
+							var gradient = ${flash.totalEffort}/${flash.burndownTargetXSize};
 						    var markings = [{ color: '#ff0000', lineWidth: 1, xaxis: { from: today, to: today} }];
 						    
-						    for (var i = 0; i <= ${session.burndownTargetXSize}; i += 1) {
-						        target.push([dates[i], ${session.totalEffort} - gradient*i]);
+						    for (var i = 0; i <= ${flash.burndownTargetXSize}; i += 1) {
+						        target.push([dates[i], ${flash.totalEffort} - gradient*i]);
 						    }
 						    
-						    $.plot($("#burndown"), [ target, ${session.burndownReal} ],
+						    $.plot($("#burndown"), [ target, ${flash.burndownReal} ],
 						    	    {
 					    	    		xaxis: {
 				    							mode: 'time',
@@ -141,7 +141,7 @@
 						<g:elseif test="${session.sprint.isSprintActive()}">
 							<g:render template="formNewTask"/>
 						</g:elseif>
-						<g:submitButton name="toggleProductBacklog" value="Product Backlog (${session.projectBacklog.size()} tasks)"/>
+						<g:submitButton name="toggleProductBacklog" value="Product Backlog (${flash.projectBacklog.size()} tasks)"/>
 						
 						<g:hasErrors bean="${flash.task}">
 							<div class="errors">
@@ -157,13 +157,13 @@
 						<div class="backlog" id="productBacklog">
 							<div class="boardheader">Backlog</div>
 							<div style="height: 500px; overflow: auto;">
-								<g:if test="${session.projectBacklog.size() > 0}">
+								<g:if test="${flash.projectBacklog.size() > 0}">
 									<ul id="backlog" class="connectedSortable">
 								</g:if>
 								<g:else>
 									<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
 								</g:else>
-									<g:each var="task" in="${session.projectBacklog}" status="i">
+									<g:each var="task" in="${flash.projectBacklog}" status="i">
 										<g:render template="task" model="['task':task]"/>
 									</g:each>
 								</ul>
@@ -173,13 +173,13 @@
 						<div class="scrumboard" id="scrumboard">
 							<div class="open">
 								<div class="boardheader">Open</div>
-								<g:if test="${session.taskListOpen.size() > 0}">
+								<g:if test="${flash.taskListOpen.size() > 0}">
 									<ul id="open" class="connectedSortable">
 								</g:if>
 								<g:else>
 									<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
 								</g:else>
-									<g:each var="task" in="${session.taskListOpen}" status="i">
+									<g:each var="task" in="${flash.taskListOpen}" status="i">
 										<g:render template="task" model="['task':task]"/>
 									</g:each>
 								</ul>
@@ -187,13 +187,13 @@
 							
 							<div class="checkout">
 								<div class="boardheader">Checkout</div>
-								<g:if test="${session.taskListCheckout.size() > 0}">
+								<g:if test="${flash.taskListCheckout.size() > 0}">
 									<ul id="checkout" class="connectedSortable">
 								</g:if>
 								<g:else>
 									<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
 								</g:else>
-									<g:each var="task" in="${session.taskListCheckout}" status="i">
+									<g:each var="task" in="${flash.taskListCheckout}" status="i">
 										<g:render template="task" model="['task':task]"/>
 									</g:each>
 								</ul>
@@ -201,13 +201,13 @@
 							
 							<div class="done">
 								<div class="boardheader">Done</div>
-								<g:if test="${session.taskListDone.size() > 0}">
+								<g:if test="${flash.taskListDone.size() > 0}">
 									<ul id="done" class="connectedSortable">
 								</g:if>
 								<g:else>
 									<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
 								</g:else>
-									<g:each var="task" in="${session.taskListDone}" status="i">
+									<g:each var="task" in="${flash.taskListDone}" status="i">
 										<g:render template="task" model="['task':task]"/>
 									</g:each>
 								</ul>
@@ -215,13 +215,13 @@
 							
 							<div class="next">
 								<div class="boardheader">Next</div>
-								<g:if test="${session.taskListNext.size() > 0}">
+								<g:if test="${flash.taskListNext.size() > 0}">
 									<ul id="next" class="connectedSortable">
 								</g:if>
 								<g:else>
 									<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
 								</g:else>
-									<g:each var="task" in="${session.taskListNext}" status="i">
+									<g:each var="task" in="${flash.taskListNext}" status="i">
 										<g:render template="task" model="['task':task]"/>
 									</g:each>
 								</ul>
@@ -229,13 +229,13 @@
 							
 							<div class="standBy">
 								<div class="boardheader">Stand by</div>
-								<g:if test="${session.taskListStandBy.size() > 0}">
+								<g:if test="${flash.taskListStandBy.size() > 0}">
 									<ul id="standBy" class="connectedSortable">
 								</g:if>
 								<g:else>
 									<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
 								</g:else>
-									<g:each var="task" in="${session.taskListStandBy}" status="i">
+									<g:each var="task" in="${flash.taskListStandBy}" status="i">
 										<g:render template="task" model="['task':task]"/>
 									</g:each>
 								</ul>

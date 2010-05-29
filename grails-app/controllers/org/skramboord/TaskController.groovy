@@ -23,37 +23,34 @@ class TaskController extends BaseController {
 	}
 	
 	def list = {
-		session.priorityList=Priority.list()
+		flash.priorityList=Priority.list()
 				
 		if (params.sprint) {
 			session.sprint = Sprint.get(params.sprint)
-		}
-		
-		if(!session.project) {
 			session.project = session.sprint.project
 		}
 		
-		session.projectBacklog = Task.projectBacklog(session.project).list()
+		flash.projectBacklog = Task.projectBacklog(session.project).list()
 		
-		session.taskListOpen = Task.fromSprint(session.sprint, StateTask.getStateOpen()).list()
-		session.taskListCheckout = Task.fromSprint(session.sprint, StateTask.getStateCheckedOut()).list()
-		session.taskListDone = Task.fromSprint(session.sprint, StateTask.getStateDone()).list()
-		session.taskListStandBy = Task.fromSprint(session.sprint, StateTask.getStateStandBy()).list()
-		session.taskListNext = Task.fromSprint(session.sprint, StateTask.getStateNext()).list()
+		flash.taskListOpen = Task.fromSprint(session.sprint, StateTask.getStateOpen()).list()
+		flash.taskListCheckout = Task.fromSprint(session.sprint, StateTask.getStateCheckedOut()).list()
+		flash.taskListDone = Task.fromSprint(session.sprint, StateTask.getStateDone()).list()
+		flash.taskListStandBy = Task.fromSprint(session.sprint, StateTask.getStateStandBy()).list()
+		flash.taskListNext = Task.fromSprint(session.sprint, StateTask.getStateNext()).list()
 		
-		session.numberOfTasks = session.taskListOpen.size() + session.taskListCheckout.size() + session.taskListDone.size() + session.taskListStandBy.size()
+		flash.numberOfTasks = flash.taskListOpen.size() + flash.taskListCheckout.size() + flash.taskListDone.size() + flash.taskListStandBy.size()
 
 		def totalEffort = Task.effortTasksTotal(session.sprint).list()?.first()
 		def totalEffortDone = Task.effortTasksDone(session.sprint).list()?.first()
 		
-		session.totalEffort = totalEffort ? totalEffort : 0
-		session.totalEffortDone = totalEffortDone ? totalEffortDone : 0
+		flash.totalEffort = totalEffort ? totalEffort : 0
+		flash.totalEffortDone = totalEffortDone ? totalEffortDone : 0
 		
 		// Burn down target
 		def datesXTarget = []
-		def burnDownEffort = session.totalEffort
-		session.burndownReal = []
-		session.burndownReal.add([session.sprint.startDate.getTime(), burnDownEffort])
+		def burnDownEffort = flash.totalEffort
+		flash.burndownReal = []
+		flash.burndownReal.add([session.sprint.startDate.getTime(), burnDownEffort])
 		def lastEffort = 0
 		for (Date startDate = session.sprint.startDate; startDate <= session.sprint.endDate; startDate++) {
 			datesXTarget.add(startDate.getTime())
@@ -71,15 +68,15 @@ class TaskController extends BaseController {
 
 			if (tmpEffort > 0) {
 				lastEffort = burnDownEffort
-				session.burndownReal.add([startDate.getTime(), burnDownEffort])
+				flash.burndownReal.add([startDate.getTime(), burnDownEffort])
 			} else if (Today.isDateToday(startDate)) {
 				// if there is no task done yet today, paint a horizontal line for the rest.
-				session.burndownReal.add([Today.getInstance().getTime(), lastEffort])
+				flash.burndownReal.add([Today.getInstance().getTime(), lastEffort])
 			}
 		}
-		session.burndownTargetXSize = datesXTarget.size()-1
-		session.burndownTargetX = datesXTarget
-		session.today = Today.getInstance().getTime()
+		flash.burndownTargetXSize = datesXTarget.size()-1
+		flash.burndownTargetX = datesXTarget
+		flash.today = Today.getInstance().getTime()
 	}
 	
 	/**

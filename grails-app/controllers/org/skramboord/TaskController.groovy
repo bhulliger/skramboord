@@ -23,12 +23,17 @@ class TaskController extends BaseController {
 	}
 	
 	def list = {
-		flash.priorityList=Priority.list()
-				
 		if (params.sprint) {
 			session.sprint = Sprint.get(params.sprint)
 			session.project = session.sprint.project
 		}
+		
+		// check if this user has access rights
+		if (taskViewPermission(session.user, session.project)) {
+			redirect(controller:'project', action:'list')
+		}
+		
+		flash.priorityList=Priority.list()
 		
 		flash.projectBacklog = Task.projectBacklog(session.project).list()
 		
@@ -231,6 +236,10 @@ class TaskController extends BaseController {
 	 */
 	private String removeTaskPrefix(String taskId) {
 		return taskId.replaceFirst("taskId_", "")
+	}
+	
+	private boolean taskViewPermission(User user, Project project) {
+		return Project.accessRight(session.project, session.user, authenticateService).list().first() == 0
 	}
 	
 	private boolean taskWritePermission(User user, Project project) {

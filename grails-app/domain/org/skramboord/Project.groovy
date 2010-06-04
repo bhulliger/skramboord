@@ -32,4 +32,37 @@ class Project {
 		owner(nullable:false)
 		master(nullable:false)
     }
+	
+	static namedQueries = {
+		projectsUserBelongsTo { fromUser, sortParam, orderParam, authenticateService ->
+			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+				or {
+					team {
+						eq('id', fromUser.id)
+					}
+					eq('master.id', fromUser.id)
+					eq('owner.id', fromUser.id)
+				}
+			}
+			if (sortParam != 'sprints') {
+				order(sortParam, orderParam)
+			}
+		}
+		
+		accessRight { fromProject, fromUser, authenticateService ->
+			eq('id', fromProject.id)
+			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+				or {
+					team {
+						eq('id', fromUser.id)
+					}
+					eq('master.id', fromUser.id)
+					eq('owner.id', fromUser.id)
+				}
+			}
+			projections {
+				rowCount()
+			}
+		}
+	}
 }

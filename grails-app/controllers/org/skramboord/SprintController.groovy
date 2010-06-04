@@ -29,6 +29,11 @@ class SprintController extends BaseController {
 			session.project = Project.get(session.project.id)
 		}
 		
+		// check if this user has access rights
+		if (sprintViewPermission(session.user, session.project)) {
+			redirect(controller:'project', action:'list')
+		}
+		
 		flash.teamList = session.project.team
 		flash.teamList.add(session.project.owner)
 		flash.teamList.add(session.project.master)
@@ -177,6 +182,10 @@ class SprintController extends BaseController {
 		}
 		
 		redirect(controller:'sprint', action:'list')
+	}
+	
+	private boolean sprintViewPermission(User user, Project project) {
+		return Project.accessRight(project, user, authenticateService).list().first() == 0
 	}
 	
 	private boolean sprintWritePermission(User user, Project project) {

@@ -34,20 +34,7 @@ class ProjectController extends BaseController {
 		Date today = Today.getInstance()
 
 		// get all project the user belongs to
-		flash.projectList = Project.createCriteria().listDistinct {
-			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
-				or {
-					team {
-						eq('id', session.user.id)
-					}
-					eq('master.id', session.user.id)
-					eq('owner.id', session.user.id)
-				}
-			}
-			if (params.sort != 'sprints') {
-				order(params.sort, params.order)
-			}
-		}
+		flash.projectList = Project.projectsUserBelongsTo(session.user, params.sort, params.order, authenticateService).listDistinct()
 		
 		// get all running sprints the user belongs to
 		flash.runningSprintsList = Sprint.createCriteria().listDistinct {

@@ -21,9 +21,16 @@ import java.awt.Color;
 
 class User {
 	static transients = ['pass']
-	static hasMany = [authorities:Role, tasks:Task, portlets:DashboardPortlet]
+	static hasMany = [authorities:Role, tasks:Task, portlets:DashboardPortlet, projects:Membership, watch:Follow]
 	static belongsTo = Role
-
+	
+	static mapping = {
+		owner lazy:false
+		master lazy:false
+		projects cascade:"all,delete-orphan"
+		watch cascade:"all,delete-orphan"
+	}
+	
 	/** Username */
 	String username
 	/** Frist Name */

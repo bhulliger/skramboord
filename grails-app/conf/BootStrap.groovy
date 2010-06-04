@@ -34,6 +34,8 @@ import org.skramboord.Sprint;
 import org.skramboord.Project;
 import org.skramboord.User;
 import org.skramboord.Role;
+import org.skramboord.Membership;
+import org.skramboord.Follow;
 import org.skramboord.Requestmap;
 import org.apache.commons.codec.digest.DigestUtils
 
@@ -82,6 +84,7 @@ class BootStrap {
 		def userDev1 = new User(username:'lbeethoven', prename:'Ludwig', name:'Beethoven', enabled: true, emailShow: true, email: 'ludwig.beethoven@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
 		def userDev2 = new User(username:'asalieri', prename:'Antonio', name:'Salieri', enabled: true, emailShow: true, email: 'antonio.salieri@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
 		def userDev3 = new User(username:'jbach', prename:'Johann', name:'Bach', enabled: true, emailShow: true, email: 'johann.bach@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
+		def userClient1 = new User(username:'hmuster', prename:'Hans', name:'Muster', enabled: true, emailShow: true, email: 'hans.muster@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
 		
 		// Adding user to roles
 		roleSuperUser.addToPeople(userAdmin)
@@ -92,6 +95,7 @@ class BootStrap {
 		roleUser.addToPeople(userDev1)
 		roleUser.addToPeople(userDev2)
 		roleUser.addToPeople(userDev3)
+		roleUser.addToPeople(userClient1)
 		
 		// Initialize priorities
 		Priority low = new Priority(name: "low", color: Color.decode("0x808080"))
@@ -149,10 +153,12 @@ class BootStrap {
 		skramboord.addToSprints(sprint1_1)
 		skramboord.addToSprints(sprint1_2)
 		skramboord.addToSprints(sprint1_3)
-		skramboord.addToTeam(userDev1)
-		skramboord.addToTeam(userDev3)
 		skramboord.save()
-		
+
+		Membership.link(skramboord, userDev1)
+		Membership.link(skramboord, userDev3)
+		Follow.link(skramboord, userClient1)
+						
 		// Initialize Project Grails
 		Project grails = new Project(name: "grails", owner: userAdmin, master: userDevChief)
 		grails.save()

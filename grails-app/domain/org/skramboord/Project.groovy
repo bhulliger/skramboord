@@ -19,12 +19,22 @@ package org.skramboord
 
 class Project {
 	String name
-	static hasMany = [sprints:Sprint, tasks:Task, team:User]
+	static hasMany = [sprints:Sprint, tasks:Task, team:Membership, follower:Follow]
 	static belongsTo = [owner:User, master:User]
+
+	def teamList() {
+		return team.collect{it.user}
+	}
+	
+	def followerList() {
+		return follower.collect{it.user}
+	}
 
 	static mapping = {
 		owner lazy:false
 		master lazy:false
+		team cascade:"all,delete-orphan"
+		follower cascade:"all,delete-orphan"
 	}
 	
     static constraints = {
@@ -38,10 +48,13 @@ class Project {
 			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
 				or {
 					team {
-						eq('id', fromUser.id)
+						eq('user', fromUser)
 					}
-					eq('master.id', fromUser.id)
-					eq('owner.id', fromUser.id)
+					follower {
+						eq('user', fromUser)
+					}
+					eq('master', fromUser)
+					eq('owner', fromUser)
 				}
 			}
 			if (sortParam != 'sprints') {
@@ -54,10 +67,13 @@ class Project {
 			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
 				or {
 					team {
-						eq('id', fromUser.id)
+						eq('user', fromUser)
 					}
-					eq('master.id', fromUser.id)
-					eq('owner.id', fromUser.id)
+					follower {
+						eq('user', fromUser)
+					}
+					eq('master', fromUser)
+					eq('owner', fromUser)
 				}
 			}
 			projections {

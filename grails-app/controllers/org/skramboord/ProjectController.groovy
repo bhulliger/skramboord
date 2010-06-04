@@ -44,10 +44,13 @@ class ProjectController extends BaseController {
 				project {
 					or {
 						team {
-							eq('id', session.user.id)
+							eq('user', session.user)
 						}
-						eq('master.id', session.user.id)
-						eq('owner.id', session.user.id)
+						follower {
+							eq('user', session.user)
+						}
+						eq('master', session.user)
+						eq('owner', session.user)
 					}
 				}
 			}

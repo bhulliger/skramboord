@@ -34,14 +34,25 @@ class SprintController extends BaseController {
 			redirect(controller:'project', action:'list')
 		}
 		
-		flash.teamList = session.project.team
-		flash.teamList.add(session.project.owner)
-		flash.teamList.add(session.project.master)
-		
-		flash.teamList = flash.teamList.sort{it.username}
+		flash.watchList = User.withCriteria {
+			watch {
+				eq('project', session.project)
+			}
+		}
+		flash.teamList = User.withCriteria {
+			projects {
+				eq('project', session.project)
+			}
+		}
+		flash.fullList = new HashSet<User>()
+		flash.fullList.addAll(flash.watchList)
+		flash.fullList.addAll(flash.teamList)
+		flash.fullList.add(session.project.owner)
+		flash.fullList.add(session.project.master)
+		flash.fullList = flash.fullList.sort{it.username}
 		
 		flash.personList = User.list(params)
-		flash.personList.removeAll(flash.teamList)
+		flash.personList.removeAll(flash.fullList)
 		
 		flash.sprintList = Sprint.withCriteria {
 			eq('project', session.project)
@@ -58,8 +69,14 @@ class SprintController extends BaseController {
 			if (params.user) {
 				def user = User.get(params.user)
 				session.project.refresh()
-				
-				session.project.addToTeam(user)
+
+				if (params.follower) {
+					// Follower
+					Follow.link(session.project, user)
+				} else {
+					// Developer
+					session.project.addToTeam(user)
+				}
 				session.project.save()
 			}
 		} else {
@@ -78,23 +95,30 @@ class SprintController extends BaseController {
 				def user = User.get(params.user)
 				session.project.refresh()
 				
-				// set checked out tasks from this user back to open.
-				def tasks = Task.withCriteria {
-					eq('user', user)
-					eq('state', StateTask.getStateCheckedOut())
-					sprint {
-						eq('project', session.project)
+				if (session.project.followerList().contains(user)) {
+					// Remove Follower
+					Follow.unlink(session.project, user)
+				} else {
+					// Remove Developer
+					// set checked out tasks from this user back to open.
+					def tasks = Task.withCriteria {
+						eq('user', user)
+						eq('state', StateTask.getStateCheckedOut())
+						sprint {
+							eq('project', session.project)
+						}
 					}
-				}
-				for (def task : tasks) {
-					task.user = null
-					task.state = StateTask.getStateOpen()
-					task.save()
+					for (def task : tasks) {
+						task.user = null
+						task.state = StateTask.getStateOpen()
+						task.save()
+					}
+					
+					session.project.refresh()
+					
+					Membership.unlink(session.project, user)
 				}
 				
-				session.project.refresh()
-				
-				session.project.removeFromTeam(user)
 				session.project.save()
 			}
 		} else {

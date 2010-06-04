@@ -132,13 +132,14 @@
 									<th style="width: 90px; text-align: center;">Project Owner</th>
 									<th style="width: 90px; text-align: center;">Project Master</th>
 									<th style="width: 90px; text-align: center;">Developer</th>
+									<th style="width: 90px; text-align: center;">Follower</th>
 									<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-										<th style="width: 70px;"></th>
+										<th style="width: 70px; text-align: center;">Remove</th>
 									</g:if>
 								</tr>
 							</thead>
 							<tbody>
-								<g:each in="${flash.teamList}" status="i" var="person">
+								<g:each in="${flash.fullList}" status="i" var="person">
 									<g:def var="userId" value="${person.id}"/>
 									<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 										<td>
@@ -159,15 +160,23 @@
 										</td>
 										<g:if test="${person.id != session.project.master.id && person.id != session.project.owner.id}">
 											<td style="vertical-align: middle; text-align: center;">
-												<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
+												<g:if test="${flash.teamList.contains(person)}">
+													<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
+												</g:if>
+											</td>
+											<td style="vertical-align: middle; text-align: center;">
+												<g:if test="${flash.watchList.contains(person)}">
+													<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
+												</g:if>
 											</td>
 											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-												<td>
-													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]" onclick="return confirm(unescape('Are you sure to remove this user from this project? All checked out tasks from this user will be released again.'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon">Remove</span></g:link>
+												<td style="vertical-align: middle; text-align: center;">
+													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]" onclick="return confirm(unescape('Are you sure to remove this user from this project? All checked out tasks from this user will be released again.'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon"></span></g:link>
 												</td>
 											</g:if>
 										</g:if>
 										<g:else>
+											<td></td>
 											<td></td>
 											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 												<td></td>
@@ -195,7 +204,8 @@
 										<g:sortableColumn property="prename" title="Prename" />
 										<g:sortableColumn property="description" title="Description" />
 										<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-											<th style="width: 50px;"></th>
+											<th style="width: 50px;">Developer</th>
+											<th style="width: 50px;">Follower</th>
 										</g:if>
 									</tr>
 								</thead>
@@ -210,8 +220,11 @@
 											<td style="vertical-align: middle;">${person.prename?.encodeAsHTML()}</td>
 											<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
 											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-												<td>
-													<g:link controller="sprint" action="addDeveloper" params="[user: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="add"/></span><span class="icon">Add</span></g:link>
+												<td style="vertical-align: middle;text-align:center;">
+													<g:link controller="sprint" action="addDeveloper" params="[user: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="add"/></span><span class="icon"></span></g:link>
+												</td>
+												<td style="vertical-align: middle;text-align:center;">
+													<g:link controller="sprint" action="addDeveloper" params="[user: userId, follower: true]"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="add"/></span><span class="icon"></span></g:link>
 												</td>
 											</g:if>
 										</tr>

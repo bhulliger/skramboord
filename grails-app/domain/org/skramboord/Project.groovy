@@ -80,5 +80,21 @@ class Project {
 				rowCount()
 			}
 		}
+		
+		changeRight { fromProject, fromUser, authenticateService ->
+			eq('id', fromProject.id)
+			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+				or {
+					team {
+						eq('user', fromUser)
+					}
+					eq('master', fromUser)
+					eq('owner', fromUser)
+				}
+			}
+			projections {
+				rowCount()
+			}
+		}
 	}
 }

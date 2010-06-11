@@ -22,10 +22,6 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
 		
 		<script type="text/javascript">
-			function changeTo(event, ui, stateMethod){
-				location.href="/${meta(name: "app.name")}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
-			}
-
 			$(function() {
 				var showProductBacklog = $.cookie('showProductBacklog'); 
 				if (showProductBacklog != 'show') {
@@ -49,6 +45,7 @@
 				    	}
 				});
 				
+<g:if test="${flash.teammate}">
 				$('#create-task')
 					.button()
 					.click(function() {
@@ -85,6 +82,7 @@
 					dropOnEmpty: true,
 					receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToStandBy') }
 				}).disableSelection();
+</g:if>
 
 				var tabId = parseInt($.cookie("taskTab")) || 0;
 				$("#tabs").tabs({
@@ -118,7 +116,13 @@
 						}
 					}
 				});
-			});							
+			});
+
+<g:if test="${flash.teammate}">
+			function changeTo(event, ui, stateMethod){
+				location.href="/${meta(name: "app.name")}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
+			}
+</g:if>
 		</script>
 
 	</head>

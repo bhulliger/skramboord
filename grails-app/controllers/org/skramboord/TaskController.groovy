@@ -29,8 +29,13 @@ class TaskController extends BaseController {
 		}
 		
 		// check if this user has access rights
-		if (taskViewPermission(session.user, session.project)) {
+		if (!taskViewPermission(session.user, session.project)) {
 			redirect(controller:'project', action:'list')
+		}
+		
+		// teammate or follower?
+		if (taskWorkPermission(session.user, session.project)) {
+			flash.teammate = true
 		}
 		
 		flash.priorityList=Priority.list()
@@ -88,9 +93,13 @@ class TaskController extends BaseController {
 	 * Add task
 	 */
 	def addTask = {
-		Task task = new Task(name: params.taskName, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.get(params.taskPriority), sprint: Sprint.find(session.sprint))
-		if (!task.save()) {
-			flash.task = task
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = new Task(name: params.taskName, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.get(params.taskPriority), sprint: Sprint.find(session.sprint))
+			if (!task.save()) {
+				flash.task = task
+			}
+		} else {
+			flash.message = "Only teammates can add new tasks."
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -154,18 +163,22 @@ class TaskController extends BaseController {
 	 * Changes status of a task to open
 	 */
 	def changeTaskStateToOpen = {
-		Task task = Task.get(removeTaskPrefix(params.taskId))
-		if (task.project) {
-			// task from backlog -> set state to open
-			task.state = StateTask.getStateOpen()
-			task.project = null
-			task.sprint = Sprint.get(session.sprint.id)
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+			if (task.project) {
+				// task from backlog -> set state to open
+				task.state = StateTask.getStateOpen()
+				task.project = null
+				task.sprint = Sprint.get(session.sprint.id)
+				task.save()
+			} else {
+				// Change to state open
+				task.state.open(task)
+			}
 			task.save()
 		} else {
-			// Change to state open
-			task.state.open(task)
+			flash.message = "Only teammates can change the state of a task."
 		}
-		task.save()
 		
 		redirect(controller:'task', action:'list')
 	}
@@ -174,10 +187,14 @@ class TaskController extends BaseController {
 	 * Changes status of a task to checkout
 	 */
 	def changeTaskStateToCheckOut = {
-		Task task = Task.get(removeTaskPrefix(params.taskId))
-		task.user = session.user
-		task.state.checkOut(task)
-		task.save()
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+			task.user = session.user
+			task.state.checkOut(task)
+			task.save()
+		} else {
+			flash.message = "Only teammates can change the state of a task."
+		}
 		
 		redirect(controller:'task', action:'list')
 	}
@@ -186,9 +203,13 @@ class TaskController extends BaseController {
 	 * Changes status of a task to done
 	 */
 	def changeTaskStateToDone = {
-		Task task = Task.get(removeTaskPrefix(params.taskId))
-		task.state.done(task)
-		task.save()
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+			task.state.done(task)
+			task.save()
+		} else {
+			flash.message = "Only teammates can change the state of a task."
+		}
 		
 		redirect(controller:'task', action:'list')
 	}
@@ -197,9 +218,13 @@ class TaskController extends BaseController {
 	 * Changes status of a task to next
 	 */
 	def changeTaskStateToNext = {
-		Task task = Task.get(removeTaskPrefix(params.taskId))
-		task.state.next(task)
-		task.save()
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+			task.state.next(task)
+			task.save()
+		} else {
+			flash.message = "Only teammates can change the state of a task."
+		}
 		
 		redirect(controller:'task', action:'list')
 	}
@@ -208,9 +233,13 @@ class TaskController extends BaseController {
 	 * Changes status of a task to standby
 	 */
 	def changeTaskStateToStandBy = {
-		Task task = Task.get(removeTaskPrefix(params.taskId))
-		task.state.standBy(task)
-		task.save()
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+			task.state.standBy(task)
+			task.save()
+		} else {
+			flash.message = "Only teammates can change the state of a task."
+		}
 		
 		redirect(controller:'task', action:'list')
 	}
@@ -219,11 +248,15 @@ class TaskController extends BaseController {
 	 * Copy Task to Backlog
 	 */
 	def copyTaskToBacklog = {
-		Task task = Task.get(removeTaskPrefix(params.taskId))
-
-		task.sprint = null
-		task.project = Project.get(session.project.id)
-		task.save()
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+	
+			task.sprint = null
+			task.project = Project.get(session.project.id)
+			task.save()
+		} else {
+			flash.message = "Only teammates can change the state of a task."
+		}
 		
 		redirect(controller:'task', action:'list')
 	}
@@ -238,10 +271,35 @@ class TaskController extends BaseController {
 		return taskId.replaceFirst("taskId_", "")
 	}
 	
+	/**
+	 * Returns true if the user is allowed to access this sprint.
+	 * 
+	 * @param user
+	 * @param project
+	 * @return
+	 */
 	private boolean taskViewPermission(User user, Project project) {
-		return Project.accessRight(session.project, session.user, authenticateService).list().first() == 0
+		return Project.accessRight(session.project, session.user, authenticateService).list().first() != 0
 	}
 	
+	/**
+	 * Returns true if this user is allowed to change the state of the tasks.
+	 * 
+	 * @param user
+	 * @param project
+	 * @return
+	 */
+	private boolean taskWorkPermission(User user, Project project) {
+		return Project.changeRight(session.project, session.user, authenticateService).list().first() != 0
+	}
+	
+	/**
+	 * Returns true if this user is allowed to change and delete the existing tasks.
+	 * 
+	 * @param user
+	 * @param project
+	 * @return
+	 */
 	private boolean taskWritePermission(User user, Project project) {
 		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
 	}

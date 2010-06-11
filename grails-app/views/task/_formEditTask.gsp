@@ -34,4 +34,6 @@
 		</fieldset>
 	</g:form>
 </div>
-<g:submitButton name="create-task" value="Create task"/>
+<g:if test="${flash.teammate}">
+	<g:submitButton name="create-task" value="Create task"/>
+</g:if>

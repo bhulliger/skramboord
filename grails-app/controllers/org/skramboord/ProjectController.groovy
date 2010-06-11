@@ -112,6 +112,13 @@ class ProjectController extends BaseController {
 				project.master = User.get(params.projectMaster)
 				project.name = params.projectName
 				
+				// Twitter
+				if (!params.twitterAccount.isEmpty() && !params.twitterPassword.isEmpty()) {
+					project.twitter = new Twitter(account: params.twitterAccount, password: params.twitterPassword).save()
+				} else {
+					project.twitter = null
+				}
+				
 				if (!project.save()) {
 					flash.project=project
 				}

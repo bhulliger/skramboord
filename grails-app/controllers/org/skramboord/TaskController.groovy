@@ -18,6 +18,7 @@
 package org.skramboord
 
 class TaskController extends BaseController {
+	def twitterService
 	
 	def index = { redirect(controller:'task', action:'list')
 	}
@@ -27,7 +28,7 @@ class TaskController extends BaseController {
 			session.sprint = Sprint.get(params.sprint)
 			session.project = session.sprint.project
 		}
-		
+				
 		// check if this user has access rights
 		if (!taskViewPermission(session.user, session.project)) {
 			redirect(controller:'project', action:'list')
@@ -207,6 +208,9 @@ class TaskController extends BaseController {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.state.done(task)
 			task.save()
+			
+			// tweet it!
+			sendTwitterMessage(session.user, session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
 		} else {
 			flash.message = "Only teammates can change the state of a task."
 		}
@@ -302,5 +306,35 @@ class TaskController extends BaseController {
 	 */
 	private boolean taskWritePermission(User user, Project project) {
 		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
+	}
+	
+	/**
+	 * Sends Twitter message if project has a Twitter account.
+	 * 
+	 * @param user
+	 * @param project
+	 * @param message
+	 */
+	private void sendTwitterMessage(User user, Project project, String message) {
+		if (project.twitter) {
+			if (!twitterService.loggedIn) {
+				// just log in...
+				twitterService.login(project.twitter.account, project.twitter.password, request, response)
+				session.twitterAccount = project.twitter.account
+			} else {
+				// Already logged in. Check if it's the right twitter account
+				if (session.twitterAccount != project.twitter.account) {
+					// Another Twitter account. Logout and in again.
+					twitterService.logout(request, response)
+					twitterService.login(project.twitter.account, project.twitter.password, request, response)
+					session.twitterAccount = project.twitter.account
+				}
+			}
+	
+			if (twitterService.loggedIn) {
+				// send message
+				twitterService.setStatus(message)
+			}
+		}
 	}
 }

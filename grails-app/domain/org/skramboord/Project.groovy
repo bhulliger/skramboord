@@ -19,6 +19,7 @@ package org.skramboord
 
 class Project {
 	String name
+	Twitter twitter
 	static hasMany = [sprints:Sprint, tasks:Task, team:Membership, follower:Follow]
 	static belongsTo = [owner:User, master:User]
 
@@ -33,6 +34,7 @@ class Project {
 	static mapping = {
 		owner lazy:false
 		master lazy:false
+		twitter lazy:false
 		team cascade:"all,delete-orphan"
 		follower cascade:"all,delete-orphan"
 	}
@@ -41,6 +43,7 @@ class Project {
 		name(nullable:false, blank:false, unique: true)
 		owner(nullable:false)
 		master(nullable:false)
+		twitter(nullable:true)
     }
 	
 	static namedQueries = {

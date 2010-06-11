@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-project-edit").dialog({
 			autoOpen: true,
-			height: 320,
+			height: 400,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -28,6 +28,11 @@
 			<g:select name="projectOwner" from="${flash.users}" value="${flash.projectEdit.owner.id}" optionValue="userRealName" optionKey="id" />
 			<label>Project Master</label>
 			<g:select name="projectMaster" from="${flash.allUsers}" value="${flash.projectEdit.master.id}" optionValue="userRealName" optionKey="id" />
+			<label>Twitter Account</label>
+			<input type="text" name="twitterAccount" id="twitterAccount" value="${flash.projectEdit.twitter?.account}" class="text ui-widget-content ui-corner-all"/>
+			<label>Twitter Password</label>
+			<input type="password" name="twitterPassword" id="twitterPassword" value="${flash.projectEdit.twitter?.password}" class="text ui-widget-content ui-corner-all"/>
+			
 			<input type="hidden" name="projectId" value="${flash.projectEdit.id}" style="border-style: none;"/>
 		</fieldset>
 	</g:form>

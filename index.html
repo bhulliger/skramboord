@@ -8,22 +8,34 @@
 	<title>pablohess/skramboord @ GitHub</title>
 	
 	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #048500;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
+    html * {
+        margin: 0;
+        /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
+    }
+
+    body {
+        font-family: "Helvetica,Arial,FreeSans";
+        color: #101010;
+        background: #fff url('http://github.com/pablohess/skramboord/raw/master/web-app/images/skramboord/postit.green.jpg') repeat-x;
     }
     #container {
-      margin: 0 auto;
-      width: 700px;
+	width: 992px;
+	height: 768px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0px 16px 40px 16px;
+	background: #ffffff;
+	border: 0px;
+	position: relative;
     }
-		h1 { font-size: 3.8em; color: #fb7aff; margin-bottom: 3px; }
+		h1 { font-size: 2.8em; color: #000000; margin-bottom: 3px; }
 		h1 .small { font-size: 0.4em; }
 		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #fb7aff; }
-    h3 { text-align: center; color: #fb7aff; }
-    a { color: #fb7aff; }
+		h2 { font-size: 1.5em; color: #000000; margin-top: 20px; margin-bottom: 5px;}
+    h3 { text-align: center; color: #000000; }
+    a { color: #00aa00; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
 		pre { background: #000; color: #fff; padding: 15px;}
@@ -37,7 +49,24 @@
   <a href="http://github.com/pablohess/skramboord"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
   <div id="container">
+    <div style="float: left; margin-top: 20px;"><a href="http://github.com/pablohess/skramboord"><img border="0" style="border: 0;" src="http://github.com/pablohess/skramboord/raw/master/web-app/images/skramboord/skramboord.logo.glossy.small.png"></a></div>
+    <div style="float: left; margin-top: 15px; margin-left: 5px;"><div class="description">
+       is an open source multi user scrum board web application.
+    </div></div>
+    <div style="clear: both;"></div>
 
+    <h2>License</h2>
+<p>skramboord is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE v3.</p>
+    <h2>Documentation</h2>
+<p>Read more about skramboord <a href="http://wiki.github.com/pablohess/skramboord/">here</a>.</p>
+<h2>Authors</h2>
+<p><a href="http://github.com/pablohess">pablohess</a>
+<br/>      </p>
+<h2>Contact</h2>
+<p>Pablo Hess: info (at) skramboord.org
+<br/>      </p>
+
+    <h2>Download</h2>
     <div class="download">
       <a href="http://github.com/pablohess/skramboord/zipball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
@@ -45,30 +74,16 @@
         <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
     </div>
 
-    <h1><a href="http://github.com/pablohess/skramboord">skramboord</a>
-      <span class="small">by <a href="http://github.com/pablohess">pablohess</a></span></h1>
-
-    <div class="description">
-      skramboord is an open source multi user scrum board web application.
-    </div>
-
-    <h2>License</h2>
-<p>skramboord is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE v3.</p>
-<h2>Authors</h2>
-<p>Pablo Hess<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Pablo Hess (hess@puzzle.ch)<br/>      </p>
-
-
-    <h2>Download</h2>
     <p>
       You can download this project in either
       <a href="http://github.com/pablohess/skramboord/zipball/master">zip</a> or
       <a href="http://github.com/pablohess/skramboord/tarball/master">tar</a> formats.
     </p>
+
+    <h2>Source Code</h2>
     <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
       by running:
-      <pre>$ git clone git://github.com/pablohess/skramboord</pre>
+      <pre style="margin-top: 10px;">$ git clone git://github.com/pablohess/skramboord</pre>
     </p>
 
     <div class="footer">

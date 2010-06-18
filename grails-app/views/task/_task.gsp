@@ -1,4 +1,4 @@
-<li id="taskId_${task.id}" style="margin: 0; padding: 0;" onmouseover="">
+<li id="taskId_${task.id}" style="margin: 0; padding: 0;">
 	<div class="postit-right" onmouseover="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEdit')"
                               onmouseout="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEditNone')">
 		<div class="postit">
@@ -8,7 +8,7 @@
 					<g:link controller="task" action="edit" params="[task: task.id]">
 						<span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon"></span>
 					</g:link>
-					<g:link controller="task" action="delete" params="[task: task.id]" onclick="return confirm(unescape('Are you sure to delete task %22${task.name}%22?'));">
+					<g:link controller="task" action="delete" params="[task: task.id]" onclick="return confirm('${message(code:'task.delete', args: [task.name])}');">
 						<span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon"></span>
 					</g:link>
 				</div>

@@ -34,6 +34,18 @@
 		        			</span>
 		        			<span class="icon"><g:message code="main.welcome"/>, ${session.user.userRealName}</span>
 	        			</g:link>
+	        			
+	        			<g:link controller="${params.controller}" action="${params.action}" params="[lang:'en']">
+	        				<span class="icon">
+		        				<img src="${resource(dir:'images/icons',file:'english.png')}" alt="english" height="16px"/>
+		        			</span>
+	        			</g:link>
+						<g:link controller="${params.controller}" action="${params.action}" params="[lang:'de']" style="padding-right: 10px;">
+							<span class="icon">
+		        				<img src="${resource(dir:'images/icons',file:'german.png')}" alt="german" height="16px"/>
+		        			</span>
+						</g:link>
+	        			
 		        		<g:link controller="logout" action="index">
 		        			<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'application_go.png')}" alt="logout"/>

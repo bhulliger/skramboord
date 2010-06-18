@@ -19,20 +19,20 @@
 	});							
 </script>
 
-<div id="dialog-form" title="Create new task" class="form">
+<div id="dialog-form" title="${message(code:'task.formNameCreateTask')}" class="form">
 	<g:form action="addTask" name="formNewTask">
 		<fieldset>
-			<label>Name</label>
+			<label><g:message code="task.name"/></label>
 			<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
-			<label>Effort</label>
+			<label><g:message code="task.effort"/></label>
 			<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
-			<label>Link</label>
+			<label><g:message code="task.link"/></label>
 			<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
-			<label>Priority</label>
+			<label><g:message code="task.priority"/></label>
 			<g:select name="taskPriority" from="${flash.priorityList}" optionValue="name" optionKey="id"/>
 		</fieldset>
 	</g:form>
 </div>
 <g:if test="${flash.teammate}">
-	<g:submitButton name="create-task" value="Create task"/>
+	<g:submitButton name="create-task" value="${message(code:'task.createTask')}"/>
 </g:if>

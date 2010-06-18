@@ -28,17 +28,17 @@
 		$('#endDate').datepicker("setDate", "${flash.sprintEdit.endDate}");
 	});
 </script>
-<div id="dialog-form-sprint-edit" title="Edit sprint" class="form">
+<div id="dialog-form-sprint-edit" title="${message(code:'sprint.formNameEditSprint')}" class="form">
 	<g:form action="editSprint" name="formEditSprint">
 		<fieldset>
-			<label>Sprint</label>
+			<label><g:message code="sprint.sprint"/></label>
 			<input type="text" name="sprintName" id="sprintName" value="${flash.sprintEdit.name}" class="text ui-widget-content ui-corner-all"/>
-			<label>Goal</label>
+			<label><g:message code="sprint.goal"/></label>
 			<input type="text" name="sprintGoal" id="sprintGoal" value="${flash.sprintEdit.goal}" class="text ui-widget-content ui-corner-all"/>
 			<table>
 				<tr>
-					<td><label>Start:</label></td>
-					<td><label>End:</label></td>
+					<td><label><g:message code="sprint.start"/>:</label></td>
+					<td><label><g:message code="sprint.end"/>:</label></td>
 				</tr>
 				<tr>
 					<td><div id="startDate"></div></td>
@@ -52,4 +52,4 @@
 	</g:form>
 </div>
 
-<g:submitButton name="create-sprint" value="Create sprint"/>
+<g:submitButton name="create-sprint" value="${message(code:'sprint.createSprint')}"/>

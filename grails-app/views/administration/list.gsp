@@ -31,11 +31,11 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="administration" action="list">> System Preferences</g:link></h1>          
+			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="administration" action="list">> <g:message code="admin.systemPreferences"/></g:link></h1>          
 			
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-priorities">Priorities</a></li>
+					<li><a href="#tab-priorities"><g:message code="admin.priorities"/></a></li>
 				</ul>
 				<div id="tab-priorities">
 					<g:render template="priorities"/>

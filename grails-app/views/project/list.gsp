@@ -154,22 +154,22 @@
 			<div style="padding-top: 10px;">
 				<div class="column">
 					<div class="portlet" id="tasks">
-						<div class="portlet-header">My Tasks</div>
+						<div class="portlet-header"><g:message code="dashboard.myTasks"/></div>
 						<div class="portlet-content">
 							<g:if test="${flash.myTasks.isEmpty()}">
 								<div class="message">
-									No tasks checked out. What are you paid for?
+									<g:message code="dashboard.noMyTasks"/>
 								</div>
 							</g:if>
 							<g:else>
 								<div class="list">
 									<table>
 										<tr>
-											<th>Task</th>
-											<th>Project</th>
-											<th>Sprint</th>
-											<th style="text-align:center; width: 50px;">Effort</th>
-											<th>Priority</th>
+											<th><g:message code="task.task"/></th>
+											<th><g:message code="project.project"/></th>
+											<th><g:message code="sprint.sprint"/></th>
+											<th style="text-align:center; width: 50px;"><g:message code="task.effort"/></th>
+											<th><g:message code="task.priority"/></th>
 										</tr>
 										<g:each var="task" in="${flash.myTasks}" status="i">
 											<g:def var="sprintId" value="${task.sprint?.id}"/>
@@ -190,23 +190,23 @@
 					</div>
 					
 					<div class="portlet" id="sprints">
-						<div class="portlet-header">Active Spints</div>
+						<div class="portlet-header"><g:message code="dashboard.activeSprints"/></div>
 						<div class="portlet-content">
 							<g:if test="${flash.runningSprintsList.isEmpty()}">
 								<div class="message">
-									No active sprints found.
+									<g:message code="dashboard.noActiveSprints"/>
 								</div>
 							</g:if>
 							<g:else>
 								<div class="list">
 									<table>
 										<tr>
-											<th>Sprint</th>
-											<th>Goal</th>
-											<th>Start</th>
-											<th>End</th>
-											<th style="text-align:center; width: 20px;">Tasks</th>
-											<th style="text-align:center; width: 20px;">Active</th>
+											<th><g:message code="sprint.sprint"/></th>
+											<th><g:message code="sprint.goal"/></th>
+											<th><g:message code="sprint.start"/></th>
+											<th><g:message code="sprint.end"/></th>
+											<th style="text-align:center; width: 20px;"><g:message code="task.tasks"/></th>
+											<th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
 										</tr>
 										<g:each var="sprint" in="${flash.runningSprintsList}" status="i">
 											<g:def var="sprintId" value="${sprint.id}"/>
@@ -238,26 +238,26 @@
 					</div>
 					
 					<div class="portlet" id="projects">
-						<div class="portlet-header">Projects</div>
+						<div class="portlet-header"><g:message code="project.projects"/></div>
 						<div class="portlet-content">
 							<g:if test="${flash.projectList.isEmpty()}">
 								<div class="message">
-									No projects created yet.
+									<g:message code="project.noProjects"/>
 								</div>
 							</g:if>
 							<g:else>
 								<div class="list">
 									<table>
 										<tr>
-											<g:sortableColumn property="name" defaultOrder="asc" title="Project"/>
-											<g:sortableColumn property="owner" defaultOrder="asc" title="Project Owner"/>
-											<g:sortableColumn property="master" defaultOrder="asc" title="Project Master"/>
-											<g:sortableColumn property="sprints" defaultOrder="desc" title="Sprints" style="text-align:center; width: 50px;"/>
+											<g:sortableColumn property="name" defaultOrder="asc" title="${message(code:'project.project')}"/>
+											<g:sortableColumn property="owner" defaultOrder="asc" title="${message(code:'project.owner')}"/>
+											<g:sortableColumn property="master" defaultOrder="asc" title="${message(code:'project.master')}"/>
+											<g:sortableColumn property="sprints" defaultOrder="desc" title="${message(code:'sprint.sprints')}" style="text-align:center; width: 50px;"/>
 											<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
-												<th style="width: 50px;"></th>
+												<th style="width: 20px;"></th>
 											</g:ifAnyGranted>
 											<g:ifAllGranted role="ROLE_SUPERUSER">
-												<th style="width: 70px;"></th>
+												<th style="width: 20px;"></th>
 											</g:ifAllGranted>
 										</tr>
 										<g:each var="project" in="${flash.projectList}" status="i">
@@ -272,7 +272,7 @@
 				
 												<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
 													<td>
-														<g:link controller="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+														<g:link controller="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span><span class="icon"></span></g:link>
 													</td>
 												</g:if>
 												<g:elseif test="${authenticateService.ifAnyGranted('ROLE_ADMIN')}">
@@ -280,7 +280,7 @@
 												</g:elseif>
 												<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER')}">
 													<td>
-														<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm(unescape('Are you sure to delete project %22${project.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
+														<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm('${message(code:'project.delete', args: [project.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span><span class="icon"></span></g:link>
 													</td>
 												</g:if>
 											</tr>
@@ -289,7 +289,7 @@
 											<tr style="border: 1px solid #ccc;">
 												<td colspan="6">
 													<g:render template="formNewProject"/>
-													<g:submitButton name="create-project" value="Create project"/>
+													<g:submitButton name="create-project" value="${message(code:'project.createProject')}"/>
 												</td>
 											</tr>
 										</g:ifAnyGranted>

@@ -75,7 +75,7 @@ class SprintController extends BaseController {
 					Follow.link(session.project, user)
 				} else {
 					// Developer
-					session.project.addToTeam(user)
+					Membership.link(session.project, user)
 				}
 				session.project.save()
 			}

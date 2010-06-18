@@ -19,21 +19,21 @@
 	});							
 </script>
 
-<div id="dialog-form-edit" title="Edit task" class="form">
+<div id="dialog-form-edit" title="${message(code:'task.formNameEditTask')}" class="form">
 	<g:form action="editTask" name="formEditTask">
 		<fieldset>
-			<label>Name</label>
+			<label><g:message code="task.name"/></label>
 			<input type="text" name="taskName" id="taskName" value="${flash.taskEdit.name}" class="text ui-widget-content ui-corner-all" />
-			<label>Effort</label>
+			<label><g:message code="task.effort"/></label>
 			<input type="text" name="taskEffort" id="taskEffort" value="${flash.taskEdit.effort}" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
-			<label>Link</label>
+			<label><g:message code="task.link"/></label>
 			<input type="text" name="taskLink" id="taskLink" value="${flash.taskEdit.url}" class="text ui-widget-content ui-corner-all" />
-			<label>Priority</label>
+			<label><g:message code="task.priority"/></label>
 			<g:select name="taskPriority" from="${flash.priorityList}" value="${flash.taskEdit.priority.id}" optionValue="name" optionKey="id"/>
 			<input type="hidden" name="taskId" value="${flash.taskEdit.id}" style="border-style: none;"/>
 		</fieldset>
 	</g:form>
 </div>
 <g:if test="${flash.teammate}">
-	<g:submitButton name="create-task" value="Create task"/>
+	<g:submitButton name="create-task" value="${message(code:'task.createTask')}"/>
 </g:if>

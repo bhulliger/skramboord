@@ -19,12 +19,12 @@
 	});
 </script>
 
-<div id="dialog-form-project" title="Create new project" class="form">
+<div id="dialog-form-project" title="${message(code:'project.formNameCreateProject')}" class="form">
 	<g:form action='addProject' name='formNewProject'>
 		<fieldset>
-			<label>Project</label>
+			<label><g:message code="project.project"/></label>
 			<input type="text" name="projectName" id="projectName" class="text ui-widget-content ui-corner-all"/>
-			<label>Project Master</label>
+			<label><g:message code="project.master"/></label>
 			<g:select name="projectMaster" from="${flash.allUsers}" value="${session.user.id}" optionValue="userRealName" optionKey="id" />
 		</fieldset>
 	</g:form>

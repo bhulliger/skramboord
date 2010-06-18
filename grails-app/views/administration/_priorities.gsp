@@ -39,8 +39,8 @@
 			</g:each>
 		</table>
 		<div class="buttons">
-			<span class="button"><g:actionSubmit class="cancel" action="list" value="Cancel" /></span>
-			<span class="button"><g:actionSubmit class="save" action="savePriorities" value="Save" /></span>
+			<span class="button"><g:actionSubmit class="cancel" action="list" value="${message(code:'default.button.cancel.label')}" /></span>
+			<span class="button"><g:actionSubmit class="save" action="savePriorities" value="${message(code:'default.button.save.label')}" /></span>
 		</div>
 	</g:form>
 </div>

@@ -14,7 +14,7 @@
 	        </div>
 	        <div id="grailsLogo" class="logo">
 	        	<div style="float: left;">
-		        	<a href="http://github.com/pablohess/skramboord" onclick="return ! window.open(this.href);">
+		        	<a href="http://www.skramboord.org" onclick="return ! window.open(this.href);">
 		        		<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord"/>
 		        	</a>
 	        	</div>
@@ -25,20 +25,20 @@
 		        				<span class="icon">
 			        				<img src="${resource(dir:'images/icons',file:'bullet_wrench.png')}" alt="profil"/>
 			        			</span>
-			        			<span class="icon">System Preferences</span>
+			        			<span class="icon"><g:message code="admin.systemPreferences"/></span>
 		        			</g:link>
 						</g:ifAnyGranted>
 	        			<g:link controller="user" action="show" params="[id: session.user.id]" style="padding-right: 10px;">
 	        				<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil"/>
 		        			</span>
-		        			<span class="icon">Welcome, ${session.user.userRealName}</span>
+		        			<span class="icon"><g:message code="main.welcome"/>, ${session.user.userRealName}</span>
 	        			</g:link>
 		        		<g:link controller="logout" action="index">
 		        			<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'application_go.png')}" alt="logout"/>
 		        			</span>
-		        			<span class="icon">Logout</span>
+		        			<span class="icon"><g:message code="main.logout"/></span>
 		        		</g:link>
 	        		</g:isLoggedIn>
 	        	</div>

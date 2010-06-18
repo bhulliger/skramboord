@@ -133,19 +133,19 @@
 				
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-0">Scrum Board</a></li>
-					<li><a href="#tab-1">Burn Down</a></li>
+					<li><a href="#tab-0"><g:message code="task.scrumboard"/></a></li>
+					<li><a href="#tab-1"><g:message code="task.burndown"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<div>
-						<h3>Tasks</h3>
+						<h3><g:message code="task.tasks"/></h3>
 						<g:if test="${flash.taskEdit}">
 							<g:render template="formEditTask"/>
 						</g:if>
 						<g:elseif test="${session.sprint.isSprintActive()}">
 							<g:render template="formNewTask"/>
 						</g:elseif>
-						<g:submitButton name="toggleProductBacklog" value="Product Backlog (${flash.projectBacklog.size()} tasks)"/>
+						<g:submitButton name="toggleProductBacklog" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}"/>
 						
 						<g:hasErrors bean="${flash.task}">
 							<div class="errors">
@@ -159,7 +159,7 @@
 						<div class="clear"></div>
 						
 						<div class="backlog" id="productBacklog">
-							<div class="boardheader">Backlog</div>
+							<div class="boardheader"><g:message code="project.backlog"/></div>
 							<div style="height: 500px; overflow: auto;">
 								<g:if test="${flash.projectBacklog.size() > 0}">
 									<ul id="backlog" class="connectedSortable">
@@ -176,7 +176,7 @@
 						
 						<div class="scrumboard" id="scrumboard">
 							<div class="open">
-								<div class="boardheader">Open</div>
+								<div class="boardheader"><g:message code="task.open"/></div>
 								<g:if test="${flash.taskListOpen.size() > 0}">
 									<ul id="open" class="connectedSortable">
 								</g:if>
@@ -190,7 +190,7 @@
 							</div>
 							
 							<div class="checkout">
-								<div class="boardheader">Checkout</div>
+								<div class="boardheader"><g:message code="task.checkout"/></div>
 								<g:if test="${flash.taskListCheckout.size() > 0}">
 									<ul id="checkout" class="connectedSortable">
 								</g:if>
@@ -204,7 +204,7 @@
 							</div>
 							
 							<div class="done">
-								<div class="boardheader">Done</div>
+								<div class="boardheader"><g:message code="task.done"/></div>
 								<g:if test="${flash.taskListDone.size() > 0}">
 									<ul id="done" class="connectedSortable">
 								</g:if>
@@ -219,7 +219,7 @@
 							
 							<div class="nextStandBy">
 								<div class="next">
-									<div class="boardheader">Next</div>
+									<div class="boardheader"><g:message code="task.next"/></div>
 									<g:if test="${flash.taskListNext.size() > 0}">
 										<ul id="next" class="connectedSortable">
 									</g:if>
@@ -233,7 +233,7 @@
 								</div>
 								
 								<div class="standBy">
-									<div class="boardheader">Stand by</div>
+									<div class="boardheader"><g:message code="task.standby"/></div>
 									<g:if test="${flash.taskListStandBy.size() > 0}">
 										<ul id="standBy" class="connectedSortable">
 									</g:if>

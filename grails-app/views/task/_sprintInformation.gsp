@@ -1,14 +1,14 @@
-<h3>Sprint informations</h3>
+<h3><g:message code="sprint.informations"/></h3>
 <table>
 	<tr>
-		<th>Sprint</th>
-		<th>Goal</th>
-		<th>Start</th>
-		<th>End</th>
-		<th style="text-align:center;">Number of Tasks</th>
-	    <th style="text-align:center;">Total effort</th>
-	    <th style="text-align:center;">Total effort done</th>
-	    <th style="text-align:center; width: 20px;">Active</th>
+		<th><g:message code="sprint.sprint"/></th>
+		<th><g:message code="sprint.goal"/></th>
+		<th><g:message code="sprint.start"/></th>
+		<th><g:message code="sprint.end"/></th>
+		<th style="text-align:center;"><g:message code="task.Tasks"/></th>
+	    <th style="text-align:center;"><g:message code="sprint.totalEffort"/></th>
+	    <th style="text-align:center;"><g:message code="sprint.totalEffortDone"/></th>
+	    <th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
 	</tr>
 	<tr>
 		<td><b>${session.sprint.name}</b></td>

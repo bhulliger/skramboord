@@ -53,8 +53,8 @@
 			
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-0">Sprints</a></li>
-					<li><a href="#tab-1">Project Team</a></li>
+					<li><a href="#tab-0"><g:message code="sprint.sprints"/></a></li>
+					<li><a href="#tab-1"><g:message code="sprint.projectTeam"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:if test="${flash.sprintEdit}">
@@ -66,22 +66,22 @@
 					
 					<g:if test="${session.project.sprints.isEmpty()}">
 						<div class="message">
-							No sprints created yet.
+							<g:message code="sprint.noSprints"/>
 						</div>
 					</g:if>
 					<g:else>
 						<div class="list">
 							<table>
 								<tr>
-									<th>Sprint</th>
-									<th>Goal</th>
-									<th>Start</th>
-									<th>End</th>
-									<th style="text-align:center;">Tasks</th>
-									<th style="text-align:center; width: 20px;">Active</th>
+									<th><g:message code="sprint.sprint"/></th>
+									<th><g:message code="sprint.goal"/></th>
+									<th><g:message code="sprint.start"/></th>
+									<th><g:message code="sprint.end"/></th>
+									<th style="text-align:center;"><g:message code="task.tasks"/></th>
+									<th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
 									<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-										<th style="width: 50px;"></th>
-										<th style="width: 70px;"></th>
+										<th style="width: 20px;"></th>
+										<th style="width: 20px;"></th>
 									</g:if>
 								</tr>
 								<g:each var="sprint" in="${flash.sprintList}" status="i">
@@ -107,10 +107,10 @@
 										</td>
 										<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 											<td>
-												<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon">Edit</span></g:link>
+												<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span><span class="icon"></span></g:link>
 											</td>
 											<td>
-												<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm(unescape('Are you sure to delete sprint %22${sprint.name}%22?'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon">Delete</span></g:link>
+												<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm('${message(code:'sprint.delete', args: [sprint.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span><span class="icon"></span></g:link>
 											</td>
 										</g:if>
 									</tr>
@@ -121,20 +121,20 @@
 				</div>
 				<div id="tab-1">
 					<div class="list">
-						<h3>Team</h3>
+						<h3><g:message code="project.team"/></h3>
 						<table>
 							<thead>
 								<tr>
-									<g:sortableColumn property="username" title="Login Name" />
-									<g:sortableColumn property="name" title="Name" />
-									<g:sortableColumn property="prename" title="Prename" />
-									<g:sortableColumn property="description" title="Description" />
-									<th style="width: 90px; text-align: center;">Project Owner</th>
-									<th style="width: 90px; text-align: center;">Project Master</th>
-									<th style="width: 90px; text-align: center;">Developer</th>
-									<th style="width: 90px; text-align: center;">Follower</th>
+									<g:sortableColumn property="username" title="${message(code:'user.loginName')}" />
+									<g:sortableColumn property="name" title="${message(code:'user.name')}" />
+									<g:sortableColumn property="prename" title="${message(code:'user.prename')}" />
+									<g:sortableColumn property="description" title="${message(code:'user.description')}" />
+									<th style="width: 90px; text-align: center;"><g:message code="project.owner"/></th>
+									<th style="width: 90px; text-align: center;"><g:message code="project.master"/></th>
+									<th style="width: 90px; text-align: center;"><g:message code="project.developer"/></th>
+									<th style="width: 90px; text-align: center;"><g:message code="project.follower"/></th>
 									<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-										<th style="width: 70px; text-align: center;">Remove</th>
+										<th style="width: 20px; text-align: center;"></th>
 									</g:if>
 								</tr>
 							</thead>
@@ -171,7 +171,7 @@
 											</td>
 											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 												<td style="vertical-align: middle; text-align: center;">
-													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]" onclick="return confirm(unescape('Are you sure to remove this user from this project? All checked out tasks from this user will be released again.'));"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon"></span></g:link>
+													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]" onclick="return confirm('${message(code:'project.developer.remove')}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon"></span></g:link>
 												</td>
 											</g:if>
 										</g:if>
@@ -191,7 +191,7 @@
 					<h3>Users</h3>
 					<g:if test="${flash.personList.isEmpty()}">
 						<div class="message">
-							No more users left to support this project.
+							<g:message code="project.noUsers"/>
 						</div>
 					</g:if>
 					<g:else>
@@ -199,13 +199,13 @@
 							<table>
 								<thead>
 									<tr>
-										<g:sortableColumn property="username" title="Login Name" />
-										<g:sortableColumn property="name" title="Name" />
-										<g:sortableColumn property="prename" title="Prename" />
-										<g:sortableColumn property="description" title="Description" />
+										<g:sortableColumn property="username" title="${message(code:'user.loginName')}" />
+										<g:sortableColumn property="name" title="${message(code:'user.name')}" />
+										<g:sortableColumn property="prename" title="${message(code:'user.prename')}" />
+										<g:sortableColumn property="description" title="${message(code:'user.description')}" />
 										<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-											<th style="width: 50px;">Developer</th>
-											<th style="width: 50px;">Follower</th>
+											<th style="width: 50px;"><g:message code="project.developer"/></th>
+											<th style="width: 50px;"><g:message code="project.follower"/></th>
 										</g:if>
 									</tr>
 								</thead>

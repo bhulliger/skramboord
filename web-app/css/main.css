@@ -405,6 +405,7 @@ th.desc a {
 	margin: 0;
 	padding: 0;
 	background: transparent url(../images/skramboord/postit-right.png) no-repeat top right;
+	cursor: move;
 }
 
 .postit {
@@ -443,16 +444,21 @@ div.open, div.checkout, div.done {
 	margin-top: 5px;
 }
 
+div.nextStandBy {
+	float: right;
+	width: 68%;
+}
+
 div.standBy {
 	float: right;
-	width: 32%;
+	width: 47%;
 	margin-top: 5px;
 }
 
 div.next {
 	float: right;
-	width: 32%;
-	margin-right: 4%;
+	width: 47%;
+	margin-right: 6%;
 	margin-top: 5px;
 }
 
@@ -476,4 +482,12 @@ div.next {
 
 div.clear {
 	clear: both;
+}
+
+.iconsTaskEditNone {
+	display: none;
+}
+
+.iconsTaskEdit {
+	display: block;
 }

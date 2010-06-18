@@ -217,32 +217,34 @@
 								</ul>
 							</div>
 							
-							<div class="next">
-								<div class="boardheader">Next</div>
-								<g:if test="${flash.taskListNext.size() > 0}">
-									<ul id="next" class="connectedSortable">
-								</g:if>
-								<g:else>
-									<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
-								</g:else>
-									<g:each var="task" in="${flash.taskListNext}" status="i">
-										<g:render template="task" model="['task':task]"/>
-									</g:each>
-								</ul>
-							</div>
-							
-							<div class="standBy">
-								<div class="boardheader">Stand by</div>
-								<g:if test="${flash.taskListStandBy.size() > 0}">
-									<ul id="standBy" class="connectedSortable">
-								</g:if>
-								<g:else>
-									<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
-								</g:else>
-									<g:each var="task" in="${flash.taskListStandBy}" status="i">
-										<g:render template="task" model="['task':task]"/>
-									</g:each>
-								</ul>
+							<div class="nextStandBy">
+								<div class="next">
+									<div class="boardheader">Next</div>
+									<g:if test="${flash.taskListNext.size() > 0}">
+										<ul id="next" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${flash.taskListNext}" status="i">
+											<g:render template="task" model="['task':task]"/>
+										</g:each>
+									</ul>
+								</div>
+								
+								<div class="standBy">
+									<div class="boardheader">Stand by</div>
+									<g:if test="${flash.taskListStandBy.size() > 0}">
+										<ul id="standBy" class="connectedSortable">
+									</g:if>
+									<g:else>
+										<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
+									</g:else>
+										<g:each var="task" in="${flash.taskListStandBy}" status="i">
+											<g:render template="task" model="['task':task]"/>
+										</g:each>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<div class="clear"></div>

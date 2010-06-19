@@ -2,7 +2,7 @@
 	<div class="postit-right" onmouseover="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEdit')"
                               onmouseout="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEditNone')">
 		<div class="postit">
-			<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.toString()};">${task.name}</g:link>
+			<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.colorAsString()};">${task.name}</g:link>
 			<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 				<div id="icons_${task.id}" class="iconsTaskEditNone" style="float: right;">
 					<g:link controller="task" action="edit" params="[task: task.id]">

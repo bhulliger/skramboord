@@ -7,16 +7,16 @@
 		<table>
 			<tr>
 				<g:sortableColumn property="id" defaultOrder="asc" title="Id" style="width: 40px;"/>
-				<g:sortableColumn property="name" defaultOrder="asc" title="Priority"/>
-				<g:sortableColumn property="color" defaultOrder="asc" title="Color" style="width: 55px;"/>
+				<g:sortableColumn property="name" defaultOrder="asc" title="${message(code:'task.priority')}"/>
+				<g:sortableColumn property="color" defaultOrder="asc" title="${message(code:'task.color')}" style="width: 55px;"/>
 			</tr>
 			<g:each var="priority" in="${flash.priorities}" status="i">
 				<g:def var="priorityId" value="${priority.id}"/>
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 					<td style="vertical-align: middle;">${priority.id}</td>
-					<td style="vertical-align: middle;">${priority.name}</td>
-					<td style="vertical-align: middle; background-color: #${priority.toString()}" id="td${i}">
-						<input type="text" maxlength="6" size="6" name="priority_${priority.id}" id="colorpickerField${i}" value="${priority.toString()}"/>
+					<td style="vertical-align: middle;"><g:message code="priorities.${priority.name}"/></td>
+					<td style="vertical-align: middle; background-color: #${priority.colorAsString()}" id="td${i}">
+						<input type="text" maxlength="6" size="6" name="priority_${priority.id}" id="colorpickerField${i}" value="${priority.colorAsString()}"/>
 						<script type="text/javascript">
 							$(function() {
 								$('#colorpickerField'+${i}).ColorPicker({

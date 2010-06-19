@@ -24,6 +24,10 @@ class Priority {
 	Color color
 	
 	String toString() {
+		return name
+	}
+	
+	String colorAsString() {
 		String hex = Integer.toHexString(color.getRGB() & 0x00ffffff)
 		// add leading zeros if necessary
 		while(hex.length() < 6) {
@@ -36,4 +40,10 @@ class Priority {
 		name(nullable:false)
 		color(nullable:false)
     }
+	
+	static namedQueries = {
+		byName { name ->
+			eq('name', name)
+		}
+	}
 }

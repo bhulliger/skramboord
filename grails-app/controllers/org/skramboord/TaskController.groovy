@@ -95,7 +95,7 @@ class TaskController extends BaseController {
 	 */
 	def addTask = {
 		if (taskWorkPermission(session.user, session.project)) {
-			Task task = new Task(name: params.taskName, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.get(params.taskPriority), sprint: Sprint.find(session.sprint))
+			Task task = new Task(name: params.taskName, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.byName(params.taskPriority).list().first(), sprint: Sprint.find(session.sprint))
 			if (!task.save()) {
 				flash.task = task
 			}
@@ -147,7 +147,7 @@ class TaskController extends BaseController {
 				task.name = params.taskName
 				task.effort = params.taskEffort?.toDouble()
 				task.url = params.taskLink
-				task.priority = Priority.get(params.taskPriority)
+				task.priority = Priority.byName(params.taskPriority).list().first()
 
 				if (!task.save()) {
 					flash.task=task

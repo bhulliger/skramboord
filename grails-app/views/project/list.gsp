@@ -180,7 +180,7 @@
 												<td style="vertical-align: middle;">${task.sprint?.project?.name}</td>
 												<td style="vertical-align: middle;">${task.sprint?.name}</td>
 												<td style="vertical-align: middle;text-align:center;">${task.effort}</td>
-												<td style="vertical-align: middle; font-weight: bold; color: #${task.priority};">${task.priority.name}</td>
+												<td style="vertical-align: middle; font-weight: bold; color: #${task.priority.colorAsString()};"><g:message code="priorities.${task.priority.name}"/></td>
 											</tr>
 										</g:each>
 									</table>

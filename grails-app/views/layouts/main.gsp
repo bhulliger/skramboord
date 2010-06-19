@@ -37,12 +37,12 @@
 	        			
 	        			<g:link controller="${params.controller}" action="${params.action}" params="[lang:'en']">
 	        				<span class="icon">
-		        				<img src="${resource(dir:'images/icons',file:'english.png')}" alt="english" height="16px"/>
+		        				<img src="${resource(dir:'images/icons',file:'english.png')}" alt="english"/>
 		        			</span>
 	        			</g:link>
 						<g:link controller="${params.controller}" action="${params.action}" params="[lang:'de']" style="padding-right: 10px;">
 							<span class="icon">
-		        				<img src="${resource(dir:'images/icons',file:'german.png')}" alt="german" height="16px"/>
+		        				<img src="${resource(dir:'images/icons',file:'german.png')}" alt="german"/>
 		        			</span>
 						</g:link>
 	        			

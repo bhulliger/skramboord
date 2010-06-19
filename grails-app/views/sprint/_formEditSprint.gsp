@@ -6,11 +6,11 @@
 			width: 500,
 			modal: true,
 			buttons: {
-				'Save': function() {
+				'<g:message code="default.button.save.label"/>': function() {
 					document.getElementById("formEditSprint").submit();
 					$(this).dialog('close');
 				},
-				Cancel: function() {
+				'<g:message code="default.button.cancel.label"/>': function() {
 					location.reload(true);
 					$(this).dialog('close');
 				}

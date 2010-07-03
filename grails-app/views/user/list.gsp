@@ -10,7 +10,7 @@
 			
 			<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
 				<div class="nav">
-					<span class="menuButton"><g:link class="create" action="create">New User</g:link></span>
+					<span class="menuButton"><g:link class="create" action="create"><g:message code="admin.newUser"/></g:link></span>
 				</div>
 			</g:ifAnyGranted>
 			<h3>User List</h3>

@@ -34,7 +34,8 @@
 		        			</span>
 		        			<span class="icon"><g:message code="main.welcome"/>, ${session.user.userRealName}</span>
 	        			</g:link>
-	        			
+	        		</g:isLoggedIn>
+	        		
 	        			<g:link controller="${params.controller}" action="${params.action}" params="[lang:'en']">
 	        				<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'english.png')}" alt="english"/>
@@ -45,7 +46,8 @@
 		        				<img src="${resource(dir:'images/icons',file:'german.png')}" alt="german"/>
 		        			</span>
 						</g:link>
-	        			
+						
+	        		<g:isLoggedIn>
 		        		<g:link controller="logout" action="index">
 		        			<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'application_go.png')}" alt="logout"/>

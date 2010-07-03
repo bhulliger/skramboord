@@ -5,14 +5,14 @@
 
 <body>
 	<div class="body">
-		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="user" action="list">> User List</g:link> <g:link controller="user" action="show" params="[id: flash.person.id]">> ${flash.person.username?.encodeAsHTML()}</g:link></h1>
+		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="user" action="list">> <g:message code="admin.userList"/></g:link> <g:link controller="user" action="show" params="[id: flash.person.id]">> ${flash.person.username?.encodeAsHTML()}</g:link></h1>
 		
 		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
 			<div class="nav">
-				<span class="menuButton"><g:link class="create" action="create">New User</g:link></span>
+				<span class="menuButton"><g:link class="create" action="create"><g:message code="admin.newUser"/></g:link></span>
 			</div>
 		</g:ifAnyGranted>
-		<h3>Show User</h3>
+		<h3><g:message code="user.profile"/></h3>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
@@ -20,47 +20,47 @@
 			<table>
 			<tbody>
 				<tr class="prop">
-					<td valign="top" class="name">Login Name:</td>
+					<td valign="top" class="name"><g:message code="user.loginName"/>:</td>
 					<td valign="top" class="value">${flash.person.username?.encodeAsHTML()}</td>
 				</tr>
 
 				<tr class="prop">
-					<td valign="top" class="name">First Name:</td>
+					<td valign="top" class="name"><g:message code="user.prename"/>:</td>
 					<td valign="top" class="value">${flash.person.prename?.encodeAsHTML()}</td>
 				</tr>
 				
 				<tr class="prop">
-					<td valign="top" class="name">Name:</td>
+					<td valign="top" class="name"><g:message code="user.name"/>:</td>
 					<td valign="top" class="value">${flash.person.name?.encodeAsHTML()}</td>
 				</tr>
 
 				<tr class="prop">
-					<td valign="top" class="name">Enabled:</td>
-					<td valign="top" class="value">${flash.person.enabled}</td>
+					<td valign="top" class="name"><g:message code="user.enabled"/>:</td>
+					<td valign="top" class="value"><g:checkBox name="userEnabled" value="${flash.person.enabled}" disabled="true"/></td>
 				</tr>
 
 				<tr class="prop">
-					<td valign="top" class="name">Description:</td>
+					<td valign="top" class="name"><g:message code="user.description"/>:</td>
 					<td valign="top" class="value">${flash.person.description?.encodeAsHTML()}</td>
 				</tr>
 
 				<tr class="prop">
-					<td valign="top" class="name">Email:</td>
+					<td valign="top" class="name"><g:message code="user.email"/>:</td>
 					<td valign="top" class="value">${flash.person.email?.encodeAsHTML()}</td>
 				</tr>
 
 				<tr class="prop">
-					<td valign="top" class="name">Show Email:</td>
-					<td valign="top" class="value">${flash.person.emailShow}</td>
+					<td valign="top" class="name"><g:message code="user.showEmail"/>:</td>
+					<td valign="top" class="value"><g:checkBox name="emailShow" value="${flash.person.emailShow}" disabled="true"/></td>
 				</tr>
 				
 				<tr class="prop">
-					<td valign="top" class="name">Task Color:</td>
+					<td valign="top" class="name"><g:message code="task.taskColor"/>:</td>
 					<td valign="top" class="value"><span style="padding: 2px; border: 4px solid #${flash.person.taskColor};">${flash.person.taskColor}</span></td>
 				</tr>
 
 				<tr class="prop">
-					<td valign="top" class="name">Roles:</td>
+					<td valign="top" class="name"><g:message code="admin.roles"/>:</td>
 					<td valign="top" class="value">
 						<ul>
 						<g:each in="${flash.roleNames}" var='name'>
@@ -77,9 +77,9 @@
 			<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || flash.person.id == session.user.id}">
 				<div class="buttons">
 					<input type="hidden" name="id" value="${flash.person.id}"/>
-					<span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
+					<span class="button"><g:actionSubmit class="edit" value="${message(code:'default.button.edit.label')}" action="Edit"/></span>
 					<g:ifAnyGranted role="ROLE_SUPERUSER">
-						<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+						<span class="button"><g:actionSubmit class="delete" onclick="return confirm('${message(code:'default.button.delete.confirm.message')}');" value="${message(code:'default.button.delete.label')}" /></span>
 					</g:ifAnyGranted>
 				</div>
 			</g:if>

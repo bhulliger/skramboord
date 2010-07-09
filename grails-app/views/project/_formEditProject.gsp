@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-project-edit").dialog({
 			autoOpen: true,
-			height: 420,
+			height: 300,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -24,10 +24,6 @@
 		<fieldset>
 			<label><g:message code="project.project"/></label>
 			<input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/>
-			<label><g:message code="project.owner"/></label>
-			<g:select name="projectOwner" from="${flash.users}" value="${flash.projectEdit.owner.id}" optionValue="userRealName" optionKey="id" />
-			<label><g:message code="project.master"/></label>
-			<g:select name="projectMaster" from="${flash.allUsers}" value="${flash.projectEdit.master.id}" optionValue="userRealName" optionKey="id" />
 			<label><g:message code="project.twitter.account"/></label>
 			<input type="text" name="twitterAccount" id="twitterAccount" value="${flash.projectEdit.twitter?.account}" class="text ui-widget-content ui-corner-all"/>
 			<label><g:message code="project.twitter.password"/></label>

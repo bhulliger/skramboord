@@ -34,22 +34,16 @@ class SprintController extends BaseController {
 			redirect(controller:'project', action:'list')
 		}
 		
-		flash.watchList = User.withCriteria {
-			watch {
-				eq('project', session.project)
-			}
-		}
-		flash.teamList = User.withCriteria {
-			projects {
-				eq('project', session.project)
-			}
-		}
+		flash.watchList = User.followers(session.project).list()
+		flash.teamList = User.projectTeam(session.project).list()
+		
 		flash.fullList = new HashSet<User>()
 		flash.fullList.addAll(flash.watchList)
 		flash.fullList.addAll(flash.teamList)
 		flash.fullList.add(session.project.owner)
 		flash.fullList.add(session.project.master)
-		flash.fullList = flash.fullList.sort{it.username}
+		flash.fullList = flash.fullList.sort{it.username
+		}
 		
 		flash.personList = User.list(params)
 		flash.personList.removeAll(flash.fullList)
@@ -59,73 +53,6 @@ class SprintController extends BaseController {
 			order('endDate','desc')
 			order('startDate', 'desc')
 		}
-	}
-	
-	/**
-	 * Add developer to project
-	 */
-	def addDeveloper = {
-		if (sprintWritePermission(session.user, session.project)) {
-			if (params.user) {
-				def user = User.get(params.user)
-				session.project.refresh()
-
-				if (params.follower) {
-					// Follower
-					Follow.link(session.project, user)
-				} else {
-					// Developer
-					Membership.link(session.project, user)
-				}
-				session.project.save()
-			}
-		} else {
-			flash.message = message(code:"error.insufficientAccessRights")
-		}
-		
-		redirect(controller:'sprint', action:'list')
-	}
-	
-	/**
-	 * Remove developer from project
-	 */
-	def removeDeveloper = {
-		if (sprintWritePermission(session.user, session.project)) {
-			if (params.user) {
-				def user = User.get(params.user)
-				session.project.refresh()
-				
-				if (session.project.followerList().contains(user)) {
-					// Remove Follower
-					Follow.unlink(session.project, user)
-				} else {
-					// Remove Developer
-					// set checked out tasks from this user back to open.
-					def tasks = Task.withCriteria {
-						eq('user', user)
-						eq('state', StateTask.getStateCheckedOut())
-						sprint {
-							eq('project', session.project)
-						}
-					}
-					for (def task : tasks) {
-						task.user = null
-						task.state = StateTask.getStateOpen()
-						task.save()
-					}
-					
-					session.project.refresh()
-					
-					Membership.unlink(session.project, user)
-				}
-				
-				session.project.save()
-			}
-		} else {
-			flash.message = message(code:"error.insufficientAccessRights")
-		}
-		
-		redirect(controller:'sprint', action:'list')
 	}
 	
 	/**
@@ -206,6 +133,168 @@ class SprintController extends BaseController {
 		}
 		
 		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Sets a new scrum master.
+	 */
+	def movePersonToScrumMaster = {
+		if (sprintWritePermission(session.user, session.project)) {
+			User user = User.get(removePersonPrefix(params.personId))
+			session.project.refresh()
+			if (session.project.owner.id != user.id) {
+				if (User.projectTeam(session.project).list().contains(user)) {
+					// Remove as developer
+					removeDeveloper(user, session.project)
+				}
+				if (User.followers(session.project).list().contains(user)) {
+					// Remove as follower
+					Follow.unlink(session.project, user)
+				}
+				
+				session.project.master = user
+				session.project.save()
+			} else {
+				flash.message = message(code:"project.error.masterOrOwnerRemoved")
+			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Sets a new product owner.
+	 */
+	def movePersonToProdctOwner = {
+		if (sprintWritePermission(session.user, session.project)) {
+			User user = User.get(removePersonPrefix(params.personId))
+			session.project.refresh()
+			if (session.project.master.id != user.id) {				
+				if (User.projectTeam(session.project).list().contains(user)) {
+					// Remove as developer
+					removeDeveloper(user, session.project)
+				}
+				if (User.followers(session.project).list().contains(user)) {
+					// Remove as follower
+					Follow.unlink(session.project, user)
+				}
+				
+				session.project.owner = user
+				session.project.save()
+			} else {
+				flash.message = message(code:"project.error.masterOrOwnerRemoved")
+			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Moves a person back to the user list.
+	 */
+	def movePersonToUsers = {
+		if (sprintWritePermission(session.user, session.project)) {
+			User user = User.get(removePersonPrefix(params.personId))
+			session.project.refresh()
+			if (session.project.master.id != user.id && session.project.owner.id != user.id) {
+				if (User.projectTeam(session.project).list().contains(user)) {
+					// Remove as developer
+					removeDeveloper(user, session.project)
+				}
+				if (User.followers(session.project).list().contains(user)) {
+					// Remove as follower
+					Follow.unlink(session.project, user)
+				}
+				
+				session.project.save()
+			} else {
+				flash.message = message(code:"project.error.masterOrOwnerRemoved")
+			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Adds a person to a project as follower.
+	 */
+	def movePersonToFollowers = {
+		if (sprintWritePermission(session.user, session.project)) {
+			User user = User.get(removePersonPrefix(params.personId))
+			session.project.refresh()
+			if (session.project.master.id != user.id && session.project.owner.id != user.id) {
+				if (User.projectTeam(session.project).list().contains(user)) {
+					// Remove as developer
+					removeDeveloper(user, session.project)
+				}
+				// Add as follower
+				Follow.link(session.project, user)
+			} else {
+				flash.message = message(code:"project.error.masterOrOwnerRemoved")
+			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Adds a person to a project as developer.
+	 */
+	def movePersonToDevelopers = {
+		if (sprintWritePermission(session.user, session.project)) {
+			User user = User.get(removePersonPrefix(params.personId))
+			session.project.refresh()
+			if (session.project.master.id != user.id && session.project.owner.id != user.id) {
+				if (User.followers(session.project).list().contains(user)) {
+					// Remove as follower
+					Follow.unlink(session.project, user)
+				}
+				// Add as developer
+				Membership.link(session.project, user)
+			} else {
+				flash.message = message(code:"project.error.masterOrOwnerRemoved")
+			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Removes a developer froma project. Set checked out task back to open.
+	 * 
+	 * @param user
+	 * @param project
+	 */
+	private void removeDeveloper(User user, Project project) {
+		// set checked out tasks from this user back to open.
+		def tasks = Task.checkedOutTasksFromUserInProject(user, project).list()
+		for (def task : tasks) {
+			task.user = null
+			task.state = StateTask.getStateOpen()
+			task.save()
+		}
+		
+		Membership.unlink(project, user)
+	}
+	
+	/**
+	 * Removes prefix 'personId_'
+	 *
+	 * @param String
+	 * @return person id
+	 */
+	private String removePersonPrefix(String personId) {
+		return personId.replaceFirst("personId_", "")
 	}
 	
 	private boolean sprintViewPermission(User user, Project project) {

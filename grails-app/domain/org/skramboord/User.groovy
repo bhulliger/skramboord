@@ -67,6 +67,20 @@ class User {
 		color(nullable: true)
 	}
 	
+	static namedQueries = {
+		projectTeam { fromProject ->
+			projects {
+				eq('project', fromProject)
+			}
+		}
+		
+		followers { fromProject ->
+			watch {
+				eq('project', fromProject)
+			}
+		}
+	}
+	
 	def initDashboard() {
 		addToPortlets(new DashboardPortlet(name: "tasks", portletsOrder: 0, owner: this))
 		addToPortlets(new DashboardPortlet(name: "sprints", portletsOrder: 1, owner: this))

@@ -7,6 +7,9 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.mouse.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.draggable.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.sortable.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.droppable.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.dialog.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.position.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.resizable.js')}"></script>
@@ -15,7 +18,7 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.datepicker.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
-		
+				
 		<script type="text/javascript">
 			$(function() {
 				$('#create-sprint')
@@ -120,119 +123,7 @@
 					</g:else>
 				</div>
 				<div id="tab-1">
-					<div class="list">
-						<h3><g:message code="project.team"/></h3>
-						<table>
-							<thead>
-								<tr>
-									<g:sortableColumn property="username" title="${message(code:'user.loginName')}" />
-									<g:sortableColumn property="name" title="${message(code:'user.name')}" />
-									<g:sortableColumn property="prename" title="${message(code:'user.prename')}" />
-									<g:sortableColumn property="description" title="${message(code:'user.description')}" />
-									<th style="width: 90px; text-align: center;"><g:message code="project.owner"/></th>
-									<th style="width: 90px; text-align: center;"><g:message code="project.master"/></th>
-									<th style="width: 90px; text-align: center;"><g:message code="project.developer"/></th>
-									<th style="width: 90px; text-align: center;"><g:message code="project.follower"/></th>
-									<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-										<th style="width: 20px; text-align: center;"></th>
-									</g:if>
-								</tr>
-							</thead>
-							<tbody>
-								<g:each in="${flash.fullList}" status="i" var="person">
-									<g:def var="userId" value="${person.id}"/>
-									<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-										<td>
-											<g:link controller="user" action="show" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="show"/></span><span class="icon">${person.username?.encodeAsHTML()}</span></g:link>
-										</td>
-										<td style="vertical-align: middle;">${person.name?.encodeAsHTML()}</td>
-										<td style="vertical-align: middle;">${person.prename?.encodeAsHTML()}</td>
-										<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
-										<td style="vertical-align: middle; text-align: center;">
-											<g:if test="${person.id == session.project.owner.id}">
-												<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
-											</g:if>
-										</td>
-										<td style="vertical-align: middle; text-align: center;">
-											<g:if test="${person.id == session.project.master.id}">
-												<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
-											</g:if>
-										</td>
-										<g:if test="${person.id != session.project.master.id && person.id != session.project.owner.id}">
-											<td style="vertical-align: middle; text-align: center;">
-												<g:if test="${flash.teamList.contains(person)}">
-													<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
-												</g:if>
-											</td>
-											<td style="vertical-align: middle; text-align: center;">
-												<g:if test="${flash.watchList.contains(person)}">
-													<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}" alt="show"/></span><span class="icon"></span>
-												</g:if>
-											</td>
-											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-												<td style="vertical-align: middle; text-align: center;">
-													<g:link controller="sprint" action="removeDeveloper" params="[user: userId]" onclick="return confirm('${message(code:'project.developer.remove')}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="remove"/></span><span class="icon"></span></g:link>
-												</td>
-											</g:if>
-										</g:if>
-										<g:else>
-											<td></td>
-											<td></td>
-											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-												<td></td>
-											</g:if>
-										</g:else>
-									</tr>
-								</g:each>
-							</tbody>
-						</table>
-					</div>
-					<br/>
-					<h3>Users</h3>
-					<g:if test="${flash.personList.isEmpty()}">
-						<div class="message">
-							<g:message code="project.noUsers"/>
-						</div>
-					</g:if>
-					<g:else>
-						<div class="list">
-							<table>
-								<thead>
-									<tr>
-										<g:sortableColumn property="username" title="${message(code:'user.loginName')}" />
-										<g:sortableColumn property="name" title="${message(code:'user.name')}" />
-										<g:sortableColumn property="prename" title="${message(code:'user.prename')}" />
-										<g:sortableColumn property="description" title="${message(code:'user.description')}" />
-										<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-											<th style="width: 50px;"><g:message code="project.developer"/></th>
-											<th style="width: 50px;"><g:message code="project.follower"/></th>
-										</g:if>
-									</tr>
-								</thead>
-								<tbody>
-									<g:each in="${flash.personList}" status="i" var="person">
-										<g:def var="userId" value="${person.id}"/>
-										<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-											<td>
-												<g:link controller="user" action="show" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="show"/></span><span class="icon">${person.username?.encodeAsHTML()}</span></g:link>
-											</td>
-											<td style="vertical-align: middle;">${person.name?.encodeAsHTML()}</td>
-											<td style="vertical-align: middle;">${person.prename?.encodeAsHTML()}</td>
-											<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
-											<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-												<td style="vertical-align: middle;text-align:center;">
-													<g:link controller="sprint" action="addDeveloper" params="[user: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="add"/></span><span class="icon"></span></g:link>
-												</td>
-												<td style="vertical-align: middle;text-align:center;">
-													<g:link controller="sprint" action="addDeveloper" params="[user: userId, follower: true]"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="add"/></span><span class="icon"></span></g:link>
-												</td>
-											</g:if>
-										</tr>
-									</g:each>
-								</tbody>
-							</table>
-						</div>
-					</g:else>
+					<g:render template="projectTeam"/>
 				</div>
 			</div>
 		</div>

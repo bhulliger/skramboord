@@ -148,7 +148,7 @@ class BootStrap {
 		sprint1_3.save()
 		
 		// Initialize Project skramboord
-		Project skramboord = new Project(name: "skramboord", owner: userDevChief, master: userDevChief)
+		Project skramboord = new Project(name: "skramboord", owner: userAdmin, master: userDevChief)
 		skramboord.addToSprints(sprint1_0)
 		skramboord.addToSprints(sprint1_1)
 		skramboord.addToSprints(sprint1_2)

@@ -86,7 +86,6 @@ class ProjectController extends BaseController {
 		
 			if (projectEditPermission(session.user, project)) {
 				flash.projectEdit = project
-				flash.allUsers = User.list()
 				def criteria = User.createCriteria()
 				flash.users = criteria.list {
 						authorities {
@@ -108,8 +107,6 @@ class ProjectController extends BaseController {
 		if (params.projectId) {
 			def project = Project.get(params.projectId)
 			if (projectEditPermission(session.user, project)) {
-				project.owner = User.get(params.projectOwner)
-				project.master = User.get(params.projectMaster)
 				project.name = params.projectName
 				
 				// Twitter

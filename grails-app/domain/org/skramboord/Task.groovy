@@ -76,5 +76,12 @@ class Task {
 				sum("effort")
 			}
 		}
+		checkedOutTasksFromUserInProject { fromUser, fromProject ->
+			eq('user', fromUser)
+			eq('state', StateTask.getStateCheckedOut())
+			sprint {
+				eq('project', fromProject)
+			}
+		}
 	}
 }

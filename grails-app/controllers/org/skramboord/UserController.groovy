@@ -38,7 +38,7 @@ class UserController extends BaseController {
 	def show = {
 		def person = User.get(params.id)
 		if (!person) {
-			flash.message = "User not found with id $params.id"
+			flash.message = message(code:"user.notFound", args:[params.id])
 			redirect action: list
 			return
 		}
@@ -64,7 +64,7 @@ class UserController extends BaseController {
 				def authPrincipal = authenticateService.principal()
 				//avoid self-delete if the logged-in user is an admin
 				if (!(authPrincipal instanceof String) && authPrincipal.username == person.username) {
-					flash.message = "You can not delete yourself, please login as another admin and try again"
+					flash.message = message(code:"user.selfDestruction")
 				}
 				else {
 					// first, delete this person from People_Authorities table.
@@ -76,14 +76,14 @@ class UserController extends BaseController {
 					
 					// Now delete this person...
 					person.delete()
-					flash.message = "User $params.id deleted."
+					flash.message = message(code:"user.deleted", args:[params.id])
 				}
 			}
 			else {
-				flash.message = "User not found with id $params.id"
+				flash.message = message(code:"user.notFound", args:[params.id])
 			}
 		} else {
-			flash.message = "Only Super User can delete other users."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect action: list
@@ -92,12 +92,12 @@ class UserController extends BaseController {
 	def edit = {
 		def person = User.get(params.id)
 		if (!person) {
-			flash.message = "User not found with id $params.id"
+			flash.message = message(code:"user.notFound", args:[params.id])
 			redirect action: list
 			return
 		}
 		if (authenticateService.ifNotGranted('ROLE_SUPERUSER') && person.id != session.user.id) {
-			flash.message = "You have no permission to edit this user."
+			flash.message = message(code:"error.insufficientAccessRights")
 			redirect action: list
 			return
 		}
@@ -112,7 +112,7 @@ class UserController extends BaseController {
 		
 		def person = User.get(params.id)
 		if (!person) {
-			flash.message = "User not found with id $params.id"
+			flash.message = message(code:"user.notFound", args:[params.id])
 			redirect action: edit, id: params.id
 			return
 		}

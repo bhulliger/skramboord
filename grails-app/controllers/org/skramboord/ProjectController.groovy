@@ -71,10 +71,10 @@ class ProjectController extends BaseController {
 				def project = Project.get(params.project)
 				project.delete()
 				
-				flash.message = "Project $project.name deleted."
+				flash.message = message(code:"project.deleted", args:[project.name])
 			}
 		} else {
-			flash.message = "Only Super User can delete projects."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'project', action:'list')
@@ -94,7 +94,7 @@ class ProjectController extends BaseController {
 				       }
 				}
 			} else {
-				flash.message = "Only Super User and admins can edit projects."
+				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
 		
@@ -123,7 +123,7 @@ class ProjectController extends BaseController {
 					flash.project=project
 				}
 			} else {
-				flash.message = "Only Super User and admins can edit projects."
+				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
 
@@ -142,7 +142,7 @@ class ProjectController extends BaseController {
 				flash.project=project
 			}
 		} else {
-			flash.message = "Only Super User and admins can create new projects."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'project', action:'list')

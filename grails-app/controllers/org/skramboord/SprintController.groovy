@@ -80,7 +80,7 @@ class SprintController extends BaseController {
 				session.project.save()
 			}
 		} else {
-			flash.message = "Only project owner, project master and super user can add a developer."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -122,7 +122,7 @@ class SprintController extends BaseController {
 				session.project.save()
 			}
 		} else {
-			flash.message = "Only project owner, project master and super user can remove a developer."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -145,7 +145,7 @@ class SprintController extends BaseController {
 				flash.sprint=sprint
 			}
 		} else {
-			flash.message = "Only project owner, project master and super user can create new sprints."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -157,7 +157,7 @@ class SprintController extends BaseController {
 				flash.sprintEdit = Sprint.get(params.sprint)
 			}
 		} else {
-			flash.message = "Only Super User and admins can edit sprints."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -184,7 +184,7 @@ class SprintController extends BaseController {
 				}
 			}
 		} else {
-			flash.message = "Only project owner, project master and super user can edit sprints."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'sprint', action:'list')
@@ -199,10 +199,10 @@ class SprintController extends BaseController {
 				def sprint = Sprint.get(params.sprint)
 				sprint.delete()
 				
-				flash.message = "Sprint $sprint.name deleted."
+				flash.message = message(code:"sprint.deleted", args:[sprint.name])
 			}
 		} else {
-			flash.message = "Only project owner, project master and super user can delete sprints."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'sprint', action:'list')

@@ -44,7 +44,7 @@ class AdministrationController {
 				prio.save()
 			}
 		} catch (NumberFormatException e) {
-			flash.message = "Only hexadacimal values are allowed."
+			flash.message = message(code:"admin.hexValues")
 		}
 		
 		redirect(controller:'administration', action:'list')

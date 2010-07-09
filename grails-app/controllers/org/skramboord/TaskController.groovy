@@ -100,7 +100,7 @@ class TaskController extends BaseController {
 				flash.task = task
 			}
 		} else {
-			flash.message = "Only teammates can add new tasks."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -115,10 +115,10 @@ class TaskController extends BaseController {
 				def task = Task.get(params.task)
 				task.delete()
 				
-				flash.message = "Task $task.name deleted."
+				flash.message = message(code:"task.deleted", args:[task.name])
 			}
 		} else {
-			flash.message = "Only Super User and admins can delete tasks."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -130,7 +130,7 @@ class TaskController extends BaseController {
 				flash.taskEdit = Task.get(params.task)
 			}
 		} else {
-			flash.message = "Only Super User and admins can edit tasks."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -154,7 +154,7 @@ class TaskController extends BaseController {
 				}
 			}
 		} else {
-			flash.message = "Only Super User and admins can edit tasks."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -178,7 +178,7 @@ class TaskController extends BaseController {
 			}
 			task.save()
 		} else {
-			flash.message = "Only teammates can change the state of a task."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -194,7 +194,7 @@ class TaskController extends BaseController {
 			task.state.checkOut(task)
 			task.save()
 		} else {
-			flash.message = "Only teammates can change the state of a task."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -212,7 +212,7 @@ class TaskController extends BaseController {
 			// tweet it!
 			sendTwitterMessage(session.user, session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
 		} else {
-			flash.message = "Only teammates can change the state of a task."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -227,7 +227,7 @@ class TaskController extends BaseController {
 			task.state.next(task)
 			task.save()
 		} else {
-			flash.message = "Only teammates can change the state of a task."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -242,7 +242,7 @@ class TaskController extends BaseController {
 			task.state.standBy(task)
 			task.save()
 		} else {
-			flash.message = "Only teammates can change the state of a task."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')
@@ -259,7 +259,7 @@ class TaskController extends BaseController {
 			task.project = Project.get(session.project.id)
 			task.save()
 		} else {
-			flash.message = "Only teammates can change the state of a task."
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
 		redirect(controller:'task', action:'list')

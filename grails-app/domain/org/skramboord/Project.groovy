@@ -20,7 +20,7 @@ package org.skramboord
 class Project {
 	String name
 	Twitter twitter
-	static hasMany = [sprints:Sprint, tasks:Task, team:Membership, follower:Follow]
+	static hasMany = [releases:Release, sprints:Sprint, tasks:Task, team:Membership, follower:Follow]
 	static belongsTo = [owner:User, master:User]
 
 	def teamList() {

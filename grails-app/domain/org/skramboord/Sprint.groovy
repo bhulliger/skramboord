@@ -23,10 +23,10 @@ class Sprint {
 	Date startDate
 	Date endDate
 	static hasMany = [tasks:Task]
-	static belongsTo = [project:Project]
+	static belongsTo = [release:Release]
 
     static constraints = {
-		name(nullable:false, blank:false, unique: ['project'])
+		name(nullable:false, blank:false, unique: ['release'])
 		goal(nullable:true)
 		startDate(nullable:false)
 		endDate(nullable:false, validator: {val, obj ->
@@ -35,8 +35,13 @@ class Sprint {
 			}
 
 		})
-		project(nullable:false)
+		release(nullable:false)
     }
+	
+	static mapping = {
+		sort endDate:"desc"
+		//sort:'endDate desc, startDate desc'
+	}
 	
 	/**
 	 * Returns true if today is between start and end date.

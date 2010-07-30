@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	$(function() {
+	$(function() {		
 		$("#dialog-form-sprint").dialog({
 			autoOpen: false,
 			height: 500,
@@ -24,6 +24,12 @@
 			document.getElementById('endDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
 		}});
 	});
+
+	function openFormNewSprint(id){
+		document.getElementById('releaseId').value=id;
+		$('#dialog-form-sprint').dialog('open');
+		return true;
+	}
 </script>
 
 <div id="dialog-form-sprint" title="${message(code:'sprint.formNameCreateSprint')}" class="form">
@@ -45,7 +51,7 @@
 			</table>
 			<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
 			<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
+			<input type="hidden" id="releaseId" name="releaseId" style="border-style: none;"/>
 		</fieldset>
 	</g:form>
 </div>
-<g:submitButton name="create-sprint" value="${message(code:'sprint.createSprint')}"/>

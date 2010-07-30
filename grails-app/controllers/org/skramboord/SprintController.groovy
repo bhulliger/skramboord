@@ -48,10 +48,9 @@ class SprintController extends BaseController {
 		flash.personList = User.list(params)
 		flash.personList.removeAll(flash.fullList)
 		
-		flash.sprintList = Sprint.withCriteria {
+		flash.releaseList = Release.withCriteria {
 			eq('project', session.project)
-			order('endDate','desc')
-			order('startDate', 'desc')
+			order('name','asc')
 		}
 	}
 	
@@ -64,10 +63,9 @@ class SprintController extends BaseController {
 			def sprintGoal = params.sprintGoal
 			def startDate = params.startDateHidden ? new Date(params.startDateHidden) : null
 			def endDate = params.endDateHidden ? new Date(params.endDateHidden) : null
+			Release release = Release.get(params.releaseId)
 			
-			Project project = Project.find(session.project)
-			
-			Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, project: project)
+			Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, release: release)
 			if (!sprint.save()) {
 				flash.sprint=sprint
 			}

@@ -51,5 +51,3 @@
 		</fieldset>
 	</g:form>
 </div>
-
-<g:submitButton name="create-sprint" value="${message(code:'sprint.createSprint')}"/>

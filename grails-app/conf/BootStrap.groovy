@@ -38,6 +38,7 @@ import org.skramboord.Membership;
 import org.skramboord.Follow;
 import org.skramboord.Requestmap;
 import org.apache.commons.codec.digest.DigestUtils
+import org.skramboord.Release;
 
 class BootStrap {
 	
@@ -116,6 +117,10 @@ class BootStrap {
 		Date date3 = date2 - 10
 		Date date4 = date3 - 10
 		
+		// Releases
+		Release release1_0 = new Release(name: "1.0", goal: "Login System")
+		Release release1_1 = new Release(name: "1.1", goal: "Usability Improvements")
+		
 		// Sprint 1.0
 		Sprint sprint1_0 = new Sprint(name: "1.0", goal: "Login System", startDate: date4, endDate: date3, tasks: [])
 		createTask(userDev1, sprint1_0, "Mantis 1812", 2.0, urlPuzzle, taskStateDone, normal, date4 + 1)
@@ -149,11 +154,17 @@ class BootStrap {
 		
 		// Initialize Project skramboord
 		Project skramboord = new Project(name: "skramboord", owner: userAdmin, master: userDevChief)
-		skramboord.addToSprints(sprint1_0)
-		skramboord.addToSprints(sprint1_1)
-		skramboord.addToSprints(sprint1_2)
-		skramboord.addToSprints(sprint1_3)
+		skramboord.addToReleases(release1_0)
+		skramboord.addToReleases(release1_1)
 		skramboord.save()
+		
+		// Initialize Releases
+		release1_0.addToSprints(sprint1_0)
+		release1_0.addToSprints(sprint1_1)
+		release1_1.addToSprints(sprint1_2)
+		release1_1.addToSprints(sprint1_3)
+		release1_0.save()
+		release1_1.save()
 
 		Membership.link(skramboord, userDev1)
 		Membership.link(skramboord, userDev3)

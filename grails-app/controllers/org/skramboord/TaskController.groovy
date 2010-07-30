@@ -26,7 +26,7 @@ class TaskController extends BaseController {
 	def list = {
 		if (params.sprint) {
 			session.sprint = Sprint.get(params.sprint)
-			session.project = session.sprint.project
+			session.project = session.sprint.release.project
 		}
 				
 		// check if this user has access rights

@@ -17,6 +17,11 @@
 			}
 		});
 	});
+
+	function openFormNewProject(){
+		$('#dialog-form-project').dialog('open');
+		return true;
+	}
 </script>
 
 <div id="dialog-form-project" title="${message(code:'project.formNameCreateProject')}" class="form">

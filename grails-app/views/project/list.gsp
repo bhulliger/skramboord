@@ -289,7 +289,7 @@
 											<tr style="border: 1px solid #ccc;">
 												<td colspan="6">
 													<g:render template="formNewProject"/>
-													<g:submitButton name="create-project" value="${message(code:'project.createProject')}"/>
+													<g:link url="#" onclick="return openFormNewProject();"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="project.createProject"/></span></g:link>
 												</td>
 											</tr>
 										</g:ifAnyGranted>

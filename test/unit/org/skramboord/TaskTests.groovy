@@ -18,6 +18,8 @@
 package org.skramboord
 import java.awt.Color;
 import grails.test.*
+import org.codehaus.groovy.grails.plugins.GrailsPluginManager
+import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 
 class TaskTests extends GrailsUnitTestCase {
 	Url urlPuzzle
@@ -29,6 +31,7 @@ class TaskTests extends GrailsUnitTestCase {
 	
     protected void setUp() {
         super.setUp()
+		PluginManagerHolder.pluginManager = [hasGrailsPlugin: { String name -> true }] as GrailsPluginManager
 
         mockForConstraintsTests(Task)
 
@@ -45,6 +48,7 @@ class TaskTests extends GrailsUnitTestCase {
 
     protected void tearDown() {
         super.tearDown()
+		PluginManagerHolder.pluginManager = null
     }
 
     /**

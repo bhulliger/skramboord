@@ -80,7 +80,9 @@ class Task {
 			eq('user', fromUser)
 			eq('state', StateTask.getStateCheckedOut())
 			sprint {
-				eq('project', fromProject)
+				release {
+					eq('project', fromProject)
+				}
 			}
 		}
 	}

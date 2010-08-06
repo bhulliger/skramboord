@@ -2,28 +2,71 @@
 	$(function() {
 		$("#accordion").accordion({autoHeight: false});
 	});
+
+	function deleteRelease(releaseId, message){
+		if (confirm(message)){
+			location.href="/${meta(name: "app.name")}/release/delete?release=" + releaseId;
+		}
+	}
+
+	function editRelease(releaseId){
+		location.href="/${meta(name: "app.name")}/release/edit?release=" + releaseId;
+	}
 </script>
+
+<g:if test="${flash.sprintEdit}">
+	<g:render template="formEditSprint"/>
+</g:if>
+<g:elseif test="${flash.releaseEdit}">
+	<g:render template="../release/formEditRelease"/>
+</g:elseif>
+<g:elseif test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+	<g:render template="formNewSprint"/>
+	<g:render template="../release/formNewRelease"/>
+</g:elseif>
 
 <g:if test="${flash.releaseList.isEmpty()}">
 	<div class="message">
 		<g:message code="release.noReleases"/>
 	</div>
+	
+	<table>
+		<tr style="border: 1px solid #ccc;">
+			<td colspan="8">
+				<g:link url="#" onclick="return openFormNewRelease()"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="release.createRelease"/></span></g:link>
+			</td>
+		</tr>
+	</table>
 </g:if>
 <g:else>
-	<g:if test="${flash.sprintEdit}">
-		<g:render template="formEditSprint"/>
-	</g:if>
-	<g:elseif test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-		<g:render template="formNewSprint"/>
-	</g:elseif>
+	<table>
+		<tr style="border: 1px solid #ccc;">
+			<td colspan="8">
+				<g:link url="#" onclick="return openFormNewRelease()"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="release.createRelease"/></span></g:link>
+			</td>
+		</tr>
+	</table>
 	<div id="accordion">
 		<g:each in="${flash.releaseList}" status="j" var="release">
-			<h3><a href="#">${release.name} - ${release.goal}</a></h3>
-			<div>				
+			<h3>
+				<a href="#">${release.name} - ${release.goal}
+					<span style="float: right;"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}" onclick="return deleteRelease(${release.id}, '${message(code:'release.delete', args: [release.name])}')";/></span>
+					<span style="float: right;"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}" onclick="return editRelease(${release.id})";/></span>
+					<span class="clear"></span>
+				</a>
+			</h3>
+			<div>
 				<g:if test="${release.sprints.isEmpty()}">
 					<div class="message">
 						<g:message code="sprint.noSprints"/>
 					</div>
+					<table>
+						<tr style="border: 1px solid #ccc;">
+							<td colspan="8">
+								<g:link url="#" onclick="return openFormNewSprint(${release.id})"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="sprint.createSprint"/></span></g:link>
+							</td>
+						</tr>
+					</table>
 				</g:if>
 				<g:else>
 					<div class="list">

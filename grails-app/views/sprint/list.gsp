@@ -45,6 +45,11 @@
 					<g:renderErrors bean="${flash.sprint}" as="list"/>
 				</div>
 			</g:hasErrors>
+			<g:hasErrors bean="${flash.release}">
+				<div class="errors">
+					<g:renderErrors bean="${flash.release}" as="list"/>
+				</div>
+			</g:hasErrors>
 			<g:if test="${flash.message}">
 				<div class="message">${flash.message}</div>
 			</g:if>

@@ -19,7 +19,7 @@ package org.skramboord
 
 import java.awt.Color;
 
-class AdministrationController {
+class AdministrationController extends BaseController {
 	
 	def index = { redirect(controller:'administration', action:'list')
 	}

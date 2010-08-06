@@ -121,8 +121,8 @@ class BootStrap {
 		Release release1_0 = new Release(name: "1.0", goal: "Login System")
 		Release release1_1 = new Release(name: "1.1", goal: "Usability Improvements")
 		
-		// Sprint 1.0
-		Sprint sprint1_0 = new Sprint(name: "1.0", goal: "Login System", startDate: date4, endDate: date3, tasks: [])
+		// Sprint 1
+		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", startDate: date4, endDate: date3, tasks: [])
 		createTask(userDev1, sprint1_0, "Mantis 1812", 2.0, urlPuzzle, taskStateDone, normal, date4 + 1)
 		createTask(userDev3, sprint1_0, "Mantis 1798", 4.0, urlPuzzle, taskStateDone, normal, date4 + 3)
 		createTask(userDev1, sprint1_0, "Mantis 1765", 4.5, urlPuzzle, taskStateDone, high, date4 + 4)
@@ -132,8 +132,8 @@ class BootStrap {
 		createTask(userDev2, sprint1_0, "Mantis 1722", 0.5, urlPuzzle, taskStateDone, low, date4 + 9)
 		createTask(userDev2, sprint1_0, "Mantis 1700", 4, urlPuzzle, taskStateDone, low, date4 + 10)
 		
-		// Sprint 1.1
-		Sprint sprint1_1 = new Sprint(name: "1.1", goal: "Drag'n'Drop Functionality", startDate: date3, endDate: date2, tasks: [])
+		// Sprint 2
+		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", startDate: date3, endDate: date2, tasks: [])
 		createTask(userDev2, sprint1_1, "Mantis 1980", 5.5, urlPuzzle, taskStateDone, normal, date3 + 2)
 		createTask(userDev3, sprint1_1, "Mantis 2100", 2.0, urlPuzzle, taskStateDone, immediate, date3 + 4)
 		createTask(null, sprint1_1, "Mantis 2001", 2.0, urlPuzzle, taskStateOpen, normal, null)
@@ -144,12 +144,12 @@ class BootStrap {
 		createTask(null, sprint1_1, "Mantis 2012", 1.5, urlPuzzle, taskStateNext, normal, null)
 		createTask(null, sprint1_1, "Mantis 2014", 5.0, urlPuzzle, taskStateNext, low, null)
 		
-		// Sprint 1.2
-		Sprint sprint1_2 = new Sprint(name: "1.2", goal: "Email Warning System", startDate: date2, endDate: date1, tasks: [])
+		// Sprint 1
+		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", startDate: date2, endDate: date1, tasks: [])
 		sprint1_2.save()
 		
-		// Sprint 1.3
-		Sprint sprint1_3 = new Sprint(name: "1.3", goal: "Usability Improvements", startDate: date1, endDate: date0, tasks: [])
+		// Sprint 2
+		Sprint sprint1_3 = new Sprint(name: "#2", goal: "Usability Improvements", startDate: date1, endDate: date0, tasks: [])
 		sprint1_3.save()
 		
 		// Initialize Project skramboord

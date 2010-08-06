@@ -41,16 +41,18 @@ class ProjectController extends BaseController {
 			le('startDate', today)
 			ge('endDate', today)
 			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
-				project {
-					or {
-						team {
-							eq('user', session.user)
+				release {
+					project {
+						or {
+							team {
+								eq('user', session.user)
+							}
+							follower {
+								eq('user', session.user)
+							}
+							eq('master', session.user)
+							eq('owner', session.user)
 						}
-						follower {
-							eq('user', session.user)
-						}
-						eq('master', session.user)
-						eq('owner', session.user)
 					}
 				}
 			}

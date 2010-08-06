@@ -167,6 +167,7 @@
 										<tr>
 											<th><g:message code="task.task"/></th>
 											<th><g:message code="project.project"/></th>
+											<th><g:message code="release.release"/></th>
 											<th><g:message code="sprint.sprint"/></th>
 											<th style="text-align:center; width: 50px;"><g:message code="task.effort"/></th>
 											<th><g:message code="task.priority"/></th>
@@ -178,6 +179,7 @@
 													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.name}</span></g:link>
 												</td>
 												<td style="vertical-align: middle;">${task.sprint?.release?.project?.name}</td>
+												<td style="vertical-align: middle;">${task.sprint?.release?.name}</td>
 												<td style="vertical-align: middle;">${task.sprint?.name}</td>
 												<td style="vertical-align: middle;text-align:center;">${task.effort}</td>
 												<td style="vertical-align: middle; font-weight: bold; color: #${task.priority.colorAsString()};"><g:message code="priorities.${task.priority.name}"/></td>
@@ -202,6 +204,7 @@
 									<table>
 										<tr>
 											<th><g:message code="sprint.sprint"/></th>
+											<th><g:message code="release.release"/></th>
 											<th><g:message code="sprint.goal"/></th>
 											<th><g:message code="sprint.start"/></th>
 											<th><g:message code="sprint.end"/></th>
@@ -214,6 +217,7 @@
 												<td>
 													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
 												</td>
+												<td style="vertical-align: middle;">${sprint.release?.name}</td>
 												<td style="vertical-align: middle;">${sprint.goal}</td>
 												<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
 												<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>

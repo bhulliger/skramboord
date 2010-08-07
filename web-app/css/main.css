@@ -409,6 +409,10 @@ th.desc a {
 	cursor: move;
 }
 
+.readonly {
+	cursor: default;
+}
+
 .postit {
 	height: 60px;
 	padding-top: 5px;

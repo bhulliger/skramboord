@@ -1,3 +1,5 @@
+<%! import org.skramboord.Sprint %> 
+
 <script type="text/javascript">
 	$(function() {
 		$("#accordion").accordion({autoHeight: false});
@@ -53,7 +55,7 @@
 	<div id="accordion">
 		<g:each in="${flash.releaseList}" status="j" var="release">
 			<h3>
-				<a href="#">${release.name} - ${release.goal}
+				<a href="#">${release.name} - ${release.goal}, <g:formatDate format="dd.MM.yyyy" date="${Sprint.startDateRelease(release).list()?.first()}"/> - <g:formatDate format="dd.MM.yyyy" date="${Sprint.endDateRelease(release).list()?.first()}"/>
 					<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}" onclick="return deleteRelease(${release.id}, '${message(code:'release.delete', args: [release.name])}')";/></span>
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}" onclick="return editRelease(${release.id})";/></span>

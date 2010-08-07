@@ -43,6 +43,26 @@ class Sprint {
 		//sort:'endDate desc, startDate desc'
 	}
 	
+	static namedQueries = {
+		startDateRelease { fromRelease ->
+			release {
+				eq('id', fromRelease.id)
+			}
+			projections {
+				min("startDate")
+			}
+		}
+		
+		endDateRelease { fromRelease ->
+			release {
+				eq('id', fromRelease.id)
+			}
+			projections {
+				max("endDate")
+			}
+		}
+	}
+	
 	/**
 	 * Returns true if today is between start and end date.
 	 * 

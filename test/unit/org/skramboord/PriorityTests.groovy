@@ -19,20 +19,15 @@ package org.skramboord
 
 import java.awt.Color;
 import grails.test.*
-import org.codehaus.groovy.grails.plugins.GrailsPluginManager
-import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 
 class PriorityTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
-		PluginManagerHolder.pluginManager = [hasGrailsPlugin: { String name -> true }] as GrailsPluginManager
-		
         mockForConstraintsTests(Priority)
     }
 
     protected void tearDown() {
         super.tearDown()
-		PluginManagerHolder.pluginManager = null
     }
 
     /**

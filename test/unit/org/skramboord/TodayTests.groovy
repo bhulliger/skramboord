@@ -18,18 +18,14 @@
 package org.skramboord
 
 import grails.test.*
-import org.codehaus.groovy.grails.plugins.GrailsPluginManager
-import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 
 class TodayTests extends GrailsUnitTestCase {
 	protected void setUp() {
 		super.setUp()
-		PluginManagerHolder.pluginManager = [hasGrailsPlugin: { String name -> true }] as GrailsPluginManager
 	}
 	
 	protected void tearDown() {
 		super.tearDown()
-		PluginManagerHolder.pluginManager = null
 	}
 	
 	/**

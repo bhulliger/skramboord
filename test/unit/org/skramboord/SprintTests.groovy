@@ -18,15 +18,12 @@
 package org.skramboord
 
 import grails.test.*
-import org.codehaus.groovy.grails.plugins.GrailsPluginManager
-import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 
 class SprintTests extends GrailsUnitTestCase {
 	Date today
 	
 	protected void setUp() {
 		super.setUp()
-		PluginManagerHolder.pluginManager = [hasGrailsPlugin: { String name -> true }] as GrailsPluginManager
 		mockForConstraintsTests(Sprint)
 		
 		today = Today.getInstance()
@@ -34,7 +31,6 @@ class SprintTests extends GrailsUnitTestCase {
 	
 	protected void tearDown() {
 		super.tearDown()
-		PluginManagerHolder.pluginManager = null
 	}
 	
 	/**

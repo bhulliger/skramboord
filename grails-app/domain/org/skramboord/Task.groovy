@@ -34,7 +34,7 @@ class Task {
 	}
 	                    
 	static constraints = {
-		name(nullable:false)
+		name(nullable:false, blank:false)
 		effort(nullable:false)
 		url(nullable:true, url:true, blank:false)
 		state(nullable:false)

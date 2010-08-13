@@ -13,8 +13,6 @@
 			.ui-sortable-placeholder * { visibility: hidden; }
 		</style>
 		
-		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.mouse.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.dialog.js')}"></script>
@@ -23,7 +21,6 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.button.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.tabs.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.sortable.js')}"></script>
-
 		<script type="text/javascript">
 			// set the list selector
 			var setSelector = ".column";
@@ -139,9 +136,9 @@
 				<g:render template="formEditProject" model="['fwdTo':'project']"/>
 			</g:if>
 			
-			<g:hasErrors bean="${flash.project}">
+			<g:hasErrors bean="${flash.objectToSave}">
 				<div class="errors">
-					<g:renderErrors bean="${flash.project}" as="list"/>
+					<g:renderErrors bean="${flash.objectToSave}" as="list"/>
 				</div>
 			</g:hasErrors>
 			<g:if test="${flash.message}">

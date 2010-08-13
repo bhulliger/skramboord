@@ -50,7 +50,7 @@ class ReleaseController extends BaseController {
 			
 			Release release = new Release(name: releaseName, goal: releaseGoal, project: session.project)
 			if (!release.save()) {
-				flash.release=release
+				flash.objectToSave=release
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
@@ -82,7 +82,7 @@ class ReleaseController extends BaseController {
 				release.goal = params.releaseGoal
 				
 				if (!release.save()) {
-					flash.release=release
+					flash.objectToSave=release
 				}
 			}
 		} else {

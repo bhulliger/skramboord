@@ -34,7 +34,7 @@ class UserController extends BaseController {
 		}
 		flash.personList = User.list(params)
 	}
-	
+		
 	def show = {
 		def person = User.get(params.id)
 		if (!person) {
@@ -91,56 +91,51 @@ class UserController extends BaseController {
 	
 	def edit = {
 		def person = User.get(params.id)
-		if (!person) {
-			flash.message = message(code:"user.notFound", args:[params.id])
-			redirect action: list
-			return
-		}
-		if (authenticateService.ifNotGranted('ROLE_SUPERUSER') && person.id != session.user.id) {
+		if (userWritePermission(session.user, person)) {
+			if (params.id) {
+				flash.userEdit = User.get(params.id)
+			}
+		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
-			redirect action: list
-			return
 		}
-		
-		return buildPersonModel(person)
+		redirect(uri:params.fwdTo)
 	}
 	
 	/**
 	 * Person update action.
 	 */
 	def update = {
-		
-		def person = User.get(params.id)
-		if (!person) {
-			flash.message = message(code:"user.notFound", args:[params.id])
-			redirect action: edit, id: params.id
-			return
-		}
-		
-		long version = params.version.toLong()
-		if (person.version > version) {
-			person.errors.rejectValue 'version', "person.optimistic.locking.failure",
-			"Another user has updated this User while you were editing."
-			render view: 'edit', model: buildPersonModel(person)
-			return
-		}
-		
-		def oldPassword = person.passwd
-		person.properties = params
-		if (!params.passwd.equals(oldPassword)) {
-			person.passwd = authenticateService.encodePassword(params.passwd)
-		}
-		person.color = Color.decode("0x" + params["taskColor"])
-		
-		if (person.save() && authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
-			Role.findAll().each { it.removeFromPeople(person)
+		def person = User.get(params.userId)
+		if (userWritePermission(session.user, person)) {
+			if (params.userPassword == params.userPassword2) {
+				if (!params.userPassword.equals(person.passwd)) {
+					person.passwd = authenticateService.encodePassword(params.userPassword)
+				}
+			} else {
+				flash.message = message(code:"error.passwordNotEqual")			
 			}
-			addRoles(person)
-			redirect action: show, id: person.id
+			
+			person.name = params.userName
+			person.prename = params.userPrename
+			person.description = params.userDescription
+			person.email = params.userEmail
+			person.color = Color.decode("0x" + params.taskColor)
+			
+			if (!person.save()) {
+				flash.objectToSave=person
+			}
+			
+			// TODO: Roles: not possible to change roles
+//			if (person.save() && authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
+//				Role.findAll().each { it.removeFromPeople(person)
+//				}
+//				addRoles(person)
+//			}
+			
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		else {
-			render view: 'edit', model: buildPersonModel(person)
-		}
+		redirect(uri:params.fwdTo)
 	}
 	
 	def create = {
@@ -193,5 +188,9 @@ class UserController extends BaseController {
 		}
 		
 		return [person: person, roleMap: roleMap]
+	}
+	
+	private boolean userWritePermission(User user, User userToChange) {
+		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.id.equals(user.id)
 	}
 }

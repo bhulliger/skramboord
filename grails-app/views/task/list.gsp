@@ -3,8 +3,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="layout" content="main" />
 		
-		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.mouse.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.draggable.js')}"></script>
@@ -84,6 +82,15 @@
 	<body>
 		<div class="body">
 			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: session.sprint.id]">> ${session.sprint.name}</g:link></h1>
+			<g:hasErrors bean="${flash.objectToSave}">
+				<div class="errors">
+					<g:renderErrors bean="${flash.objectToSave}" as="list"/>
+				</div>
+			</g:hasErrors>
+			<g:if test="${flash.message}">
+				<div class="message">${flash.message}</div>
+			</g:if>
+			
 			<g:render template="sprintInformation"/>
 				
 			<div id="tabs">

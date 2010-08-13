@@ -1,12 +1,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<meta name="layout" content="main" />
-
-	<link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
-
-	<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
-	<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
-	<script type="text/javascript" src="${resource(dir:'js/jquery/colorpicker',file:'colorpicker.js')}"></script>
 </head>
 
 <body>
@@ -20,7 +14,7 @@
 		</g:ifAnyGranted>
 		<h3><g:message code="user.editProfile"/></h3>
 		<g:if test="${flash.message}">
-		<div class="message">${flash.message}</div>
+			<div class="message">${flash.message}</div>
 		</g:if>
 		<g:hasErrors bean="${person}">
 		<div class="errors">

@@ -5,8 +5,6 @@
 
 		<link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
 
-		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.mouse.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.dialog.js')}"></script>
@@ -32,6 +30,14 @@
 	<body>
 		<div class="body">
 			<h1><g:link controller="project" action="list">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="administration" action="list">> <g:message code="admin.systemPreferences"/></g:link></h1>          
+			<g:hasErrors bean="${flash.objectToSave}">
+				<div class="errors">
+					<g:renderErrors bean="${flash.objectToSave}" as="list"/>
+				</div>
+			</g:hasErrors>
+			<g:if test="${flash.message}">
+				<div class="message">${flash.message}</div>
+			</g:if>
 			
 			<div id="tabs">
 				<ul>

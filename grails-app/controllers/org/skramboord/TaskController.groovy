@@ -97,7 +97,7 @@ class TaskController extends BaseController {
 		if (taskWorkPermission(session.user, session.project)) {
 			Task task = new Task(name: params.taskName, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.byName(params.taskPriority).list().first(), sprint: Sprint.find(session.sprint))
 			if (!task.save()) {
-				flash.task = task
+				flash.objectToSave = task
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
@@ -150,7 +150,7 @@ class TaskController extends BaseController {
 				task.priority = Priority.byName(params.taskPriority).list().first()
 
 				if (!task.save()) {
-					flash.task=task
+					flash.objectToSave=task
 				}
 			}
 		} else {

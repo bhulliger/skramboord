@@ -119,7 +119,7 @@ class ProjectController extends BaseController {
 				}
 				
 				if (!project.save()) {
-					flash.project=project
+					flash.objectToSave=project
 				}
 			} else {
 				flash.message = message(code:"error.insufficientAccessRights")
@@ -138,7 +138,7 @@ class ProjectController extends BaseController {
 			
 			Project project = new Project(name: projectName, owner: session.user, master: User.get(params.projectMaster))
 			if (!project.save()) {
-				flash.project=project
+				flash.objectToSave=project
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")

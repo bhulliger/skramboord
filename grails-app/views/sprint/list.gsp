@@ -3,8 +3,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="layout" content="main" />
 		
-		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.widget.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.mouse.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.draggable.js')}"></script>
@@ -40,14 +38,9 @@
 			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
 			<g:render template="projectInformation"/>
 
-			<g:hasErrors bean="${flash.sprint}">
+			<g:hasErrors bean="${flash.objectToSave}">
 				<div class="errors">
-					<g:renderErrors bean="${flash.sprint}" as="list"/>
-				</div>
-			</g:hasErrors>
-			<g:hasErrors bean="${flash.release}">
-				<div class="errors">
-					<g:renderErrors bean="${flash.release}" as="list"/>
+					<g:renderErrors bean="${flash.objectToSave}" as="list"/>
 				</div>
 			</g:hasErrors>
 			<g:if test="${flash.message}">

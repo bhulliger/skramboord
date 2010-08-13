@@ -67,7 +67,7 @@ class SprintController extends BaseController {
 			
 			Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, release: release)
 			if (!sprint.save()) {
-				flash.sprint=sprint
+				flash.objectToSave=sprint
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
@@ -105,7 +105,7 @@ class SprintController extends BaseController {
 					sprint.endDate = new Date(params.endDateHidden)
 				}
 				if (!sprint.save()) {
-					flash.sprint=sprint
+					flash.objectToSave=sprint
 				}
 			}
 		} else {

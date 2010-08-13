@@ -5,6 +5,12 @@
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/skramboord',file:'jquery.ui.all.css')}" ></link>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'main.css')}" ></link>
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" ></link>
+        
+       	<link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
+
+		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
+		<script type="text/javascript" src="${resource(dir:'js/jquery/colorpicker',file:'colorpicker.js')}"></script>
         <g:layoutHead />
     </head>
     <body>
@@ -28,7 +34,7 @@
 			        			<span class="icon"><g:message code="admin.systemPreferences"/></span>
 		        			</g:link>
 						</g:ifAnyGranted>
-	        			<g:link controller="user" action="show" params="[id: session.user.id]" style="padding-right: 10px;">
+	        			<g:link controller="user" action="edit" params="[id: session.user.id, fwdTo: request.getServletPath()]" style="padding-right: 10px;">
 	        				<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil"/>
 		        			</span>
@@ -60,6 +66,9 @@
 	        </div>
         </div>
        	<g:layoutBody />
+		<g:if test="${flash.userEdit}">
+			<g:render template="../user/formEditUser" model="['fwdTo': request.getServletPath()]"/>
+		</g:if>
         <div style="margin-top: 10px; text-align: center;">
        		<a href="http://github.com/pablohess/skramboord" onclick="return ! window.open(this.href);">
         		<g:meta name="app.name"/>, Version <g:meta name="app.version"/>, built with Grails <g:meta name="app.grails.version"/>

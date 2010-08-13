@@ -57,15 +57,6 @@
 	</g:elseif>
 	<g:submitButton name="toggleProductBacklog" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}"/>
 	
-	<g:hasErrors bean="${flash.task}">
-		<div class="errors">
-			<g:renderErrors bean="${flash.task}" as="list"/>
-		</div>
-	</g:hasErrors>
-	<g:if test="${flash.message}">
-		<div class="message">${flash.message}</div>
-	</g:if>
-	
 	<div class="clear"></div>
 	
 	<div class="backlog" id="productBacklog">

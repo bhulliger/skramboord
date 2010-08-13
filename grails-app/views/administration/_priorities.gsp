@@ -1,9 +1,5 @@
 <div class="list">
 	<g:form>
-		<g:if test="${flash.message}">
-			<div class="message">${flash.message}</div>
-		</g:if>
-	
 		<table>
 			<tr>
 				<g:sortableColumn property="id" defaultOrder="asc" title="Id" style="width: 40px;"/>

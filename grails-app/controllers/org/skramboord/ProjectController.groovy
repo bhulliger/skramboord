@@ -105,7 +105,7 @@ class ProjectController extends BaseController {
 	/**
 	 * Project edit action
 	 */
-	def editProject = {
+	def update = {
 		if (params.projectId) {
 			def project = Project.get(params.projectId)
 			if (projectEditPermission(session.user, project)) {

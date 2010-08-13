@@ -20,7 +20,7 @@
 </script>
 
 <div id="dialog-form-project-edit" title="${message(code:'project.formNameEditProject')}" class="form">
-	<g:form url="[ controller: 'project', action: 'editProject', params: [ fwdTo: fwdTo ]]" name='formEditProject'>
+	<g:form url="[ controller: 'project', action: 'update', params: [ fwdTo: fwdTo ]]" name='formEditProject'>
 		<fieldset>
 			<label><g:message code="project.project"/></label>
 			<input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/>

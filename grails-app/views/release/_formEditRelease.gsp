@@ -20,7 +20,7 @@
 </script>
 
 <div id="dialog-form-release-edit" title="${message(code:'release.formNameEditRelease')}" class="form">
-	<g:form url="[ controller: 'release', action: 'editRelease' ]" name='formEditRelease'>
+	<g:form url="[ controller: 'release', action: 'update' ]" name='formEditRelease'>
 		<fieldset>
 			<label><g:message code="release.release"/></label>
 			<input type="text" name="releaseName" id="releaseName" value="${flash.releaseEdit.name}" class="text ui-widget-content ui-corner-all"/>

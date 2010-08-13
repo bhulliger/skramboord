@@ -29,7 +29,7 @@
 	});
 </script>
 <div id="dialog-form-sprint-edit" title="${message(code:'sprint.formNameEditSprint')}" class="form">
-	<g:form action="editSprint" name="formEditSprint">
+	<g:form action="update" name="formEditSprint">
 		<fieldset>
 			<label><g:message code="sprint.sprint"/></label>
 			<input type="text" name="sprintName" id="sprintName" value="${flash.sprintEdit.name}" class="text ui-widget-content ui-corner-all"/>

@@ -20,7 +20,7 @@
 </script>
 
 <div id="dialog-form-edit" title="${message(code:'task.formNameEditTask')}" class="form">
-	<g:form action="editTask" name="formEditTask">
+	<g:form action="update" name="formEditTask">
 		<fieldset>
 			<label><g:message code="task.name"/></label>
 			<input type="text" name="taskName" id="taskName" value="${flash.taskEdit.name}" class="text ui-widget-content ui-corner-all" />

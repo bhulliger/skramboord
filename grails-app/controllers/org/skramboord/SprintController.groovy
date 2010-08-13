@@ -91,7 +91,7 @@ class SprintController extends BaseController {
 	/**
 	 * Sprint edit action
 	 */
-	def editSprint = {
+	def update = {
 		if (sprintWritePermission(session.user, session.project)) {
 			if (params.sprintId) {
 				def sprint = Sprint.get(params.sprintId)

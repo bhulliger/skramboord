@@ -74,7 +74,7 @@ class ReleaseController extends BaseController {
 	/**
 	 * Release edit action
 	 */
-	def editRelease = {
+	def update = {
 		if (releaseWritePermission(session.user, session.project)) {
 			if (params.releaseId) {
 				def release = Release.get(params.releaseId)

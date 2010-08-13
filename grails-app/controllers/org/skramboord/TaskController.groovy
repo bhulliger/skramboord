@@ -139,7 +139,7 @@ class TaskController extends BaseController {
 	/**
 	 * Task edit action
 	 */
-	def editTask = {
+	def update = {
 		if (taskWritePermission(session.user, session.project)) {
 			if (params.taskId) {
 				def task = Task.get(params.taskId)

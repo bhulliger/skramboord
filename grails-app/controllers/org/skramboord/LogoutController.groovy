@@ -16,6 +16,9 @@
  *******************************************************************************/
 
 package org.skramboord
+
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+
 /**
  * Logout Controller (Example).
  */
@@ -26,6 +29,6 @@ class LogoutController extends BaseController {
 	 */
 	def index = {
 		session.invalidate()
-		redirect(uri: '/j_spring_security_logout')
+		redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl // '/j_spring_security_logout'
 	}
 }

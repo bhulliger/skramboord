@@ -18,6 +18,7 @@
 package org.skramboord
 
 import org.hibernate.criterion.Distinct;
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 
 class ProjectController extends BaseController {
 	
@@ -34,13 +35,13 @@ class ProjectController extends BaseController {
 		Date today = Today.getInstance()
 
 		// get all project the user belongs to
-		flash.projectList = Project.projectsUserBelongsTo(session.user, params.sort, params.order, authenticateService).listDistinct()
+		flash.projectList = Project.projectsUserBelongsTo(session.user, params.sort, params.order, springSecurityService).listDistinct()
 		
 		// get all running sprints the user belongs to
 		flash.runningSprintsList = Sprint.createCriteria().listDistinct {
 			le('startDate', today)
 			ge('endDate', today)
-			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
 				release {
 					project {
 						or {
@@ -68,7 +69,7 @@ class ProjectController extends BaseController {
 	 * Project delete action
 	 */
 	def delete = {
-		if (authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+		if (SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
 			if (params.project) {
 				def project = Project.get(params.project)
 				project.delete()
@@ -188,10 +189,10 @@ class ProjectController extends BaseController {
 	}
 	
 	private boolean projectNewPermission() {
-		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || authenticateService.ifAnyGranted('ROLE_ADMIN')
+		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || springSecurityService.ifAnyGranted('ROLE_ADMIN')
 	}
 	
 	private boolean projectEditPermission(User user, Project project) {
-		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner)
+		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner)
 	}
 }

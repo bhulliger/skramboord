@@ -18,13 +18,13 @@
 package org.skramboord
 
 abstract class BaseController {
-	def authenticateService
+	def springSecurityService
 	
 	def beforeInterceptor = [action:this.&doBefore]
 	
 	def doBefore() {
-		if (authenticateService && authenticateService.isLoggedIn()) {
-			def username = authenticateService.principal().username
+		if (springSecurityService && springSecurityService.isLoggedIn()) {
+			def username = springSecurityService.getPrincipal().username
 			if (username && !username.equals(session.username)) {
 				User user = User.withCriteria(uniqueResult:true) {
 					eq('username', username)

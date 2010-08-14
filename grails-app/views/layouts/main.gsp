@@ -25,22 +25,22 @@
 		        	</a>
 	        	</div>
 	        	<div style="float: right;">
-	        		<g:isLoggedIn>
-	        			<g:ifAnyGranted role="ROLE_SUPERUSER">
+	        		<sec:ifLoggedIn>
+	        			<sec:ifAnyGranted roles="ROLE_SUPERUSER">
 							<g:link controller="administration" action="list" style="padding-right: 10px;">
 		        				<span class="icon">
 			        				<img src="${resource(dir:'images/icons',file:'bullet_wrench.png')}" alt="profil"/>
 			        			</span>
 			        			<span class="icon"><g:message code="admin.systemPreferences"/></span>
 		        			</g:link>
-						</g:ifAnyGranted>
+						</sec:ifAnyGranted>
 	        			<g:link controller="user" action="edit" params="[id: session.user.id, fwdTo: request.getServletPath()]" style="padding-right: 10px;">
 	        				<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil"/>
 		        			</span>
 		        			<span class="icon"><g:message code="main.welcome"/>, ${session.user.userRealName}</span>
 	        			</g:link>
-	        		</g:isLoggedIn>
+	        		</sec:ifLoggedIn>
 	        		
 	        			<g:link controller="${params.controller}" action="${params.action}" params="[lang:'en']">
 	        				<span class="icon">
@@ -53,14 +53,14 @@
 		        			</span>
 						</g:link>
 						
-	        		<g:isLoggedIn>
+	        		<sec:ifLoggedIn>
 		        		<g:link controller="logout" action="index">
 		        			<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'application_go.png')}" alt="logout"/>
 		        			</span>
 		        			<span class="icon"><g:message code="main.logout"/></span>
 		        		</g:link>
-	        		</g:isLoggedIn>
+	        		</sec:ifLoggedIn>
 	        	</div>
 	        	<div style="clear: both;"/>
 	        </div>

@@ -22,7 +22,7 @@
 <g:elseif test="${flash.releaseEdit}">
 	<g:render template="../release/formEditRelease"/>
 </g:elseif>
-<g:elseif test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+<g:elseif test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 	<g:render template="formNewSprint"/>
 	<g:render template="../release/formNewRelease"/>
 </g:elseif>
@@ -32,7 +32,7 @@
 		<g:message code="release.noReleases"/>
 	</div>
 	
-	<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 		<table>
 			<tr style="border: 1px solid #ccc;">
 				<td colspan="8">
@@ -43,7 +43,7 @@
 	</g:if>
 </g:if>
 <g:else>
-	<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 		<table>
 			<tr style="border: 1px solid #ccc;">
 				<td colspan="8">
@@ -56,7 +56,7 @@
 		<g:each in="${flash.releaseList}" status="j" var="release">
 			<h3>
 				<a href="#">${release.name} - ${release.goal}, <g:formatDate format="dd.MM.yyyy" date="${Sprint.startDateRelease(release).list()?.first()}"/> - <g:formatDate format="dd.MM.yyyy" date="${Sprint.endDateRelease(release).list()?.first()}"/>
-					<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}" onclick="return deleteRelease(${release.id}, '${message(code:'release.delete', args: [release.name])}')";/></span>
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}" onclick="return editRelease(${release.id})";/></span>
 						<span class="clear"></span>
@@ -68,7 +68,7 @@
 					<div class="message">
 						<g:message code="sprint.noSprints"/>
 					</div>
-					<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 						<table>
 							<tr style="border: 1px solid #ccc;">
 								<td colspan="8">
@@ -88,7 +88,7 @@
 								<th><g:message code="sprint.end"/></th>
 								<th style="text-align:center;"><g:message code="task.tasks"/></th>
 								<th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
-								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 									<th style="width: 20px;"></th>
 									<th style="width: 20px;"></th>
 								</g:if>
@@ -114,7 +114,7 @@
 											<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
 										</g:else>
 									</td>
-									<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+									<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 										<td>
 											<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span><span class="icon"></span></g:link>
 										</td>
@@ -124,7 +124,7 @@
 									</g:if>
 								</tr>
 							</g:each>
-								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 									<tr style="border: 1px solid #ccc;">
 										<td colspan="8">
 											<g:link url="#" onclick="return openFormNewSprint(${release.id})"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="sprint.createSprint"/></span></g:link>

@@ -8,11 +8,11 @@
 		<div class="body">
 			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home" border="0"/> </g:link><g:link controller="user" action="list">> <g:message code="admin.userList"/></g:link></h1>
 			
-			<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
+			<sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_SUPERUSER">
 				<div class="nav">
 					<span class="menuButton"><g:link class="create" action="create"><g:message code="admin.newUser"/></g:link></span>
 				</div>
-			</g:ifAnyGranted>
+			</sec:ifAnyGranted>
 			<h3><g:message code="admin.userList"/></h3>
 			<g:if test="${flash.message}">
 			<div class="message">${flash.message}</div>
@@ -26,9 +26,9 @@
 							<g:sortableColumn property="enabled" title="${message(code:'user.enabled')}" />
 							<g:sortableColumn property="description" title="${message(code:'user.description')}" />
 							<th style="width: 20px;"></th>
-							<g:ifAnyGranted role="ROLE_SUPERUSER">
+							<sec:ifAnyGranted roles="ROLE_SUPERUSER">
 								<th style="width: 20px;"></th>
-							</g:ifAnyGranted>
+							</sec:ifAnyGranted>
 						</tr>
 					</thead>
 					<tbody>
@@ -41,7 +41,7 @@
 								<td style="vertical-align: middle;">${person.userRealName?.encodeAsHTML()}</td>
 								<td style="vertical-align: middle;">${person.enabled?.encodeAsHTML()}</td>
 								<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
-								<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || person.id == session.user.id}">
+								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || person.id == session.user.id}">
 									<td>
 										<g:link controller="user" action="edit" params="[id: userId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon"></span></g:link>
 									</td>
@@ -49,11 +49,11 @@
 								<g:else>
 									<td></td>
 								</g:else>
-								<g:ifAnyGranted role="ROLE_SUPERUSER">
+								<sec:ifAnyGranted roles="ROLE_SUPERUSER">
 									<td>
 										<g:link controller="user" action="delete" params="[id: userId]" onclick="return confirm('${message(code:'default.button.delete.confirm.message')}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon"></span></g:link>
 									</td>
-								</g:ifAnyGranted>
+								</sec:ifAnyGranted>
 							</tr>
 						</g:each>
 					</tbody>

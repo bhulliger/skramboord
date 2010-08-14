@@ -17,6 +17,8 @@
 
 package org.skramboord
 
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+
 class Project {
 	String name
 	Twitter twitter
@@ -47,8 +49,8 @@ class Project {
     }
 	
 	static namedQueries = {
-		projectsUserBelongsTo { fromUser, sortParam, orderParam, authenticateService ->
-			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+		projectsUserBelongsTo { fromUser, sortParam, orderParam, springSecurityService ->
+			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
 				or {
 					team {
 						eq('user', fromUser)
@@ -65,9 +67,9 @@ class Project {
 			}
 		}
 		
-		accessRight { fromProject, fromUser, authenticateService ->
+		accessRight { fromProject, fromUser, springSecurityService ->
 			eq('id', fromProject.id)
-			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
 				or {
 					team {
 						eq('user', fromUser)
@@ -84,9 +86,9 @@ class Project {
 			}
 		}
 		
-		changeRight { fromProject, fromUser, authenticateService ->
+		changeRight { fromProject, fromUser, springSecurityService ->
 			eq('id', fromProject.id)
-			if (!authenticateService.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
 				or {
 					team {
 						eq('user', fromUser)

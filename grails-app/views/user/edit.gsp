@@ -7,11 +7,11 @@
 	<div class="body">
 		<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="user" action="list">> <g:message code="admin.userList"/></g:link> <g:link controller="user" action="edit" params="[id: person.id]">> ${person.username?.encodeAsHTML()}</g:link></h1>
 		
-		<g:ifAnyGranted role="ROLE_ADMIN,ROLE_SUPERUSER">
+		<sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_SUPERUSER">
 			<div class="nav">
 				<span class="menuButton"><g:link class="create" action="create"><g:message code="admin.newUser"/></g:link></span>
 			</div>
-		</g:ifAnyGranted>
+		</sec:ifAnyGranted>
 		<h3><g:message code="user.editProfile"/></h3>
 		<g:if test="${flash.message}">
 			<div class="message">${flash.message}</div>
@@ -51,9 +51,9 @@
 						</tr>
 	
 						<tr class="prop">
-							<td valign="top" class="name"><label for="passwd"><g:message code="user.password"/>: *</label></td>
-							<td valign="top" class="value ${hasErrors(bean:person,field:'passwd','errors')}">
-								<input type="password" id="passwd" name="passwd" value="${person.passwd?.encodeAsHTML()}"/>
+							<td valign="top" class="name"><label for="password"><g:message code="user.password"/>: *</label></td>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'password','errors')}">
+								<input type="password" id="password" name="password" value="${person.password?.encodeAsHTML()}"/>
 							</td>
 						</tr>
 	

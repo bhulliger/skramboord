@@ -46,9 +46,9 @@
 					</tr>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd"><g:message code="user.password"/>: *</label></td>
-						<td valign="top" class="value ${hasErrors(bean:person,field:'passwd','errors')}">
-							<input type="password" id="passwd" name="passwd" value="${person.passwd?.encodeAsHTML()}"/>
+						<td valign="top" class="name"><label for="password"><g:message code="user.password"/>: *</label></td>
+						<td valign="top" class="value ${hasErrors(bean:person,field:'password','errors')}">
+							<input type="password" id="password" name="password" value="${person.password?.encodeAsHTML()}"/>
 						</td>
 					</tr>
 

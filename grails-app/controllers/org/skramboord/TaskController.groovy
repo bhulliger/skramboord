@@ -17,6 +17,8 @@
 
 package org.skramboord
 
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+
 class TaskController extends BaseController {
 	def twitterService
 	
@@ -283,7 +285,7 @@ class TaskController extends BaseController {
 	 * @return
 	 */
 	private boolean taskViewPermission(User user, Project project) {
-		return Project.accessRight(session.project, session.user, authenticateService).list().first() != 0
+		return Project.accessRight(session.project, session.user, springSecurityService).list().first() != 0
 	}
 	
 	/**
@@ -294,7 +296,7 @@ class TaskController extends BaseController {
 	 * @return
 	 */
 	private boolean taskWorkPermission(User user, Project project) {
-		return Project.changeRight(session.project, session.user, authenticateService).list().first() != 0
+		return Project.changeRight(session.project, session.user, springSecurityService).list().first() != 0
 	}
 	
 	/**
@@ -305,7 +307,7 @@ class TaskController extends BaseController {
 	 * @return
 	 */
 	private boolean taskWritePermission(User user, Project project) {
-		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
+		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
 	}
 	
 	/**

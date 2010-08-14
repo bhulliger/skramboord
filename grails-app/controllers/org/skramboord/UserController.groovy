@@ -18,6 +18,7 @@
 package org.skramboord
 
 import java.awt.Color;
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 
 /**
  * User controller.
@@ -58,10 +59,10 @@ class UserController extends BaseController {
 	 * he should be removed from those authorities which he is involved.
 	 */
 	def delete = {
-		if (authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
+		if (springSecurityService.ifAllGranted('ROLE_SUPERUSER')) {
 			def person = User.get(params.id)
 			if (person) {
-				def authPrincipal = authenticateService.principal()
+				def authPrincipal = springSecurityService.principal()
 				//avoid self-delete if the logged-in user is an admin
 				if (!(authPrincipal instanceof String) && authPrincipal.username == person.username) {
 					flash.message = message(code:"user.selfDestruction")
@@ -108,8 +109,8 @@ class UserController extends BaseController {
 		def person = User.get(params.userId)
 		if (userWritePermission(session.user, person)) {
 			if (params.userPassword == params.userPassword2) {
-				if (!params.userPassword.equals(person.passwd)) {
-					person.passwd = authenticateService.encodePassword(params.userPassword)
+				if (!params.userPassword.equals(person.password)) {
+					person.password = springSecurityService.encodePassword(params.userPassword)
 				}
 			} else {
 				flash.message = message(code:"error.passwordNotEqual")			
@@ -125,8 +126,8 @@ class UserController extends BaseController {
 				flash.objectToSave=person
 			}
 			
-			// TODO: Roles: not possible to change roles
-//			if (person.save() && authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
+			// TODO: Roles: not possible to change roles -> Migration to SpringSecurity
+//			if (person.save() && springSecurityService.ifAllGranted('ROLE_SUPERUSER')) {
 //				Role.findAll().each { it.removeFromPeople(person)
 //				}
 //				addRoles(person)
@@ -149,7 +150,7 @@ class UserController extends BaseController {
 		
 		def person = new User()
 		person.properties = params
-		person.passwd = authenticateService.encodePassword(params.passwd)
+		person.password = springSecurityService.encodePassword(params.password)
 		if (person.save()) {
 			addRoles(person)
 			redirect action: show, id: person.id
@@ -162,7 +163,7 @@ class UserController extends BaseController {
 	private void addRoles(person) {
 		for (String key in params.keySet()) {
 			if (key.contains('ROLE') && 'on' == params.get(key)) {
-				if (authenticateService.ifAllGranted('ROLE_SUPERUSER')) {
+				if (springSecurityService.ifAllGranted('ROLE_SUPERUSER')) {
 					// Only Super user can add all roles
 					Role.findByAuthority(key).addToPeople(person)
 				}
@@ -191,6 +192,6 @@ class UserController extends BaseController {
 	}
 	
 	private boolean userWritePermission(User user, User userToChange) {
-		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.id.equals(user.id)
+		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.id.equals(user.id)
 	}
 }

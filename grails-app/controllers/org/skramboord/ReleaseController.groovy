@@ -17,6 +17,8 @@
 
 package org.skramboord
 
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+
 class ReleaseController extends BaseController {
 	
 	def index = { redirect(controller:'sprint', action:'list')
@@ -93,10 +95,10 @@ class ReleaseController extends BaseController {
 	}
 	
 	private boolean releaseViewPermission(User user, Project project) {
-		return Project.accessRight(project, user, authenticateService).list().first() == 0
+		return Project.accessRight(project, user, springSecurityService).list().first() == 0
 	}
 	
 	private boolean releaseWritePermission(User user, Project project) {
-		return authenticateService.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
+		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner) || user.equals(project.master)
 	}
 }

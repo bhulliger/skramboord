@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
+import grails.plugins.springsecurity.SecurityConfigType
 
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
@@ -102,6 +103,25 @@ log4j = {
 }
 
 
-     
+// Spring Security
+grails.plugins.springsecurity.active = true
+grails.plugins.springsecurity.cacheUsers = false
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'org.skramboord.User'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.skramboord.Role'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.skramboord.UserRole'
+//grails.plugins.springsecurity.interceptUrlMap = [
+//	'/administration/**':      ["hasRole('ROLE_SUPERUSER'"]
+// ]
+grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+grails.plugins.springsecurity.interceptUrlMap = [
+   '/js/**':                  ['IS_AUTHENTICATED_ANONYMOUSLY'],
+   '/css/**':                 ['IS_AUTHENTICATED_ANONYMOUSLY'],
+   '/images/**':              ['IS_AUTHENTICATED_ANONYMOUSLY'],
+   '/login/**':               ['IS_AUTHENTICATED_ANONYMOUSLY'],
+   '/logout/**':              ['IS_AUTHENTICATED_ANONYMOUSLY'],
+   '/administration/**':      ['ROLE_SUPERUSER'],
+   '/':                       ['IS_AUTHENTICATED_FULLY'],
+   '/*':                      ['IS_AUTHENTICATED_FULLY']
+]
 
 //log4j.logger.org.springframework.security='off,stdout'

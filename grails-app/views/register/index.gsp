@@ -47,16 +47,16 @@
 			</tr>
 
 			<tr class='prop'>
-				<td valign='top' class='name'><label for='passwd'>Password:</label></td>
-				<td valign='top' class='value ${hasErrors(bean:person,field:'passwd','errors')}'>
-					<input type="password" name='passwd' value="${person?.passwd?.encodeAsHTML()}"/>
+				<td valign='top' class='name'><label for='password'>Password:</label></td>
+				<td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
+					<input type="password" name='password' value="${person?.password?.encodeAsHTML()}"/>
 				</td>
 			</tr>
 
 			<tr class='prop'>
 				<td valign='top' class='name'><label for='enabled'>Confirm Password:</label></td>
-				<td valign='top' class='value ${hasErrors(bean:person,field:'passwd','errors')}'>
-					<input type="password" name='repasswd' value="${person?.passwd?.encodeAsHTML()}"/>
+				<td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
+					<input type="password" name='repassword' value="${person?.password?.encodeAsHTML()}"/>
 				</td>
 			</tr>
 

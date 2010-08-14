@@ -245,7 +245,7 @@
 								<div class="message">
 									<g:message code="project.noProjects"/>
 								</div>
-								<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+								<sec:ifAnyGranted roles="ROLE_SUPERUSER,ROLE_ADMIN">
 									<table>
 										<tr style="border: 1px solid #ccc;">
 											<td colspan="6">
@@ -254,7 +254,7 @@
 											</td>
 										</tr>
 									</table>
-								</g:ifAnyGranted>
+								</sec:ifAnyGranted>
 							</g:if>
 							<g:else>
 								<div class="list">
@@ -264,12 +264,12 @@
 											<g:sortableColumn property="owner" defaultOrder="asc" title="${message(code:'project.owner')}"/>
 											<g:sortableColumn property="master" defaultOrder="asc" title="${message(code:'project.master')}"/>
 											<g:sortableColumn property="sprints" defaultOrder="desc" title="${message(code:'sprint.sprints')}" style="text-align:center; width: 50px;"/>
-											<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+											<sec:ifAnyGranted roles="ROLE_SUPERUSER,ROLE_ADMIN">
 												<th style="width: 20px;"></th>
-											</g:ifAnyGranted>
-											<g:ifAllGranted role="ROLE_SUPERUSER">
+											</sec:ifAnyGranted>
+											<sec:ifAllGranted roles="ROLE_SUPERUSER">
 												<th style="width: 20px;"></th>
-											</g:ifAllGranted>
+											</sec:ifAllGranted>
 										</tr>
 										<g:each var="project" in="${flash.projectList}" status="i">
 											<g:def var="projectId" value="${project.id}"/>
@@ -281,29 +281,29 @@
 												<td style="vertical-align: middle;">${project.master.userRealName}</td>
 												<td style="vertical-align: middle; text-align:center;">${project.sprints.size()}</td>
 				
-												<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
+												<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
 													<td>
 														<g:link controller="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span><span class="icon"></span></g:link>
 													</td>
 												</g:if>
-												<g:elseif test="${authenticateService.ifAnyGranted('ROLE_ADMIN')}">
+												<g:elseif test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_ADMIN')}">
 													<td style="vertical-align: middle; text-align:center;">-</td>
 												</g:elseif>
-												<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER')}">
+												<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')}">
 													<td>
 														<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm('${message(code:'project.delete', args: [project.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span><span class="icon"></span></g:link>
 													</td>
 												</g:if>
 											</tr>
 										</g:each>
-										<g:ifAnyGranted role="ROLE_SUPERUSER,ROLE_ADMIN">
+										<sec:ifAnyGranted roles="ROLE_SUPERUSER,ROLE_ADMIN">
 											<tr style="border: 1px solid #ccc;">
 												<td colspan="6">
 													<g:render template="formNewProject"/>
 													<g:link url="#" onclick="return openFormNewProject();"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="project.createProject"/></span></g:link>
 												</td>
 											</tr>
-										</g:ifAnyGranted>
+										</sec:ifAnyGranted>
 									</table>
 								</div>
 							</g:else>

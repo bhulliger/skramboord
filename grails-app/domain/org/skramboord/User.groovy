@@ -18,53 +18,46 @@
 package org.skramboord
 
 import java.awt.Color;
+import java.util.Set;
+
 
 class User {
-	static transients = ['pass']
-	static hasMany = [authorities:Role, tasks:Task, portlets:DashboardPortlet, projects:Membership, watch:Follow]
-	static belongsTo = Role
+
+	String username
+	String prename
+	String name
+	String password
+	boolean enabled
+	boolean accountExpired
+	boolean accountLocked
+	boolean passwordExpired
+	String email
+	boolean emailShow
+	String description = ''
+	SortedSet portlets
+	Color color
 	
+	static hasMany = [tasks:Task, portlets:DashboardPortlet, projects:Membership, watch:Follow]
+
+	static constraints = {
+		username blank: false, unique: true
+		password blank: false
+		name blank: false
+		prename blank: false
+		email blank: false, email: true
+		color nullable: true
+	}
+
 	static mapping = {
+		password column: '`password`'
 		owner lazy:false
 		master lazy:false
 		projects cascade:"all,delete-orphan"
 		watch cascade:"all,delete-orphan"
 	}
-	
-	/** Username */
-	String username
-	/** Frist Name */
-	String prename
-	/** Name */
-	String name
-	/** MD5 Password */
-	String passwd
-	/** enabled */
-	boolean enabled
 
-	String email
-	boolean emailShow
-
-	/** description */
-	String description = ''
-
-	/** Dashboard */
-	SortedSet portlets
-		
-	/** task color */
-	Color color
-
-	/** plain password to create a MD5 password */
-	String pass = '[secret]'
-		
-	static constraints = {
-		username(blank: false, unique: true)
-		prename(blank: false)
-		name(blank: false)
-		passwd(blank: false)
-		email(blank: false, email: true)
-		enabled()
-		color(nullable: true)
+	Set<Role> getAuthorities() {
+		UserRole.findAllByUser(this).collect { it.role } as Set
 	}
 	
 	static namedQueries = {

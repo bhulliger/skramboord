@@ -33,6 +33,7 @@ import org.skramboord.Priority;
 import org.skramboord.Sprint;
 import org.skramboord.Project;
 import org.skramboord.User;
+import org.skramboord.UserRole;
 import org.skramboord.Role;
 import org.skramboord.Membership;
 import org.skramboord.Follow;
@@ -42,7 +43,7 @@ import org.skramboord.Release;
 
 class BootStrap {
 	
-	def authenticateService
+	def springSecurityService
 	
 	def init = { servletContext ->
 		
@@ -80,23 +81,23 @@ class BootStrap {
 		def roleUser = new Role(authority:'ROLE_USER', description:'role user').save()
 		
 		// Adding Users
-		def userAdmin = new User(username:'admin', prename:'Pablo', name:'Hess', enabled: true, emailShow: true, email: 'admin@skramboord.org', passwd: authenticateService.encodePassword("admin")).save()
-		def userDevChief = new User(username:'wmozart', prename:'Wolfgang', name:'Mozart', enabled: true, emailShow: true, email: 'wolfgang.mozart@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
-		def userDev1 = new User(username:'lbeethoven', prename:'Ludwig', name:'Beethoven', enabled: true, emailShow: true, email: 'ludwig.beethoven@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
-		def userDev2 = new User(username:'asalieri', prename:'Antonio', name:'Salieri', enabled: true, emailShow: true, email: 'antonio.salieri@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
-		def userDev3 = new User(username:'jbach', prename:'Johann', name:'Bach', enabled: true, emailShow: true, email: 'johann.bach@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
-		def userClient1 = new User(username:'hmuster', prename:'Hans', name:'Muster', enabled: true, emailShow: true, email: 'hans.muster@skramboord.org', passwd: authenticateService.encodePassword("1234")).save()
+		def userAdmin = new User(username:'admin', prename:'Pablo', name:'Hess', enabled: true, emailShow: true, email: 'admin@skramboord.org', password: springSecurityService.encodePassword("admin")).save()
+		def userDevChief = new User(username:'wmozart', prename:'Wolfgang', name:'Mozart', enabled: true, emailShow: true, email: 'wolfgang.mozart@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
+		def userDev1 = new User(username:'lbeethoven', prename:'Ludwig', name:'Beethoven', enabled: true, emailShow: true, email: 'ludwig.beethoven@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
+		def userDev2 = new User(username:'asalieri', prename:'Antonio', name:'Salieri', enabled: true, emailShow: true, email: 'antonio.salieri@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
+		def userDev3 = new User(username:'jbach', prename:'Johann', name:'Bach', enabled: true, emailShow: true, email: 'johann.bach@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
+		def userClient1 = new User(username:'hmuster', prename:'Hans', name:'Muster', enabled: true, emailShow: true, email: 'hans.muster@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
 		
 		// Adding user to roles
-		roleSuperUser.addToPeople(userAdmin)
-		roleAdmin.addToPeople(userAdmin)
-		roleAdmin.addToPeople(userDevChief)
-		roleUser.addToPeople(userAdmin)
-		roleUser.addToPeople(userDevChief)
-		roleUser.addToPeople(userDev1)
-		roleUser.addToPeople(userDev2)
-		roleUser.addToPeople(userDev3)
-		roleUser.addToPeople(userClient1)
+		UserRole.create(userAdmin, roleSuperUser)
+		UserRole.create(userAdmin, roleAdmin)
+		UserRole.create(userDevChief, roleAdmin)
+		UserRole.create(userAdmin, roleUser)
+		UserRole.create(userDevChief, roleUser)
+		UserRole.create(userDev1, roleUser)
+		UserRole.create(userDev2, roleUser)
+		UserRole.create(userDev3, roleUser)
+		UserRole.create(userClient1, roleUser)
 		
 		// Initialize priorities
 		Priority low = new Priority(name: "low", color: Color.decode("0x808080"))

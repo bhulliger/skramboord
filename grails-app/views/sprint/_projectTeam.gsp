@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$(function() {
-<g:if test="${authenticateService.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 		$("#poductOwner").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,

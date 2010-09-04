@@ -28,7 +28,6 @@ import org.skramboord.StateTaskOpen;
 import org.skramboord.StateTaskStandBy;
 import org.skramboord.Task;
 import org.skramboord.Today;
-import org.skramboord.Url;
 import org.skramboord.Priority;
 import org.skramboord.Sprint;
 import org.skramboord.Project;

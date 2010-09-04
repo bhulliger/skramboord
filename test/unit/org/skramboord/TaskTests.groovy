@@ -20,7 +20,7 @@ import java.awt.Color;
 import grails.test.*
 
 class TaskTests extends GrailsUnitTestCase {
-	Url urlPuzzle
+	String urlPuzzle
 	Priority immediate
 	Priority normal
 	StateTaskOpen taskStateOpen
@@ -32,7 +32,7 @@ class TaskTests extends GrailsUnitTestCase {
 
         mockForConstraintsTests(Task)
 
-        urlPuzzle = new Url(url:"http://www.puzzle.ch")
+        urlPuzzle = "http://www.puzzle.ch"
 		immediate = new Priority(name: "immediate", color: Color.RED)
 		normal = new Priority(name: "normal", color: Color.GREEN)
 		taskStateOpen = new StateTaskOpen()

@@ -1,4 +1,9 @@
-<li id="taskId_${task.id}" style="margin: 0; padding: 0;">
+<g:if test="${task.description?.size() > 0}">
+	<li id="taskId_${task.id}" style="margin: 0; padding: 0;" title="<b>${message(code:'task.description')}:</b><br>${task.description}" class="tooltip">
+</g:if>
+<g:else>
+	<li id="taskId_${task.id}" style="margin: 0; padding: 0;">
+</g:else>
 	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 		<div class="postit-right" onmouseover="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEdit')"
 	                              onmouseout="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEditNone')">

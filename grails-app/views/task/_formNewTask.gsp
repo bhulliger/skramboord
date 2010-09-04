@@ -2,8 +2,8 @@
 	$(function() {
 		$("#dialog-form").dialog({
 			autoOpen: false,
-			height: 360,
-			width: 300,
+			height: 550,
+			width: 400,
 			modal: true,
 			buttons: {
 				'<g:message code="default.button.save.label"/>': function() {
@@ -24,6 +24,8 @@
 		<fieldset>
 			<label><g:message code="task.name"/></label>
 			<input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" />
+			<label><g:message code="task.description"/></label>
+			<textarea name="taskDescription" id="taskDescription" class="text ui-widget-content ui-corner-all" style="width: 356px;" rows="10"></textarea>
 			<label><g:message code="task.effort"/></label>
 			<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
 			<label><g:message code="task.link"/></label>

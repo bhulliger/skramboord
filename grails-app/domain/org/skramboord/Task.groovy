@@ -21,6 +21,7 @@ import java.util.Date;
 
 class Task {	
 	String name
+	String description
 	Double effort
 	String url
 	StateTask state
@@ -35,6 +36,7 @@ class Task {
 	                    
 	static constraints = {
 		name(nullable:false, blank:false)
+		description(nullable:true)
 		effort(nullable:false)
 		url(nullable:true, url:true, blank:false)
 		state(nullable:false)

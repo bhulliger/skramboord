@@ -12,6 +12,15 @@ html * {
 	margin-right: 2px;
 }
 
+#tooltip{
+	display:none;
+	position:absolute;
+	border:2px solid #000000;
+	background:#66FF66;
+	padding:2px 5px;
+	color:#000000;
+}
+
 img {
 	border: 0px;
 }
@@ -347,6 +356,12 @@ th.desc a {
 
 /* FORMS */
 .form input.text {
+	margin-bottom: 12px;
+	width: 95%;
+	padding: .4em;
+}
+
+.form textarea.text {
 	margin-bottom: 12px;
 	width: 95%;
 	padding: .4em;

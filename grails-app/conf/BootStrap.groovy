@@ -124,26 +124,26 @@ class BootStrap {
 		
 		// Sprint 1
 		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", startDate: date4, endDate: date3, tasks: [])
-		createTask(userDev1, sprint1_0, "Mantis 1812", 2.0, urlPuzzle, taskStateDone, normal, date4 + 1)
-		createTask(userDev3, sprint1_0, "Mantis 1798", 4.0, urlPuzzle, taskStateDone, normal, date4 + 3)
-		createTask(userDev1, sprint1_0, "Mantis 1765", 4.5, urlPuzzle, taskStateDone, high, date4 + 4)
-		createTask(userDev3, sprint1_0, "Mantis 1705", 3.5, urlPuzzle, taskStateDone, normal, date4 + 5)
-		createTask(userDev3, sprint1_0, "Mantis 1731", 2.0, urlPuzzle, taskStateDone, low, date4 + 6)
-		createTask(userDev1, sprint1_0, "Mantis 1733", 2.5, urlPuzzle, taskStateDone, low, date4 + 8)
-		createTask(userDev2, sprint1_0, "Mantis 1722", 0.5, urlPuzzle, taskStateDone, low, date4 + 9)
-		createTask(userDev2, sprint1_0, "Mantis 1700", 4, urlPuzzle, taskStateDone, low, date4 + 10)
+		createTask(userDev1, sprint1_0, "Mantis 1812", "Long names of the tasks should be shortened.", 2.0, urlPuzzle, taskStateDone, normal, date4 + 1)
+		createTask(userDev3, sprint1_0, "Mantis 1798", "Change CSS style of the whole application to blue/white.", 4.0, urlPuzzle, taskStateDone, normal, date4 + 3)
+		createTask(userDev1, sprint1_0, "Mantis 1765", null, 4.5, urlPuzzle, taskStateDone, high, date4 + 4)
+		createTask(userDev3, sprint1_0, "Mantis 1705", null, 3.5, urlPuzzle, taskStateDone, normal, date4 + 5)
+		createTask(userDev3, sprint1_0, "Mantis 1731", "This is just a sentence about nothing to show how this tooltip works with a long text. Maybe this text should be much longer. Or maybe it should also has formatted stuff in it like <b>bold</b> or <i>italic</i>...", 2.0, urlPuzzle, taskStateDone, low, date4 + 6)
+		createTask(userDev1, sprint1_0, "Mantis 1733", null, 2.5, urlPuzzle, taskStateDone, low, date4 + 8)
+		createTask(userDev2, sprint1_0, "Mantis 1722", null, 0.5, urlPuzzle, taskStateDone, low, date4 + 9)
+		createTask(userDev2, sprint1_0, "Mantis 1700", null, 4, urlPuzzle, taskStateDone, low, date4 + 10)
 		
 		// Sprint 2
 		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", startDate: date3, endDate: date2, tasks: [])
-		createTask(userDev2, sprint1_1, "Mantis 1980", 5.5, urlPuzzle, taskStateDone, normal, date3 + 2)
-		createTask(userDev3, sprint1_1, "Mantis 2100", 2.0, urlPuzzle, taskStateDone, immediate, date3 + 4)
-		createTask(null, sprint1_1, "Mantis 2001", 2.0, urlPuzzle, taskStateOpen, normal, null)
-		createTask(null, sprint1_1, "Mantis 2015", 3.5, urlPuzzle, taskStateOpen, urgent, null)
-		createTask(null, sprint1_1, "Mantis 1987", 0.5, urlPuzzle, taskStateOpen, high, null)
-		createTask(null, sprint1_1, "Mantis 1950", 2.5, urlPuzzle, taskStateOpen, normal, null)
-		createTask(userDev1, sprint1_1, "Mantis 1999", 1.0, urlPuzzle, taskStateChecked, immediate, null)
-		createTask(null, sprint1_1, "Mantis 2012", 1.5, urlPuzzle, taskStateNext, normal, null)
-		createTask(null, sprint1_1, "Mantis 2014", 5.0, urlPuzzle, taskStateNext, low, null)
+		createTask(userDev2, sprint1_1, "Mantis 1980", null, 5.5, urlPuzzle, taskStateDone, normal, date3 + 2)
+		createTask(userDev3, sprint1_1, "Mantis 2100", null, 2.0, urlPuzzle, taskStateDone, immediate, date3 + 4)
+		createTask(null, sprint1_1, "Mantis 2001", null, 2.0, urlPuzzle, taskStateOpen, normal, null)
+		createTask(null, sprint1_1, "Mantis 2015", "Change CSS style of the whole application to yellow/black/white.", 3.5, urlPuzzle, taskStateOpen, urgent, null)
+		createTask(null, sprint1_1, "Mantis 1987", null, 0.5, urlPuzzle, taskStateOpen, high, null)
+		createTask(null, sprint1_1, "Mantis 1950", null, 2.5, urlPuzzle, taskStateOpen, normal, null)
+		createTask(userDev1, sprint1_1, "Mantis 1999", null, 1.0, urlPuzzle, taskStateChecked, immediate, null)
+		createTask(null, sprint1_1, "Mantis 2012", null, 1.5, urlPuzzle, taskStateNext, normal, null)
+		createTask(null, sprint1_1, "Mantis 2014", "Change CSS style of the whole application to orange/white.", 5.0, urlPuzzle, taskStateNext, low, null)
 		
 		// Sprint 1
 		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", startDate: date2, endDate: date1, tasks: [])
@@ -187,8 +187,8 @@ class BootStrap {
 	 * @param priority
 	 * @param finished
 	 */
-	def createTask(User user, Sprint sprint, String name, Double effort, String url, StateTask state, Priority priority, Date finished) {
-		Task task = new Task(user: user, name: name, effort: effort, url: url, state: state, priority: priority, finishedDate: finished, sprint: sprint, project: null)
+	def createTask(User user, Sprint sprint, String name, String description, Double effort, String url, StateTask state, Priority priority, Date finished) {
+		Task task = new Task(user: user, name: name, description: description, effort: effort, url: url, state: state, priority: priority, finishedDate: finished, sprint: sprint, project: null)
 		task.save()
 	}
 } 

@@ -137,4 +137,74 @@ class TaskTests extends GrailsUnitTestCase {
 		// then
 		assertFalse task.validate()
 	}
+	
+	void testTaskWithCorrectUrlHttp() {
+		// given
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		
+		// when
+		
+		// then
+		assertTrue task.validate()
+	}
+	
+	void testTaskWithCorrectUrlHttps() {
+		// given
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "https://www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		
+		// when
+		
+		// then
+		assertTrue task.validate()
+	}
+	
+	void testTaskWithCorrectUrlWithWhitespaces() {
+		// given
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "   http://ww  w.pu   zzle.ch   ", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		
+		// when
+		
+		// then
+		assertTrue task.validate()
+	}
+	
+	void testTaskWithUrlMissingHttp() {
+		// given
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		
+		// when
+		
+		// then
+		assertFalse task.validate()
+	}
+	
+	void testTaskWithUrlWrongHttp() {
+		// given
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http//www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		
+		// when
+		
+		// then
+		assertFalse task.validate()
+	}
+		
+	void testTaskWithWrongUrlMissingEnding() {
+		// given
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://www.puzzle", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		
+		// when
+		
+		// then
+		assertFalse task.validate()
+	}
+	
+	void testTaskWithWrongUrlWithDoubleHttp() {
+		// given
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://http://www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		
+		// when
+		
+		// then
+		assertFalse task.validate()
+	}
 }

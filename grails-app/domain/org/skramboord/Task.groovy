@@ -29,6 +29,10 @@ class Task {
 	Date finishedDate
 	static belongsTo = [sprint:Sprint, project:Project, user:User]
 	
+	public void setUrl(String url) {
+		this.url = url.replaceAll(" ", "")
+	}
+	
 	static mapping = {
 		priority lazy:false
 		sprint lazy:false

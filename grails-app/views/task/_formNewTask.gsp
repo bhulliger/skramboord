@@ -29,7 +29,7 @@
 			<label><g:message code="task.effort"/></label>
 			<input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" />
 			<label><g:message code="task.link"/></label>
-			<input type="text" name="taskLink" id="taskLink" value="" class="text ui-widget-content ui-corner-all" />
+			<input type="text" name="taskLink" id="taskLink" value="http://" class="text ui-widget-content ui-corner-all" />
 			<label><g:message code="task.priority"/></label>
 			<g:select name="taskPriority" from="${flash.priorityList}" valueMessagePrefix="priorities"/>
 		</fieldset>

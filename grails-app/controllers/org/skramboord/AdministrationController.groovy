@@ -32,6 +32,10 @@ class AdministrationController extends BaseController {
 		flash.priorities = Priority.withCriteria {
 			order(params.sort, params.order)
 		}
+		
+		flash.users = User.withCriteria {
+			order(params.sort, params.order)
+		}
 	}
 	
 	def savePriorities = {

@@ -59,25 +59,23 @@ class UserController extends BaseController {
 	 * he should be removed from those authorities which he is involved.
 	 */
 	def delete = {
-		if (springSecurityService.ifAllGranted('ROLE_SUPERUSER')) {
-			def person = User.get(params.id)
+		def person = User.get(params.id)
+		if (userDeletePermission(session.user, person)) {
 			if (person) {
-				def authPrincipal = springSecurityService.principal()
 				//avoid self-delete if the logged-in user is an admin
-				if (!(authPrincipal instanceof String) && authPrincipal.username == person.username) {
+				if (session.user.equals(person)) {
 					flash.message = message(code:"user.selfDestruction")
 				}
 				else {
 					// first, delete this person from People_Authorities table.
-					Role.findAll().each { it.removeFromPeople(person)
-					}
+					UserRole.removeAll(person)
 					// second, remove all tasks from person
 					person.tasks.each {it.user = null}
 					person.tasks.clear()
 					
 					// Now delete this person...
 					person.delete()
-					flash.message = message(code:"user.deleted", args:[params.id])
+					flash.message = message(code:"user.deleted", args:[person.getUserRealName()])
 				}
 			}
 			else {
@@ -87,7 +85,7 @@ class UserController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
-		redirect action: list
+		redirect(uri:params.fwdTo)
 	}
 	
 	def edit = {
@@ -193,5 +191,9 @@ class UserController extends BaseController {
 	
 	private boolean userWritePermission(User user, User userToChange) {
 		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.id.equals(user.id)
+	}
+	
+	private boolean userDeletePermission(User user, User userToDelete) {
+		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')
 	}
 }

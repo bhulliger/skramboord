@@ -41,8 +41,12 @@
 			
 			<div id="tabs">
 				<ul>
+					<li><a href="#tab-users"><g:message code="admin.userList"/></a></li>
 					<li><a href="#tab-priorities"><g:message code="admin.priorities"/></a></li>
 				</ul>
+				<div id="tab-users">
+					<g:render template="users"/>
+				</div>
 				<div id="tab-priorities">
 					<g:render template="priorities"/>
 				</div>

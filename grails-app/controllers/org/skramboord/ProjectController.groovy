@@ -89,12 +89,6 @@ class ProjectController extends BaseController {
 		
 			if (projectEditPermission(session.user, project)) {
 				flash.projectEdit = project
-				def criteria = User.createCriteria()
-				flash.users = criteria.list {
-						authorities {
-				            eq('authority','ROLE_ADMIN')
-				       }
-				}
 			} else {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}

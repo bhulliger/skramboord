@@ -62,16 +62,11 @@
 				    	}
 				});
 
-				var tabId = parseInt($.cookie("taskTab")) || 0;
+				var selectTab = ${session?.tabs?.get('tasks')?session.tabs.get('tasks'):'0'};
 				$("#tabs").tabs({
-					selected: tabId,
+					selected: selectTab,
 					show:     function(junk,ui) {
-						var tabName = ui.tab.toString().split("#");
-						var ourl = tabName[1].split("-");
-						var tabId = ourl[1];
-						$.cookie("taskTab", tabId);
-
-						if (tabId == 1) { // Only render burn down if tab #1 is selected.
+						if (selectTab == 1) { // Only render burn down if tab #1 is selected.
 							var target = [];
 							var today = ${flash.today}
 							var dates = ${flash.burndownTargetX};
@@ -114,8 +109,8 @@
 				
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-0"><g:message code="task.scrumboard"/></a></li>
-					<li><a href="#tab-1"><g:message code="task.burndown"/></a></li>
+					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '0'])}"><g:message code="task.scrumboard"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '1'])}"><g:message code="task.burndown"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="scrumBoard"/>

@@ -16,19 +16,12 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.effects.core.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.datepicker.js')}"></script>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.accordion.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
 				
 		<script type="text/javascript">
 			$(function() {
-				var tabId = parseInt($.cookie("sprintTab")) || 0;
+				var selectTab = ${session?.tabs?.get('sprint')?session.tabs.get('sprint'):'0'};
 				$("#tabs").tabs({
-					selected: tabId,
-					show:     function(junk,ui) {
-						var tabName = ui.tab.toString().split("#");
-						var ourl = tabName[1].split("-");
-						var tabId = ourl[1];
-						$.cookie("sprintTab", tabId);
-					}
+					selected: selectTab
 				});
 			});
 		</script>
@@ -49,8 +42,8 @@
 			
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-0"><g:message code="release.releases"/></a></li>
-					<li><a href="#tab-1"><g:message code="sprint.projectTeam"/></a></li>
+					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '0'])}"><g:message code="release.releases"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '1'])}"><g:message code="sprint.projectTeam"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="projectReleases"/>

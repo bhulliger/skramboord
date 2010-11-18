@@ -23,7 +23,10 @@
 						$('#dialog-form-project').dialog('open');
 				});
 
-				$("#tabs").tabs();
+				var selectTab = ${session?.tabs?.get('administration')?session.tabs.get('administration'):'0'};
+				$("#tabs").tabs({
+					selected: selectTab
+				});
 			});
 		</script>
 	</head>
@@ -41,13 +44,13 @@
 			
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-users"><g:message code="admin.userList"/></a></li>
-					<li><a href="#tab-priorities"><g:message code="admin.priorities"/></a></li>
+					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'administration', tabName: '0'])}"><g:message code="admin.userList"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.priorities"/></a></li>
 				</ul>
-				<div id="tab-users">
+				<div id="tab-0">
 					<g:render template="users"/>
 				</div>
-				<div id="tab-priorities">
+				<div id="tab-1">
 					<g:render template="priorities"/>
 				</div>
 			</div>

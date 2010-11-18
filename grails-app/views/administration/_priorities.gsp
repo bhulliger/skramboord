@@ -2,9 +2,9 @@
 	<g:form>
 		<table>
 			<tr>
-				<g:sortableColumn property="id" defaultOrder="asc" title="Id" style="width: 40px;"/>
-				<g:sortableColumn property="name" defaultOrder="asc" title="${message(code:'task.priority')}"/>
-				<g:sortableColumn property="color" defaultOrder="asc" title="${message(code:'task.color')}" style="width: 55px;"/>
+				<g:sortableColumn params="[priorities:true]" property="id" defaultOrder="asc" title="Id" style="width: 40px;"/>
+				<g:sortableColumn params="[priorities:true]" property="name" defaultOrder="asc" title="${message(code:'task.priority')}"/>
+				<g:sortableColumn params="[priorities:true]" property="color" defaultOrder="asc" title="${message(code:'task.color')}" style="width: 55px;"/>
 			</tr>
 			<g:each var="priority" in="${flash.priorities}" status="i">
 				<g:def var="priorityId" value="${priority.id}"/>

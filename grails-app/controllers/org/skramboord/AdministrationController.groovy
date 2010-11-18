@@ -25,16 +25,20 @@ class AdministrationController extends BaseController {
 	}
 	
 	def list = {
-		if (!params.sort) {
-			params.sort = 'id'
-			params.order = 'asc'
-		}
 		flash.priorities = Priority.withCriteria {
-			order(params.sort, params.order)
+			if (params.priorities) {
+				order(params.sort, params.order)
+			} else {
+				order('id', 'asc')
+			}
 		}
 		
 		flash.users = User.withCriteria {
-			order(params.sort, params.order)
+			if (params.users) {
+				order(params.sort, params.order)
+			} else {
+				order('name', 'asc')
+			}
 		}
 	}
 	
@@ -52,5 +56,14 @@ class AdministrationController extends BaseController {
 		}
 		
 		redirect(controller:'administration', action:'list')
+	}
+	
+	def tabChange = {
+		if (params.viewName && params.tabName) {
+			if(!session.tabs) {
+				session.tabs = new HashMap<String,String>()
+			}
+			session.tabs.put(params.viewName, params.tabName)
+		}
 	}
 }

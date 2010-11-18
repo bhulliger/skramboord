@@ -2,7 +2,12 @@
 
 <script type="text/javascript">
 	$(function() {
-		$("#accordion").accordion({autoHeight: false});
+
+		var selectAccordion = ${session?.tabs?.get('releases')?session.tabs.get('releases'):'0'};
+		$("#accordion").accordion({
+			active: selectAccordion,
+			autoHeight: false
+		});
 	});
 
 	function deleteRelease(releaseId, message){
@@ -55,7 +60,8 @@
 	<div id="accordion">
 		<g:each in="${flash.releaseList}" status="j" var="release">
 			<h3>
-				<a href="#">${release.name} - ${release.goal}, <g:formatDate format="dd.MM.yyyy" date="${Sprint.startDateRelease(release).list()?.first()}"/> - <g:formatDate format="dd.MM.yyyy" date="${Sprint.endDateRelease(release).list()?.first()}"/>
+				<a href="#" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'releases', tabName: j])}">
+					${release.name} - ${release.goal}, <g:formatDate format="dd.MM.yyyy" date="${Sprint.startDateRelease(release).list()?.first()}"/> - <g:formatDate format="dd.MM.yyyy" date="${Sprint.endDateRelease(release).list()?.first()}"/>
 					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}" onclick="return deleteRelease(${release.id}, '${message(code:'release.delete', args: [release.name])}')";/></span>
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}" onclick="return editRelease(${release.id})";/></span>

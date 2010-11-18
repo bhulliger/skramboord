@@ -54,6 +54,10 @@ class ReleaseController extends BaseController {
 			if (!release.save()) {
 				flash.objectToSave=release
 			}
+			
+			// select new created release
+			session.project.refresh()
+			session.tabs.put('releases', session.project.releases.size()-1)
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}

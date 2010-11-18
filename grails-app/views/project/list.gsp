@@ -296,15 +296,13 @@
 												</g:if>
 											</tr>
 										</g:each>
-										<sec:ifAnyGranted roles="ROLE_SUPERUSER,ROLE_ADMIN">
-											<tr style="border: 1px solid #ccc;">
-												<td colspan="6">
-													<g:render template="formNewProject"/>
-													<g:link url="#" onclick="return openFormNewProject();"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="project.createProject"/></span></g:link>
-												</td>
-											</tr>
-										</sec:ifAnyGranted>
 									</table>
+									<sec:ifAnyGranted roles="ROLE_SUPERUSER,ROLE_ADMIN">
+										<div class="buttons">
+											<g:render template="formNewProject"/>
+											<span class="button"><g:actionSubmit class="add" onclick="return openFormNewProject();" value="${message(code:'project.createProject')}" /></span>
+										</div>
+									</sec:ifAnyGranted>
 								</div>
 							</g:else>
 						</div>

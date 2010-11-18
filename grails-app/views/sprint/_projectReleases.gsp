@@ -38,24 +38,16 @@
 	</div>
 	
 	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-		<table>
-			<tr style="border: 1px solid #ccc;">
-				<td colspan="8">
-					<g:link url="#" onclick="return openFormNewRelease()"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="release.createRelease"/></span></g:link>
-				</td>
-			</tr>
-		</table>
+		<div class="buttons">
+			<span class="button"><g:actionSubmit class="add" onclick="return openFormNewRelease();" value="${message(code:'release.createRelease')}" /></span>
+		</div>
 	</g:if>
 </g:if>
 <g:else>
 	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-		<table>
-			<tr style="border: 1px solid #ccc;">
-				<td colspan="8">
-					<g:link url="#" onclick="return openFormNewRelease()"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="release.createRelease"/></span></g:link>
-				</td>
-			</tr>
-		</table>
+		<div class="buttons">
+			<span class="button"><g:actionSubmit class="add" onclick="return openFormNewRelease();" value="${message(code:'release.createRelease')}" /></span>
+		</div>
 	</g:if>
 	<div id="accordion">
 		<g:each in="${flash.releaseList}" status="j" var="release">
@@ -75,13 +67,11 @@
 						<g:message code="sprint.noSprints"/>
 					</div>
 					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-						<table>
-							<tr style="border: 1px solid #ccc;">
-								<td colspan="8">
-									<g:link url="#" onclick="return openFormNewSprint(${release.id})"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="sprint.createSprint"/></span></g:link>
-								</td>
-							</tr>
-						</table>
+						<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+							<div class="buttons">
+								<span class="button"><g:actionSubmit class="add" onclick="return openFormNewSprint(${release.id});" value="${message(code:'sprint.createSprint')}" /></span>
+							</div>
+						</g:if>
 					</g:if>
 				</g:if>
 				<g:else>
@@ -130,14 +120,12 @@
 									</g:if>
 								</tr>
 							</g:each>
-								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-									<tr style="border: 1px solid #ccc;">
-										<td colspan="8">
-											<g:link url="#" onclick="return openFormNewSprint(${release.id})"><span class="icon"><img src="${resource(dir:'images/icons',file:'add.png')}" alt="${message(code:'default.button.create.label')}" style="vertical-align: middle;"/><span class="icon" style="padding-left: 5px;"><g:message code="sprint.createSprint"/></span></g:link>
-										</td>
-									</tr>
-								</g:if>
 						</table>
+						<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+							<div class="buttons">
+								<span class="button"><g:actionSubmit class="add" onclick="return openFormNewSprint(${release.id});" value="${message(code:'sprint.createSprint')}" /></span>
+							</div>
+						</g:if>
 					</div>
 				</g:else>
 			</div>

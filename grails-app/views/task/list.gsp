@@ -20,6 +20,7 @@
 		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
 		
 		<script type="text/javascript">
+			var showBurndown = false;
 			$(function() {
 				xOffset = 15;
 				yOffset = 15;
@@ -47,26 +48,12 @@
 				} else {
 					document.getElementById("scrumboard").style.width = "660px";
 				}
-				
-				$('#toggleProductBacklog')
-					.button()
-					.click(function() {
-				    	if ($("#productBacklog").is(":hidden")) {
-				    		$.cookie('showProductBacklog', 'show')
-				    		document.getElementById("scrumboard").style.width = "660px";
-				    		$("#productBacklog").toggle(500);
-				    	} else {
-				    		$.cookie('showProductBacklog', 'hide')
-				    		document.getElementById("scrumboard").style.width = "900px";
-				    		$("#productBacklog").toggle();
-				    	}
-				});
 
 				var selectTab = ${session?.tabs?.get('tasks')?session.tabs.get('tasks'):'0'};
 				$("#tabs").tabs({
 					selected: selectTab,
 					show:     function(junk,ui) {
-						if (selectTab == 1) { // Only render burn down if tab #1 is selected.
+						if (showBurndown || (selectTab == '1')) { // Only render burn down if tab #1 is selected.
 							var target = [];
 							var today = ${flash.today}
 							var dates = ${flash.burndownTargetX};
@@ -86,10 +73,15 @@
 										},
 						    			grid: { markings: markings }
 						    	    });
+						    showBurndown = false;
 						}
 					}
 				});
 			});
+
+			function rerenderBurndown(){
+				showBurndown = true;
+			}
 		</script>
 
 	</head>
@@ -110,7 +102,7 @@
 			<div id="tabs">
 				<ul>
 					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '0'])}"><g:message code="task.scrumboard"/></a></li>
-					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '1'])}"><g:message code="task.burndown"/></a></li>
+					<li><a href="#tab-1" onclick="rerenderBurndown(); ${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '1'])}"><g:message code="task.burndown"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="scrumBoard"/>

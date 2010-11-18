@@ -1,12 +1,6 @@
 <script type="text/javascript">
 	$(function() {
 <g:if test="${flash.teammate}">
-		$('#create-task')
-			.button()
-			.click(function() {
-				$('#dialog-form').dialog('open');
-		});
-
 		$("#backlog").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
@@ -40,9 +34,25 @@
 </g:if>
 	});
 
+	function toggleProductBacklog(){
+		if ($("#productBacklog").is(":hidden")) {
+    		$.cookie('showProductBacklog', 'show')
+    		document.getElementById("scrumboard").style.width = "660px";
+    		$("#productBacklog").toggle(500);
+    	} else {
+    		$.cookie('showProductBacklog', 'hide')
+    		document.getElementById("scrumboard").style.width = "900px";
+    		$("#productBacklog").toggle();
+    	}
+	}
+	
 <g:if test="${flash.teammate}">
 	function changeTo(event, ui, stateMethod){
 		location.href="/${meta(name: "app.name")}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
+	}
+
+	function openNewTaskForm(){
+		$('#dialog-form').dialog('open');
 	}
 </g:if>
 </script>
@@ -55,7 +65,15 @@
 	<g:elseif test="${session.sprint.isSprintActive()}">
 		<g:render template="formNewTask"/>
 	</g:elseif>
-	<g:submitButton name="toggleProductBacklog" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}"/>
+
+	<div class="buttons">
+		<span class="button">
+			<g:if test="${flash.teammate}">
+				<g:actionSubmit class="add" onclick="openNewTaskForm();" value="${message(code:'task.createTask')}"/>
+			</g:if>
+			<g:actionSubmit class="add" onclick="toggleProductBacklog();" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}" />
+		</span>
+	</div>
 	
 	<div class="clear"></div>
 	

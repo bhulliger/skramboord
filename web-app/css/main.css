@@ -354,6 +354,11 @@ th.desc a {
 	padding-left: 28px;
 }
 
+.buttons input.add {
+	background: transparent url(../images/icons/add.png) 5px 50% no-repeat;
+	padding-left: 28px;
+}
+
 /* FORMS */
 .form input.text {
 	margin-bottom: 12px;
@@ -491,7 +496,10 @@ div.next {
 .scrumboard {
 	float: right;
 	margin: 5px;
-	padding: 5px 5px 5px 20px;
+	padding-bottom: 7px;
+	padding-top: 7px;
+	padding-left: 7px;
+	padding-right: 7px;
 	border: 1px solid gray;
 	min-height: 500px;
 	background-color: #eee;

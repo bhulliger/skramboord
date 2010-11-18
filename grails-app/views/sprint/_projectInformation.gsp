@@ -1,4 +1,3 @@
-<h3><g:message code="project.informations"/></h3>
 <g:if test="${flash.projectEdit}">
 	<g:render template="../project/formEditProject" model="['fwdTo':'sprint']"/>
 </g:if>

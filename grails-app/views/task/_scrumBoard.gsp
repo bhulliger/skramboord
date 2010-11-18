@@ -58,7 +58,6 @@
 </script>
 
 <div>
-	<h3><g:message code="task.tasks"/></h3>
 	<g:if test="${flash.taskEdit}">
 		<g:render template="formEditTask"/>
 	</g:if>

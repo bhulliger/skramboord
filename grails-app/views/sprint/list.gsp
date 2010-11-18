@@ -29,7 +29,6 @@
 	<body>
 		<div class="body">
 			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link></h1>
-			<g:render template="projectInformation"/>
 
 			<g:hasErrors bean="${flash.objectToSave}">
 				<div class="errors">
@@ -43,12 +42,16 @@
 			<div id="tabs">
 				<ul>
 					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '0'])}"><g:message code="release.releases"/></a></li>
-					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '1'])}"><g:message code="sprint.projectTeam"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '1'])}"><g:message code="project.informations"/></a></li>
+					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '2'])}"><g:message code="sprint.projectTeam"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="projectReleases"/>
 				</div>
 				<div id="tab-1">
+					<g:render template="projectInformation"/>
+				</div>
+				<div id="tab-2">
 					<g:render template="projectTeam"/>
 				</div>
 			</div>

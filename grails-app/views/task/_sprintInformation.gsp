@@ -1,4 +1,3 @@
-<h3><g:message code="sprint.informations"/></h3>
 <table>
 	<tr>
 		<th><g:message code="sprint.sprint"/></th>

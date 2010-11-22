@@ -70,7 +70,7 @@
 			<g:if test="${flash.teammate}">
 				<g:actionSubmit class="add" onclick="openNewTaskForm();" value="${message(code:'task.createTask')}"/>
 			</g:if>
-			<g:actionSubmit class="add" onclick="toggleProductBacklog();" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}" />
+			<g:actionSubmit class="table" onclick="toggleProductBacklog();" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}" />
 		</span>
 	</div>
 	

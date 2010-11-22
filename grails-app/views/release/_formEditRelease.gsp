@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-release-edit").dialog({
 			autoOpen: true,
-			height: 300,
+			height: 160,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -22,11 +22,17 @@
 <div id="dialog-form-release-edit" title="${message(code:'release.formNameEditRelease')}" class="form">
 	<g:form url="[ controller: 'release', action: 'update' ]" name='formEditRelease'>
 		<fieldset>
-			<label><g:message code="release.release"/></label>
-			<input type="text" name="releaseName" id="releaseName" value="${flash.releaseEdit.name}" class="text ui-widget-content ui-corner-all"/>
-			<label><g:message code="release.goal"/></label>
-			<input type="text" name="releaseGoal" id="releaseGoal" value="${flash.releaseEdit.goal}" class="text ui-widget-content ui-corner-all"/>
-			
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td><label><g:message code="release.release"/></label></td>
+					<td><input type="text" name="releaseName" id="releaseName" value="${flash.releaseEdit.name}" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+				<tr>
+					<td><label><g:message code="release.goal"/></label></td>
+					<td><input type="text" name="releaseGoal" id="releaseGoal" value="${flash.releaseEdit.goal}" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+			</table>
+
 			<input type="hidden" name="releaseId" value="${flash.releaseEdit.id}" style="border-style: none;"/>
 		</fieldset>
 	</g:form>

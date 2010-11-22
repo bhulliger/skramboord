@@ -354,16 +354,14 @@ th.desc a {
 	padding-left: 28px;
 }
 
-.buttons input.add {
-	background: transparent url(../images/icons/add.png) 5px 50% no-repeat;
+.buttons input.table {
+	background: transparent url(../images/icons/table.png) 5px 50% no-repeat;
 	padding-left: 28px;
 }
 
 /* FORMS */
 .form input.text {
-	margin-bottom: 12px;
 	width: 95%;
-	padding: .4em;
 }
 
 .form textarea.text {
@@ -380,12 +378,17 @@ th.desc a {
 
 .form table {
 	width: 97%;
+	border: none;
+}
+
+.form table td {
+	vertical-align: middle;
+	padding: 0;
 }
 
 .form fieldset {
 	padding: 0;
 	border: 0;
-	margin-top: 25px;
 }
 
 .form div#users-contain {

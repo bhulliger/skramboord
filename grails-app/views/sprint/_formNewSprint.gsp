@@ -2,7 +2,7 @@
 	$(function() {		
 		$("#dialog-form-sprint").dialog({
 			autoOpen: false,
-			height: 500,
+			height: 350,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -35,10 +35,17 @@
 <div id="dialog-form-sprint" title="${message(code:'sprint.formNameCreateSprint')}" class="form">
 	<g:form action="addSprint" name="formNewSprint">
 		<fieldset>
-			<label><g:message code="sprint.sprint"/></label>
-			<input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/>
-			<label><g:message code="sprint.goal"/></label>
-			<input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/>
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td><label><g:message code="sprint.sprint"/></label></td>
+					<td><input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+				<tr>
+					<td><label><g:message code="sprint.goal"/></label></td>
+					<td><input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+			</table>
+			<br>
 			<table>
 				<tr>
 					<td><label><g:message code="sprint.start"/>:</label></td>
@@ -49,6 +56,7 @@
 					<td><div id="endDate"></div></td>
 				</tr>
 			</table>
+			
 			<input type="hidden" id="startDateHidden" name="startDateHidden" style="border-style: none;"/>
 			<input type="hidden" id="endDateHidden" name="endDateHidden" style="border-style: none;"/>
 			<input type="hidden" id="releaseId" name="releaseId" style="border-style: none;"/>

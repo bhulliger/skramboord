@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-sprint-edit").dialog({
 			autoOpen: true,
-			height: 500,
+			height: 350,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -31,10 +31,17 @@
 <div id="dialog-form-sprint-edit" title="${message(code:'sprint.formNameEditSprint')}" class="form">
 	<g:form action="update" name="formEditSprint">
 		<fieldset>
-			<label><g:message code="sprint.sprint"/></label>
-			<input type="text" name="sprintName" id="sprintName" value="${flash.sprintEdit.name}" class="text ui-widget-content ui-corner-all"/>
-			<label><g:message code="sprint.goal"/></label>
-			<input type="text" name="sprintGoal" id="sprintGoal" value="${flash.sprintEdit.goal}" class="text ui-widget-content ui-corner-all"/>
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td><label><g:message code="sprint.sprint"/></label></td>
+					<td><input type="text" name="sprintName" id="sprintName" value="${flash.sprintEdit.name}" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+				<tr>
+					<td><label><g:message code="sprint.goal"/></label></td>
+					<td><input type="text" name="sprintGoal" id="sprintGoal" value="${flash.sprintEdit.goal}" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+			</table>
+			<br>
 			<table>
 				<tr>
 					<td><label><g:message code="sprint.start"/>:</label></td>

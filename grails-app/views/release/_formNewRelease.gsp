@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-release").dialog({
 			autoOpen: false,
-			height: 250,
+			height: 160,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -27,10 +27,16 @@
 <div id="dialog-form-release" title="${message(code:'release.formNameCreateRelease')}" class="form">
 	<g:form action='addRelease' controller='release' name='formNewRelease'>
 		<fieldset>
-			<label><g:message code="release.release"/></label>
-			<input type="text" name="releaseName" id="releaseName" class="text ui-widget-content ui-corner-all"/>
-			<label><g:message code="release.goal"/></label>
-			<input type="text" name="releaseGoal" id="releaseGoal" class="text ui-widget-content ui-corner-all"/>
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td><label><g:message code="release.release"/></label></td>
+					<td><input type="text" name="releaseName" id="releaseName" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+				<tr>
+					<td><label><g:message code="release.goal"/></label></td>
+					<td><input type="text" name="releaseGoal" id="releaseGoal" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+			</table>
 		</fieldset>
 	</g:form>
 </div>

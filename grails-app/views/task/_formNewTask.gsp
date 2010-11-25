@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form").dialog({
 			autoOpen: false,
-			height: 550,
+			height: 400,
 			width: 500,
 			modal: true,
 			buttons: {

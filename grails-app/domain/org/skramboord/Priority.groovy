@@ -23,6 +23,18 @@ class Priority {
 	String name
 	Color color
 	
+	Priority () {
+	}
+	
+	Priority (String name, Color color) {
+		this.name = name
+		this.color = color
+	}
+	
+	Priority (String name) {
+		this.name = name
+	}
+	
 	String toString() {
 		return name
 	}
@@ -36,7 +48,7 @@ class Priority {
 		return hex
 	}
 	
-    static constraints = {
+	static constraints = {
 		name(nullable:false)
 		color(nullable:false)
     }
@@ -45,5 +57,31 @@ class Priority {
 		byName { name ->
 			eq('name', name)
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this.is(obj))
+			return true;
+		if (!obj)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Priority other = (Priority) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 }

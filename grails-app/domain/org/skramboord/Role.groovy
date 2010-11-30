@@ -23,6 +23,7 @@ package org.skramboord
 class Role {
 
 	String authority
+	String description
 
 	static mapping = {
 		cache true

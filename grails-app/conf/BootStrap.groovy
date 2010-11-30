@@ -60,7 +60,7 @@ class BootStrap {
 	
 	def initDevelopment() {
 		// Create some test data
-		String urlPuzzle = "http://www.puzzle.ch"
+		String urlPuzzle = "http://www.skramboord.org"
 		
 		// Initialize states
 		StateTaskOpen taskStateOpen = new StateTaskOpen()
@@ -75,9 +75,9 @@ class BootStrap {
 		taskStateStandBy.save()
 		
 		// Adding Roles
-		def roleSuperUser = new Role(authority:'ROLE_SUPERUSER', description:'role superuser').save()
-		def roleAdmin = new Role(authority:'ROLE_ADMIN', description:'role administration').save()
-		def roleUser = new Role(authority:'ROLE_USER', description:'role user').save()
+		def roleSuperUser = new Role(authority:'ROLE_SUPERUSER', description:'superuser').save()
+		def roleAdmin = new Role(authority:'ROLE_ADMIN', description:'administration').save()
+		def roleUser = new Role(authority:'ROLE_USER', description:'user').save()
 		
 		// Adding Users
 		def userAdmin = new User(username:'admin', prename:'Pablo', name:'Hess', enabled: true, emailShow: true, email: 'admin@skramboord.org', password: springSecurityService.encodePassword("admin")).save()
@@ -89,10 +89,7 @@ class BootStrap {
 		
 		// Adding user to roles
 		UserRole.create(userAdmin, roleSuperUser)
-		UserRole.create(userAdmin, roleAdmin)
 		UserRole.create(userDevChief, roleAdmin)
-		UserRole.create(userAdmin, roleUser)
-		UserRole.create(userDevChief, roleUser)
 		UserRole.create(userDev1, roleUser)
 		UserRole.create(userDev2, roleUser)
 		UserRole.create(userDev3, roleUser)

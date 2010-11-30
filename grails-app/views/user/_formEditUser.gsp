@@ -2,7 +2,12 @@
 	$(function() {
 		$("#dialog-form-user-edit").dialog({
 			autoOpen: true,
+<sec:ifNotGranted roles="ROLE_SUPERUSER">
 			height: 440,
+</sec:ifNotGranted>
+<sec:ifAnyGranted roles="ROLE_SUPERUSER">
+			height: 500,
+</sec:ifAnyGranted>
 			width: 500,
 			modal: true,
 			buttons: {
@@ -47,6 +52,12 @@
 					<td><label><g:message code="user.email"/></label></td>
 					<td><input type="text" name="userEmail" id="userEmail" value="${flash.userEdit.email}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
+				<sec:ifAnyGranted roles="ROLE_SUPERUSER">
+					<tr>
+						<td><label><g:message code="admin.role"/></label></td>
+						<td><g:select name="userRole" from="${flash.userRoles}" value="${flash.userRole.id}" optionValue="description" optionKey="id" /></td>
+					</tr>
+				</sec:ifAnyGranted>
 			</table>
 
 			<br>

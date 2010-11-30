@@ -44,7 +44,7 @@ class UserRole implements Serializable {
 		find 'from UserRole where user.id=:userId and role.id=:roleId',
 			[userId: userId, roleId: roleId]
 	}
-
+		
 	static UserRole create(User user, Role role, boolean flush = false) {
 		new UserRole(user: user, role: role).save(flush: flush, insert: true)
 	}
@@ -65,5 +65,16 @@ class UserRole implements Serializable {
 	static mapping = {
 		id composite: ['role', 'user']
 		version false
+	}
+	
+	static constraints = {
+		user nullable: false, unique: true
+		role nullable: false
+	}
+	
+	static namedQueries = {
+		withRole { withRole ->
+			eq('role', withRole)
+		}
 	}
 }

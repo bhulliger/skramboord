@@ -63,19 +63,23 @@ class UserController extends BaseController {
 		if (userDeletePermission(session.user, person)) {
 			if (person) {
 				//avoid self-delete if the logged-in user is an admin
-				if (session.user.equals(person)) {
-					flash.message = message(code:"user.selfDestruction")
+				if (!session.user.equals(person)) {
+					if (!istheUserTheLastSuperuser(person)) {
+						// first, delete this person from People_Authorities table.
+						UserRole.removeAll(person)
+						// second, remove all tasks from person
+						person.tasks.each {it.user = null}
+						person.tasks.clear()
+						
+						// Now delete this person...
+						person.delete()
+						flash.message = message(code:"user.deleted", args:[person.getUserRealName()])
+					} else {
+						flash.message = message(code:"error.deleteLastSuperUser")
+					}
 				}
 				else {
-					// first, delete this person from People_Authorities table.
-					UserRole.removeAll(person)
-					// second, remove all tasks from person
-					person.tasks.each {it.user = null}
-					person.tasks.clear()
-					
-					// Now delete this person...
-					person.delete()
-					flash.message = message(code:"user.deleted", args:[person.getUserRealName()])
+					flash.message = message(code:"user.selfDestruction")
 				}
 			}
 			else {
@@ -93,6 +97,8 @@ class UserController extends BaseController {
 		if (userWritePermission(session.user, person)) {
 			if (params.id) {
 				flash.userEdit = User.get(params.id)
+				flash.userRoles = Role.list()
+				flash.userRole = (flash.userEdit.getAuthorities().toArray())[0]
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
@@ -124,13 +130,16 @@ class UserController extends BaseController {
 				flash.objectToSave=person
 			}
 			
-			// TODO: Roles: not possible to change roles -> Migration to SpringSecurity
-//			if (person.save() && springSecurityService.ifAllGranted('ROLE_SUPERUSER')) {
-//				Role.findAll().each { it.removeFromPeople(person)
-//				}
-//				addRoles(person)
-//			}
-			
+			if (person.save() && SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
+				Role newRole = Role.get(params.userRole)
+				// If superuser is the last superuser then he can not change his role
+				if (!istheUserTheLastSuperuser(person)) {
+					UserRole.removeAll(person)
+					UserRole.create(person, newRole)					
+				} else {
+					flash.message = message(code:"error.lastSuperUser")
+				}
+			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
@@ -145,7 +154,6 @@ class UserController extends BaseController {
 	 * Person save action.
 	 */
 	def save = {
-		
 		def person = new User()
 		person.properties = params
 		person.password = springSecurityService.encodePassword(params.password)
@@ -158,42 +166,16 @@ class UserController extends BaseController {
 		}
 	}
 	
-	private void addRoles(person) {
-		for (String key in params.keySet()) {
-			if (key.contains('ROLE') && 'on' == params.get(key)) {
-				if (springSecurityService.ifAllGranted('ROLE_SUPERUSER')) {
-					// Only Super user can add all roles
-					Role.findByAuthority(key).addToPeople(person)
-				}
-			}
-		}
-		// Every user (USER, ADMIN and SUPERUSER) has the role ROLE_USER
-		Role.findByAuthority('ROLE_USER').addToPeople(person)
-	}
-	
-	private Map buildPersonModel(person) {
-		
-		List roles = Role.list()
-		roles.sort { r1, r2 ->
-			r1.authority <=> r2.authority
-		}
-		Set userRoleNames = []
-		for (role in person.authorities) {
-			userRoleNames << role.authority
-		}
-		LinkedHashMap<Role, Boolean> roleMap = [:]
-		for (role in roles) {
-			roleMap[(role)] = userRoleNames.contains(role.authority)
-		}
-		
-		return [person: person, roleMap: roleMap]
-	}
-	
 	private boolean userWritePermission(User user, User userToChange) {
 		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.id.equals(user.id)
 	}
 	
 	private boolean userDeletePermission(User user, User userToDelete) {
 		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')
+	}
+	
+	private boolean istheUserTheLastSuperuser(User user) {
+		Role superuserRole = Role.findByAuthority('ROLE_SUPERUSER').list().first()
+		return UserRole.get(user.id, superuserRole.id) && UserRole.withRole(superuserRole).list().size() <= 1
 	}
 }

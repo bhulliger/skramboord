@@ -126,20 +126,24 @@ class UserController extends BaseController {
 			person.email = params.userEmail
 			person.color = Color.decode("0x" + params.taskColor)
 			
-			if (!person.save()) {
-				flash.objectToSave=person
+			if (person.save()) {
+				if (SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
+					Role existingRole = (person.getAuthorities().toArray())[0]
+                    Role newRole = Role.get(params.userRole)
+                    if (!newRole.equals(existingRole)) {
+                    	// If superuser is the last superuser then he can not change his role
+                    	if (!istheUserTheLastSuperuser(person)) {
+                    		UserRole.removeAll(person)
+                    		UserRole.create(person, newRole)					
+                    	} else {
+                    		flash.message = message(code:"error.lastSuperUser")
+                    	}
+                    }
+				}
+			} else {
+				flash.objectToSave=person			
 			}
 			
-			if (person.save() && SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
-				Role newRole = Role.get(params.userRole)
-				// If superuser is the last superuser then he can not change his role
-				if (!istheUserTheLastSuperuser(person)) {
-					UserRole.removeAll(person)
-					UserRole.create(person, newRole)					
-				} else {
-					flash.message = message(code:"error.lastSuperUser")
-				}
-			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
@@ -155,27 +159,45 @@ class UserController extends BaseController {
 	 */
 	def save = {
 		def person = new User()
-		person.properties = params
-		person.password = springSecurityService.encodePassword(params.password)
+		if (params.userPassword == params.userPassword2) {
+			if (!params.userPassword.equals(person.password)) {
+				person.password = springSecurityService.encodePassword(params.userPassword)
+			}
+		} else {
+			flash.message = message(code:"error.passwordNotEqual")
+		}
+		
+		person.username = params.userLoginName
+		person.name = params.userName
+		person.prename = params.userPrename
+		person.description = params.userDescription
+		person.email = params.userEmail
+		person.color = Color.decode("0x" + params.taskColorNewUser)
+		
 		if (person.save()) {
-			addRoles(person)
-			redirect action: show, id: person.id
+			// Only Superuser can set a different role than just ROLE_USER.
+			if (SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
+				UserRole.create(person, Role.get(params.userRole))
+			} else {
+				UserRole.create(person, Role.withAuthority(Role.ROLE_USER).list().first())
+			}
+		} else {
+			flash.objectToSave=person
 		}
-		else {
-			render view: 'create', model: [authorityList: Role.list(), person: person]
-		}
+		
+		redirect(uri:params.fwdTo)
 	}
 	
 	private boolean userWritePermission(User user, User userToChange) {
-		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.id.equals(user.id)
+		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(user.id)
 	}
 	
 	private boolean userDeletePermission(User user, User userToDelete) {
-		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')
+		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)
 	}
 	
 	private boolean istheUserTheLastSuperuser(User user) {
-		Role superuserRole = Role.findByAuthority('ROLE_SUPERUSER').list().first()
+		Role superuserRole = Role.withAuthority(Role.ROLE_SUPERUSER).list().first()
 		return UserRole.get(user.id, superuserRole.id) && UserRole.withRole(superuserRole).list().size() <= 1
 	}
 }

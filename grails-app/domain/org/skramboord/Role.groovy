@@ -21,6 +21,9 @@ package org.skramboord
  * Authority domain class.
  */
 class Role {
+	static String ROLE_SUPERUSER = "ROLE_SUPERUSER" 
+	static String ROLE_ADMIN = "ROLE_ADMIN"
+	static String ROLE_USER = "ROLE_USER"
 
 	String authority
 	String description
@@ -31,5 +34,11 @@ class Role {
 
 	static constraints = {
 		authority blank: false, unique: true
+	}
+	
+	static namedQueries = {
+		withAuthority { withAuthority ->
+			eq('authority', withAuthority)
+		}
 	}
 }

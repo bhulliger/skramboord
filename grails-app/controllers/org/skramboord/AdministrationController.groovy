@@ -25,6 +25,9 @@ class AdministrationController extends BaseController {
 	}
 	
 	def list = {
+		flash.userRoles = Role.list()
+		flash.userRoleDefault = Role.withAuthority(Role.ROLE_USER).list().first()
+		
 		flash.priorities = Priority.withCriteria {
 			if (params.priorities) {
 				order(params.sort, params.order)

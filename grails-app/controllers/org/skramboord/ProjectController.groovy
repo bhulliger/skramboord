@@ -41,7 +41,7 @@ class ProjectController extends BaseController {
 		flash.runningSprintsList = Sprint.createCriteria().listDistinct {
 			le('startDate', today)
 			ge('endDate', today)
-			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (!SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
 				release {
 					project {
 						or {
@@ -69,7 +69,7 @@ class ProjectController extends BaseController {
 	 * Project delete action
 	 */
 	def delete = {
-		if (SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
+		if (SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
 			if (params.project) {
 				def project = Project.get(params.project)
 				project.delete()
@@ -183,10 +183,10 @@ class ProjectController extends BaseController {
 	}
 	
 	private boolean projectNewPermission() {
-		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || springSecurityService.ifAnyGranted('ROLE_ADMIN')
+		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || springSecurityService.ifAnyGranted(Role.ROLE_ADMIN)
 	}
 	
 	private boolean projectEditPermission(User user, Project project) {
-		return SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || user.equals(project.owner)
+		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.equals(project.owner)
 	}
 }

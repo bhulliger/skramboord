@@ -50,7 +50,7 @@ class Project {
 	
 	static namedQueries = {
 		projectsUserBelongsTo { fromUser, sortParam, orderParam, springSecurityService ->
-			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (!SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
 				or {
 					team {
 						eq('user', fromUser)
@@ -69,7 +69,7 @@ class Project {
 		
 		accessRight { fromProject, fromUser, springSecurityService ->
 			eq('id', fromProject.id)
-			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (!SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
 				or {
 					team {
 						eq('user', fromUser)
@@ -88,7 +88,7 @@ class Project {
 		
 		changeRight { fromProject, fromUser, springSecurityService ->
 			eq('id', fromProject.id)
-			if (!SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')) {
+			if (!SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
 				or {
 					team {
 						eq('user', fromUser)

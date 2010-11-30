@@ -27,4 +27,8 @@
 			</g:each>
 		</tbody>
 	</table>
+	<div class="buttons">
+		<g:render template="../user/formNewUser" model="['fwdTo': '/administration/list']"/>
+		<span class="button"><g:actionSubmit class="add" onclick="return openFormNewUser();" value="${message(code:'user.createUser')}" /></span>
+	</div>
 </div>

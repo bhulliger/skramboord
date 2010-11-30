@@ -75,9 +75,9 @@ class BootStrap {
 		taskStateStandBy.save()
 		
 		// Adding Roles
-		def roleSuperUser = new Role(authority:'ROLE_SUPERUSER', description:'superuser').save()
-		def roleAdmin = new Role(authority:'ROLE_ADMIN', description:'administration').save()
-		def roleUser = new Role(authority:'ROLE_USER', description:'user').save()
+		def roleSuperUser = new Role(authority:Role.ROLE_SUPERUSER, description:'superuser').save()
+		def roleAdmin = new Role(authority:Role.ROLE_ADMIN, description:'administration').save()
+		def roleUser = new Role(authority:Role.ROLE_USER, description:'user').save()
 		
 		// Adding Users
 		def userAdmin = new User(username:'admin', prename:'Pablo', name:'Hess', enabled: true, emailShow: true, email: 'admin@skramboord.org', password: springSecurityService.encodePassword("admin")).save()

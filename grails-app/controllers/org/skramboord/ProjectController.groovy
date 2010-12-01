@@ -19,21 +19,29 @@ package org.skramboord
 
 import org.hibernate.criterion.Distinct;
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+import twitter4j.TwitterFactory;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.conf.*;
+import twitter4j.http.AccessToken;
+import twitter4j.http.RequestToken;
 
 class ProjectController extends BaseController {
 	
-	def index = { redirect(controller:'project', action:'list')
+	def index = {
+		redirect(controller:'project', action:'list')
 	}
 	
 	def list = {
 		flash.allUsers = User.list()
-			
+		
 		if (!params.sort) {
 			params.sort = 'name'
 			params.order = 'asc'
 		}
 		Date today = Today.getInstance()
-
+		
 		// get all project the user belongs to
 		flash.projectList = Project.projectsUserBelongsTo(session.user, params.sort, params.order, springSecurityService).listDistinct()
 		
@@ -86,7 +94,7 @@ class ProjectController extends BaseController {
 	def edit = {
 		if (params.project) {
 			def project = Project.get(params.project)
-		
+			
 			if (projectEditPermission(session.user, project)) {
 				flash.projectEdit = project
 			} else {
@@ -108,7 +116,7 @@ class ProjectController extends BaseController {
 				
 				// Twitter
 				if (!params.twitterAccount.isEmpty() && !params.twitterPassword.isEmpty()) {
-					project.twitter = new Twitter(account: params.twitterAccount, password: params.twitterPassword).save()
+					project.twitter = new TwitterAccount(token: params.twitterAccount, tokenSecret: params.twitterPassword).save()
 				} else {
 					project.twitter = null
 				}
@@ -120,7 +128,7 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-
+		
 		redirect(controller:params.fwdTo, action:'list')
 	}
 	
@@ -140,6 +148,115 @@ class ProjectController extends BaseController {
 		}
 		
 		redirect(controller:'project', action:'list')
+	}
+	
+	/**
+	 * Disable Twitter account
+	 */
+	def disableTwitter = {
+		if (params.projectId) {
+			def project = Project.get(params.projectId)
+			if (projectEditPermission(session.user, project)) {
+				project.twitter.enabled = false
+				
+				if (!project.twitter.save()) {
+					flash.objectToSave = project.twitter
+				}
+			} else {
+				flash.message = message(code:"error.insufficientAccessRights")
+			}
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Enable Twitter account
+	 */
+	def enableTwitter = {
+		if (params.projectId) {
+			def project = Project.get(params.projectId)
+			if (projectEditPermission(session.user, project)) {
+				project.twitter.enabled = true
+				
+				if (!project.twitter.save()) {
+					flash.objectToSave = project.twitter
+				}
+			} else {
+				flash.message = message(code:"error.insufficientAccessRights")
+			}
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Remove Twitter account
+	 */
+	def removeTwitter = {
+		if (params.projectId) {
+			def project = Project.get(params.projectId)
+			if (projectEditPermission(session.user, project)) {
+				TwitterAccount account = project.twitter
+				project.twitter = null
+				if (!account.delete()) {
+					flash.objectToSave = account
+				}
+			} else {
+				flash.message = message(code:"error.insufficientAccessRights")
+			}
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Add Twitter account
+	 */
+	def addTwitter = {
+		if (params.projectId) {
+			def project = Project.get(params.projectId)
+			if (projectEditPermission(session.user, project)) {
+				try {
+					session.twitter = new TwitterFactory().getInstance()
+					session.twitter.setOAuthConsumer(TwitterAccount.CONSUMER_KEY, TwitterAccount.CONSUMER_SECRET)
+					session.requestToken = session.twitter.getOAuthRequestToken()
+					flash.twitterAccessUrl = session.requestToken.getAuthorizationURL()
+				} catch (TwitterException e) {
+					flash.message = message(code:"error.twitterProblems")
+				}
+			} else {
+				flash.message = message(code:"error.insufficientAccessRights")
+			}
+		}
+		
+		redirect(controller:'sprint', action:'list')
+	}
+	
+	/**
+	 * Create Twitter account with pin
+	 */
+	def createTwitterAccount = {
+		if (params.projectId) {
+			if (params.twitterAccessPin && params.twitterAccessPin.length() > 0) {
+				def project = Project.get(params.projectId)
+				if (projectEditPermission(session.user, project)) {
+					try {
+						AccessToken accessToken = session.twitter.getOAuthAccessToken(session.requestToken, params.twitterAccessPin)
+						project.twitter = new TwitterAccount(token: accessToken.getToken(), tokenSecret: accessToken.getTokenSecret()).save()
+						project.save()
+					} catch (TwitterException e) {
+						flash.message = message(code:"error.twitterProblems")
+					}
+				} else {
+					flash.message = message(code:"error.insufficientAccessRights")
+				}
+			} else {
+				flash.message = message(code:"error.twitter.noPin")
+			}
+		}
+		
+		redirect(controller:'sprint', action:'list')
 	}
 	
 	/**
@@ -178,7 +295,7 @@ class ProjectController extends BaseController {
 		
 		portlet.enabled = !portlet.enabled
 		portlet.save()
-
+		
 		redirect(controller:'project', action:'list')
 	}
 	

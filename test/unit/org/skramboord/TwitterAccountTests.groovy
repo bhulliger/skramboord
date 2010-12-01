@@ -17,12 +17,18 @@
 
 package org.skramboord
 
-class Twitter {
-	String account
-	String password
-	
-    static constraints = {
-		account(blank: false)
-		password(blank: false)
+import grails.test.*
+
+class TwitterAccountTests extends GrailsUnitTestCase {
+    protected void setUp() {
+        super.setUp()
+    }
+
+    protected void tearDown() {
+        super.tearDown()
+    }
+
+    void testSomething() {
+
     }
 }

@@ -21,7 +21,7 @@ import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 
 class Project {
 	String name
-	Twitter twitter
+	TwitterAccount twitter
 	static hasMany = [releases:Release, sprints:Sprint, tasks:Task, team:Membership, follower:Follow]
 	static belongsTo = [owner:User, master:User]
 

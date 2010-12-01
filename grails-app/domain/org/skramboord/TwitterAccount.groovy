@@ -17,18 +17,16 @@
 
 package org.skramboord
 
-import grails.test.*
-
-class TwitterTests extends GrailsUnitTestCase {
-    protected void setUp() {
-        super.setUp()
-    }
-
-    protected void tearDown() {
-        super.tearDown()
-    }
-
-    void testSomething() {
-
+class TwitterAccount {
+	static String CONSUMER_KEY = "blabla"
+	static String CONSUMER_SECRET = "blabla"
+	
+	boolean enabled = true
+	String token
+	String tokenSecret
+	
+    static constraints = {
+		token(blank: false)
+		tokenSecret(blank: false)
     }
 }

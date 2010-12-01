@@ -44,6 +44,7 @@
 					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '0'])}"><g:message code="release.releases"/></a></li>
 					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '1'])}"><g:message code="project.informations"/></a></li>
 					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '2'])}"><g:message code="sprint.projectTeam"/></a></li>
+					<li><a href="#tab-3" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '3'])}"><g:message code="twitter"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="projectReleases"/>
@@ -53,6 +54,9 @@
 				</div>
 				<div id="tab-2">
 					<g:render template="projectTeam"/>
+				</div>
+				<div id="tab-3">
+					<g:render template="twitter"/>
 				</div>
 			</div>
 		</div>

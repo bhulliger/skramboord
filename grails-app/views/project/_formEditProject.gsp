@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-project-edit").dialog({
 			autoOpen: true,
-			height: 180,
+			height: 120,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -26,14 +26,6 @@
 				<tr>
 					<td><label><g:message code="project.project"/></label></td>
 					<td><input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/></td>
-				</tr>
-				<tr>
-					<td><label><g:message code="project.twitter.account"/></label></td>
-					<td><input type="text" name="twitterAccount" id="twitterAccount" value="${flash.projectEdit.twitter?.account}" class="text ui-widget-content ui-corner-all"/></td>
-				</tr>
-				<tr>
-					<td><label><g:message code="project.twitter.password"/></label></td>
-					<td><input type="password" name="twitterPassword" id="twitterPassword" value="${flash.projectEdit.twitter?.password}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 			</table>
 

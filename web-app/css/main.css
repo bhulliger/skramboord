@@ -1,4 +1,4 @@
-html * {
+ahtml * {
 	margin: 0;
 	/*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
 }
@@ -359,6 +359,16 @@ th.desc a {
 	padding-left: 28px;
 }
 
+.buttons input.connect {
+	background: transparent url(../images/icons/connect.png) 5px 50% no-repeat;
+	padding-left: 28px;
+}
+
+.buttons input.disconnect {
+	background: transparent url(../images/icons/disconnect.png) 5px 50% no-repeat;
+	padding-left: 28px;
+}
+
 /* FORMS */
 .form input.text {
 	width: 95%;
@@ -458,6 +468,10 @@ th.desc a {
 	padding: 4px;
 	font-size: 1.2em;
 	width: 190px;
+}
+
+.twitter {
+	line-height:2em;
 }
 
 div.backlog {

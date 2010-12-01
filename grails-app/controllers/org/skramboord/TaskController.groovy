@@ -18,6 +18,13 @@
 package org.skramboord
 
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+import twitter4j.TwitterFactory;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.conf.*;
+import twitter4j.http.AccessToken;
+import twitter4j.http.RequestToken;
 
 class TaskController extends BaseController {
 	def twitterService
@@ -213,7 +220,7 @@ class TaskController extends BaseController {
 			task.save()
 			
 			// tweet it!
-			sendTwitterMessage(session.user, session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
+			sendTwitterMessage(session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
@@ -318,26 +325,17 @@ class TaskController extends BaseController {
 	 * @param project
 	 * @param message
 	 */
-	private void sendTwitterMessage(User user, Project project, String message) {
-		if (project.twitter) {
-			if (!twitterService.loggedIn) {
-				// just log in...
-				twitterService.login(project.twitter.account, project.twitter.password, request, response)
-				session.twitterAccount = project.twitter.account
-			} else {
-				// Already logged in. Check if it's the right twitter account
-				if (session.twitterAccount != project.twitter.account) {
-					// Another Twitter account. Logout and in again.
-					twitterService.logout(request, response)
-					twitterService.login(project.twitter.account, project.twitter.password, request, response)
-					session.twitterAccount = project.twitter.account
-				}
-			}
-	
-			if (twitterService.loggedIn) {
-				// send message
-				twitterService.setStatus(message)
-			}
+	private void sendTwitterMessage(Project project, String message) {
+		if (project.twitter && project.twitter.enabled) {
+			ConfigurationBuilder cb = new ConfigurationBuilder();
+			cb.setDebugEnabled(true)
+			  .setOAuthConsumerKey(TwitterAccount.CONSUMER_KEY)
+			  .setOAuthConsumerSecret(TwitterAccount.CONSUMER_SECRET)
+			  .setOAuthAccessToken(project.twitter.token)
+			  .setOAuthAccessTokenSecret(project.twitter.tokenSecret);
+			TwitterFactory tf = new TwitterFactory(cb.build());
+			Twitter twitter = tf.getInstance();
+			Status status = twitter.updateStatus(message);
 		}
 	}
 }

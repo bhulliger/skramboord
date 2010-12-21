@@ -18,9 +18,6 @@
 package org.skramboord
 
 class TwitterAccount {
-	static String CONSUMER_KEY = "blabla"
-	static String CONSUMER_SECRET = "blabla"
-	
 	boolean enabled = true
 	String token
 	String tokenSecret

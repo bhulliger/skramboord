@@ -20,6 +20,7 @@ import grails.util.GrailsUtil;
 import java.awt.Color;
 import java.util.Calendar;
 
+import org.skramboord.SystemPreferences
 import org.skramboord.StateTask;
 import org.skramboord.StateTaskCheckedOut;
 import org.skramboord.StateTaskDone;
@@ -60,7 +61,11 @@ class BootStrap {
 	
 	def initDevelopment() {
 		// Create some test data
-		String urlPuzzle = "http://www.skramboord.org"
+		String url = "http://www.skramboord.org"
+		
+		// System Preferences
+		SystemPreferences systemPreferences = new SystemPreferences(name: SystemPreferences.APPLICATION_NAME)
+		systemPreferences.save()
 		
 		// Initialize states
 		StateTaskOpen taskStateOpen = new StateTaskOpen()
@@ -120,26 +125,26 @@ class BootStrap {
 		
 		// Sprint 1
 		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", startDate: date4, endDate: date3, tasks: [])
-		createTask(userDev1, sprint1_0, "Mantis 1812", "Long names of the tasks should be shortened.", 2.0, urlPuzzle, taskStateDone, normal, date4 + 1)
-		createTask(userDev3, sprint1_0, "Mantis 1798", "Change CSS style of the whole application to blue/white.", 4.0, urlPuzzle, taskStateDone, normal, date4 + 3)
-		createTask(userDev1, sprint1_0, "Mantis 1765", null, 4.5, urlPuzzle, taskStateDone, high, date4 + 4)
-		createTask(userDev3, sprint1_0, "Mantis 1705", null, 3.5, urlPuzzle, taskStateDone, normal, date4 + 5)
-		createTask(userDev3, sprint1_0, "Mantis 1731", "This is just a sentence about nothing to show how this tooltip works with a long text. Maybe this text should be much longer. Or maybe it should also has formatted stuff in it like <b>bold</b> or <i>italic</i>...", 2.0, urlPuzzle, taskStateDone, low, date4 + 6)
-		createTask(userDev1, sprint1_0, "Mantis 1733", null, 2.5, urlPuzzle, taskStateDone, low, date4 + 8)
-		createTask(userDev2, sprint1_0, "Mantis 1722", null, 0.5, urlPuzzle, taskStateDone, low, date4 + 9)
-		createTask(userDev2, sprint1_0, "Mantis 1700", null, 4, urlPuzzle, taskStateDone, low, date4 + 10)
+		createTask(userDev1, sprint1_0, "Mantis 1812", "Long names of the tasks should be shortened.", 2.0, url, taskStateDone, normal, date4 + 1)
+		createTask(userDev3, sprint1_0, "Mantis 1798", "Change CSS style of the whole application to blue/white.", 4.0, url, taskStateDone, normal, date4 + 3)
+		createTask(userDev1, sprint1_0, "Mantis 1765", null, 4.5, url, taskStateDone, high, date4 + 4)
+		createTask(userDev3, sprint1_0, "Mantis 1705", null, 3.5, url, taskStateDone, normal, date4 + 5)
+		createTask(userDev3, sprint1_0, "Mantis 1731", "This is just a sentence about nothing to show how this tooltip works with a long text. Maybe this text should be much longer. Or maybe it should also has formatted stuff in it like <b>bold</b> or <i>italic</i>...", 2.0, url, taskStateDone, low, date4 + 6)
+		createTask(userDev1, sprint1_0, "Mantis 1733", null, 2.5, url, taskStateDone, low, date4 + 8)
+		createTask(userDev2, sprint1_0, "Mantis 1722", null, 0.5, url, taskStateDone, low, date4 + 9)
+		createTask(userDev2, sprint1_0, "Mantis 1700", null, 4, url, taskStateDone, low, date4 + 10)
 		
 		// Sprint 2
 		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", startDate: date3, endDate: date2, tasks: [])
-		createTask(userDev2, sprint1_1, "Mantis 1980", null, 5.5, urlPuzzle, taskStateDone, normal, date3 + 2)
-		createTask(userDev3, sprint1_1, "Mantis 2100", null, 2.0, urlPuzzle, taskStateDone, immediate, date3 + 4)
-		createTask(null, sprint1_1, "Mantis 2001", null, 2.0, urlPuzzle, taskStateOpen, normal, null)
-		createTask(null, sprint1_1, "Mantis 2015", "Change CSS style of the whole application to yellow/black/white.", 3.5, urlPuzzle, taskStateOpen, urgent, null)
-		createTask(null, sprint1_1, "Mantis 1987", null, 0.5, urlPuzzle, taskStateOpen, high, null)
-		createTask(null, sprint1_1, "Mantis 1950", null, 2.5, urlPuzzle, taskStateOpen, normal, null)
-		createTask(userDev1, sprint1_1, "Mantis 1999", null, 1.0, urlPuzzle, taskStateChecked, immediate, null)
-		createTask(null, sprint1_1, "Mantis 2012", null, 1.5, urlPuzzle, taskStateNext, normal, null)
-		createTask(null, sprint1_1, "Mantis 2014", "Change CSS style of the whole application to orange/white.", 5.0, urlPuzzle, taskStateNext, low, null)
+		createTask(userDev2, sprint1_1, "Mantis 1980", null, 5.5, url, taskStateDone, normal, date3 + 2)
+		createTask(userDev3, sprint1_1, "Mantis 2100", null, 2.0, url, taskStateDone, immediate, date3 + 4)
+		createTask(null, sprint1_1, "Mantis 2001", null, 2.0, url, taskStateOpen, normal, null)
+		createTask(null, sprint1_1, "Mantis 2015", "Change CSS style of the whole application to yellow/black/white.", 3.5, url, taskStateOpen, urgent, null)
+		createTask(null, sprint1_1, "Mantis 1987", null, 0.5, url, taskStateOpen, high, null)
+		createTask(null, sprint1_1, "Mantis 1950", null, 2.5, url, taskStateOpen, normal, null)
+		createTask(userDev1, sprint1_1, "Mantis 1999", null, 1.0, url, taskStateChecked, immediate, null)
+		createTask(null, sprint1_1, "Mantis 2012", null, 1.5, url, taskStateNext, normal, null)
+		createTask(null, sprint1_1, "Mantis 2014", "Change CSS style of the whole application to orange/white.", 5.0, url, taskStateNext, low, null)
 		
 		// Sprint 1
 		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", startDate: date2, endDate: date1, tasks: [])

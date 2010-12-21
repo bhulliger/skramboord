@@ -326,16 +326,17 @@ class TaskController extends BaseController {
 	 * @param message
 	 */
 	private void sendTwitterMessage(Project project, String message) {
-		if (project.twitter && project.twitter.enabled) {
-			ConfigurationBuilder cb = new ConfigurationBuilder();
+		def twitterAppSettings = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()?.twitterSettings
+		if (project.twitter && project.twitter.enabled  && twitterAppSettings && twitterAppSettings.enabled) {
+			ConfigurationBuilder cb = new ConfigurationBuilder()
 			cb.setDebugEnabled(true)
-			  .setOAuthConsumerKey(TwitterAccount.CONSUMER_KEY)
-			  .setOAuthConsumerSecret(TwitterAccount.CONSUMER_SECRET)
+			  .setOAuthConsumerKey(twitterAppSettings.consumerKey)
+			  .setOAuthConsumerSecret(twitterAppSettings.consumerSecret)
 			  .setOAuthAccessToken(project.twitter.token)
-			  .setOAuthAccessTokenSecret(project.twitter.tokenSecret);
-			TwitterFactory tf = new TwitterFactory(cb.build());
-			Twitter twitter = tf.getInstance();
-			Status status = twitter.updateStatus(message);
+			  .setOAuthAccessTokenSecret(project.twitter.tokenSecret)
+			TwitterFactory tf = new TwitterFactory(cb.build())
+			Twitter twitter = tf.getInstance()
+			Status status = twitter.updateStatus(message)
 		}
 	}
 }

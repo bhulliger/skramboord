@@ -18,13 +18,16 @@
 package org.skramboord
 
 import java.awt.Color;
+import java.security.MessageDigest
 
 class AdministrationController extends BaseController {
 	
-	def index = { redirect(controller:'administration', action:'list')
+	def index = {
+		redirect(controller:'administration', action:'list')
 	}
 	
 	def list = {
+		flash.twitterAppSettings = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()?.twitterSettings
 		flash.userRoles = Role.list()
 		flash.userRoleDefault = Role.withAuthority(Role.ROLE_USER).list().first()
 		
@@ -43,6 +46,8 @@ class AdministrationController extends BaseController {
 				order('name', 'asc')
 			}
 		}
+
+		flash.twitterRandomAppName = "skramboord-" + Math.abs((new Random(System.currentTimeMillis())).nextInt().hashCode())
 	}
 	
 	def savePriorities = {
@@ -57,6 +62,45 @@ class AdministrationController extends BaseController {
 		} catch (NumberFormatException e) {
 			flash.message = message(code:"admin.hexValues")
 		}
+		
+		redirect(controller:'administration', action:'list')
+	}
+	
+	def saveTwitterSettings = {
+		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		
+		if (!systemPreferences.twitterSettings) {
+			systemPreferences.twitterSettings = new TwitterAppSettings()
+		}
+		systemPreferences.twitterSettings.consumerKey = params.twitterConsumerKey
+		systemPreferences.twitterSettings.consumerSecret = params.twitterConsumerSecret
+		systemPreferences.twitterSettings.save()
+		
+		flash.objectToSave = systemPreferences.twitterSettings
+		
+		redirect(controller:'administration', action:'list')
+	}
+	
+	def removeTwitterSettings = {
+		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		systemPreferences.twitterSettings = null
+		systemPreferences.save()
+		
+		redirect(controller:'administration', action:'list')
+	}
+	
+	def enableTwitterSettings = {
+		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		systemPreferences.twitterSettings.enabled = true
+		systemPreferences.twitterSettings.save()
+		
+		redirect(controller:'administration', action:'list')
+	}
+	
+	def disableTwitterSettings = {
+		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		systemPreferences.twitterSettings.enabled = false
+		systemPreferences.twitterSettings.save()
 		
 		redirect(controller:'administration', action:'list')
 	}

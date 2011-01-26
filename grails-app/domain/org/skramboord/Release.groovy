@@ -31,6 +31,7 @@ class Release {
     }
 	
 	static mapping = {
+		table 'projectRelease'
 		sprints sort: 'endDate','startDate', order:'desc'
 	}
 }

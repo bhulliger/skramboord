@@ -36,8 +36,8 @@ environments {
 	}
 	test {
 		dataSource {
-			dbCreate = "update"
-			url = "jdbc:hsqldb:mem:testDb"
+			dbCreate = "create-drop"
+			url = "jdbc:hsqldb:mem:devDB"
 		}
 	}
 	production {
@@ -46,7 +46,7 @@ environments {
 			driverClassName = "com.mysql.jdbc.Driver"
 			username = "changeme"
 			password = "changeme"
-			dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+			dbCreate = "update" // one of 'create', 'create-drop','update'
 			url = "jdbc:mysql://localhost:3306/skramboord"
 		}
 	}

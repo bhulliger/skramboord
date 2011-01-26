@@ -47,7 +47,7 @@ class EmailTests extends GrailsUnitTestCase {
      */
     void testCorrectEmail() {
 		// given
-		def correctEmail = new Email(email:"info@puzzle.ch")
+		def correctEmail = new Email(email:"info@skramboord.org")
 		
 		// when
 		
@@ -60,7 +60,7 @@ class EmailTests extends GrailsUnitTestCase {
 	 */
 	void testIncorrectEmailMissingAt() {
 		// given
-		def correctEmail = new Email(email:"infopuzzle.ch")
+		def correctEmail = new Email(email:"infoskramboord.org")
 		
 		// when
 		
@@ -73,7 +73,7 @@ class EmailTests extends GrailsUnitTestCase {
 	 */
 	void testIncorrectEmailMissingDomain() {
 		// given
-		def correctEmail = new Email(email:"info@puzzle")
+		def correctEmail = new Email(email:"info@skramboord")
 		
 		// when
 		
@@ -86,7 +86,7 @@ class EmailTests extends GrailsUnitTestCase {
 	 */
 	void testIncorrectEmailMissingName() {
 		// given
-		def correctEmail = new Email(email:"@puzzle")
+		def correctEmail = new Email(email:"@skramboord")
 		
 		// when
 		
@@ -99,7 +99,7 @@ class EmailTests extends GrailsUnitTestCase {
 	 */
 	void testIncorrectEmailWithWhitespace() {
 		// given
-		def correctEmail = new Email(email:"in fo@p u zzle")
+		def correctEmail = new Email(email:"in fo@skra mbo ord.org")
 		
 		// when
 		

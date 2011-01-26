@@ -20,7 +20,7 @@ import java.awt.Color;
 import grails.test.*
 
 class TaskTests extends GrailsUnitTestCase {
-	String urlPuzzle
+	String urlSkramboord
 	Priority immediate
 	Priority normal
 	StateTaskOpen taskStateOpen
@@ -32,7 +32,7 @@ class TaskTests extends GrailsUnitTestCase {
 
         mockForConstraintsTests(Task)
 
-        urlPuzzle = "http://www.puzzle.ch"
+        urlSkramboord = "http://www.skramboord.org"
 		immediate = new Priority(name: "immediate", color: Color.RED)
 		normal = new Priority(name: "normal", color: Color.GREEN)
 		taskStateOpen = new StateTaskOpen()
@@ -52,7 +52,7 @@ class TaskTests extends GrailsUnitTestCase {
      */
     void testCorrectTask() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: urlPuzzle, state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: urlSkramboord, state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -65,7 +65,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testAnotherCorrectTask() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, state: taskStateChecked, priority: immediate, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlSkramboord, state: taskStateChecked, priority: immediate, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -78,7 +78,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithoutUrl() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 1.0, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 3050", effort: 1.0, url: "", state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -91,7 +91,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingEffort() {
 		// given
-		Task task = new Task(name:"Mantis 2001", url: urlPuzzle, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", url: urlSkramboord, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -104,7 +104,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingName() {
 		// given
-		Task task = new Task(effort: 2.0, url: urlPuzzle, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(effort: 2.0, url: urlSkramboord, state: taskStateChecked, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -117,7 +117,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingPriority() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, state: taskStateChecked, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlSkramboord, state: taskStateChecked, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -130,7 +130,7 @@ class TaskTests extends GrailsUnitTestCase {
 	 */
 	void testTaskWithMissingState() {
 		// given
-		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlPuzzle, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 3050", effort: 100.0, url: urlSkramboord, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -140,7 +140,7 @@ class TaskTests extends GrailsUnitTestCase {
 	
 	void testTaskWithCorrectUrlHttp() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://www.skramboord.org", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -150,7 +150,7 @@ class TaskTests extends GrailsUnitTestCase {
 	
 	void testTaskWithCorrectUrlHttps() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "https://www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "https://www.skramboord.org", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -160,7 +160,7 @@ class TaskTests extends GrailsUnitTestCase {
 	
 	void testTaskWithCorrectUrlWithWhitespaces() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "   http://ww  w.pu   zzle.ch   ", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "   http://ww  w.skra   mboo  rd.or g", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -170,7 +170,7 @@ class TaskTests extends GrailsUnitTestCase {
 	
 	void testTaskWithUrlMissingHttp() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "www.skramboord.org", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -180,7 +180,7 @@ class TaskTests extends GrailsUnitTestCase {
 	
 	void testTaskWithUrlWrongHttp() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http//www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http//www.skramboord.org", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -190,7 +190,7 @@ class TaskTests extends GrailsUnitTestCase {
 		
 	void testTaskWithWrongUrlMissingEnding() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://www.puzzle", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://www.skramboord", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		
@@ -200,7 +200,7 @@ class TaskTests extends GrailsUnitTestCase {
 	
 	void testTaskWithWrongUrlWithDoubleHttp() {
 		// given
-		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://http://www.puzzle.ch", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
+		Task task = new Task(name:"Mantis 2001", effort: 2.0, url: "http://http://www.skramboord.org", state: taskStateOpen, priority: normal, finishedDate: null, sprint: sprint)
 		
 		// when
 		

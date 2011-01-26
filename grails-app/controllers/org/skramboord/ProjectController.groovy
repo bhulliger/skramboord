@@ -313,6 +313,6 @@ class ProjectController extends BaseController {
 	}
 	
 	private boolean projectEditPermission(User user, Project project) {
-		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.equals(project.owner)
+		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(project.owner.id)
 	}
 }

@@ -106,6 +106,6 @@ class ReleaseController extends BaseController {
 	}
 	
 	private boolean releaseWritePermission(User user, Project project) {
-		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.equals(project.owner) || user.equals(project.master)
+		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(project.owner.id) || user.id.equals(project.master.id)
 	}
 }

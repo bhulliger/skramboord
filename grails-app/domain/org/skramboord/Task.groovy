@@ -42,7 +42,7 @@ class Task {
 		name(nullable:false, blank:false)
 		description(nullable:true)
 		effort(nullable:false)
-		url(nullable:true, url:true, blank:false)
+		url(url:true)
 		state(nullable:false)
 		priority(nullable:false)
 		finishedDate(nullable:true)

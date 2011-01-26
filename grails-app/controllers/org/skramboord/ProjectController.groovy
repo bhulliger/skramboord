@@ -45,6 +45,14 @@ class ProjectController extends BaseController {
 		// get all project the user belongs to
 		flash.projectList = Project.projectsUserBelongsTo(session.user, params.sort, params.order, springSecurityService).listDistinct()
 		
+		flash.ownerOfAProject = false
+		for (project in flash.projectList) {
+			if (session.user.equals(project.owner)) {
+				flash.ownerOfAProject = true
+				break
+			}
+		}
+		
 		// get all running sprints the user belongs to
 		flash.runningSprintsList = Sprint.createCriteria().listDistinct {
 			le('startDate', today)

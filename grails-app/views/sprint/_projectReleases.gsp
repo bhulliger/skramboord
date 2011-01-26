@@ -85,8 +85,7 @@
 								<th style="text-align:center;"><g:message code="task.tasks"/></th>
 								<th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
 								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-									<th style="width: 20px;"></th>
-									<th style="width: 20px;"></th>
+									<th style="width: 40px;"></th>
 								</g:if>
 							</tr>
 							<g:each var="sprint" in="${release.sprints}" status="i">
@@ -113,8 +112,6 @@
 									<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
 										<td>
 											<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span><span class="icon"></span></g:link>
-										</td>
-										<td>
 											<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm('${message(code:'sprint.delete', args: [sprint.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span><span class="icon"></span></g:link>
 										</td>
 									</g:if>

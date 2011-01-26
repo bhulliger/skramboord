@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-sprint-edit").dialog({
 			autoOpen: true,
-			height: 350,
+			height: 380,
 			width: 500,
 			modal: true,
 			buttons: {

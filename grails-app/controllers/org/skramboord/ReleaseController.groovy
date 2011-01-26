@@ -57,6 +57,9 @@ class ReleaseController extends BaseController {
 			
 			// select new created release
 			session.project.refresh()
+			if(!session.tabs) {
+				session.tabs = new HashMap<String,String>()
+			}
 			session.tabs.put('releases', session.project.releases.size()-1)
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")

@@ -44,9 +44,9 @@
 			
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'administration', tabName: '0'])}"><g:message code="admin.userList"/></a></li>
-					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.priorities"/></a></li>
-					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'administration', tabName: '2'])}"><g:message code="twitter"/></a></li>
+					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '0'])}"><g:message code="admin.userList"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.priorities"/></a></li>
+					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '2'])}"><g:message code="twitter"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="users"/>

@@ -188,6 +188,15 @@ class UserController extends BaseController {
 		redirect(uri:params.fwdTo)
 	}
 	
+	def tabChange = {
+		if (params.viewName && params.tabName) {
+			if(!session.tabs) {
+				session.tabs = new HashMap<String,String>()
+			}
+			session.tabs.put(params.viewName, params.tabName)
+		}
+	}
+	
 	private boolean userWritePermission(User user, User userToChange) {
 		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(user.id)
 	}

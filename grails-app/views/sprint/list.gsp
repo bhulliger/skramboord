@@ -41,11 +41,11 @@
 			
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '0'])}"><g:message code="release.releases"/></a></li>
-					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '1'])}"><g:message code="project.informations"/></a></li>
-					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '2'])}"><g:message code="sprint.projectTeam"/></a></li>
+					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'sprint', tabName: '0'])}"><g:message code="release.releases"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'sprint', tabName: '1'])}"><g:message code="project.informations"/></a></li>
+					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'sprint', tabName: '2'])}"><g:message code="sprint.projectTeam"/></a></li>
 					<g:if test="${flash.twitterAppSettings && flash.twitterAppSettings.enabled}">
-						<li><a href="#tab-3" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'sprint', tabName: '3'])}"><g:message code="twitter"/></a></li>
+						<li><a href="#tab-3" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'sprint', tabName: '3'])}"><g:message code="twitter"/></a></li>
 					</g:if>
 				</ul>
 				<div id="tab-0">

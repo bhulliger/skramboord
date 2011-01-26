@@ -99,9 +99,9 @@
 
 			<div id="tabs">
 				<ul>
-					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '0'])}"><g:message code="task.scrumboard"/></a></li>
-					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '1'])}"><g:message code="sprint.informations"/></a></li>
-					<li><a href="#tab-2" onclick="rerenderBurndown(); ${remoteFunction(controller: 'administration', action:'tabChange', params:[viewName: 'tasks', tabName: '2'])}"><g:message code="task.burndown"/></a></li>
+					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'tasks', tabName: '0'])}"><g:message code="task.scrumboard"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'tasks', tabName: '1'])}"><g:message code="sprint.informations"/></a></li>
+					<li><a href="#tab-2" onclick="rerenderBurndown(); ${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'tasks', tabName: '2'])}"><g:message code="task.burndown"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="scrumBoard"/>

@@ -104,13 +104,4 @@ class AdministrationController extends BaseController {
 		
 		redirect(controller:'administration', action:'list')
 	}
-	
-	def tabChange = {
-		if (params.viewName && params.tabName) {
-			if(!session.tabs) {
-				session.tabs = new HashMap<String,String>()
-			}
-			session.tabs.put(params.viewName, params.tabName)
-		}
-	}
 }

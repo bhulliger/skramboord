@@ -173,6 +173,9 @@ class UserController extends BaseController {
 		person.description = params.userDescription
 		person.email = params.userEmail
 		person.color = Color.decode("0x" + params.taskColorNewUser)
+		person.addToPortlets(new DashboardPortlet(name: DashboardPortlet.PORTLET_TASKS, portletsOrder: 0, owner: person))
+		person.addToPortlets(new DashboardPortlet(name: DashboardPortlet.PORTLET_SPRINTS, portletsOrder: 1, owner: person))
+		person.addToPortlets(new DashboardPortlet(name: DashboardPortlet.PORTLET_PROJECTS, portletsOrder: 2, owner: person))
 		
 		if (person.save()) {
 			// Only Superuser can set a different role than just ROLE_USER.

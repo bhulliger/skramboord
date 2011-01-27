@@ -29,6 +29,7 @@ import org.skramboord.StateTaskOpen;
 import org.skramboord.StateTaskStandBy;
 import org.skramboord.Task;
 import org.skramboord.Today;
+import org.skramboord.DashboardPortlet;
 import org.skramboord.Priority;
 import org.skramboord.Sprint;
 import org.skramboord.Project;
@@ -83,12 +84,12 @@ class BootStrap {
 		String url = "http://www.skramboord.org"
 		
 		// Adding Users
-		def userDevChief = new User(username:'wmozart', prename:'Wolfgang', name:'Mozart', enabled: true, emailShow: true, email: 'wolfgang.mozart@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
-		def userDev1 = new User(username:'lbeethoven', prename:'Ludwig', name:'Beethoven', enabled: true, emailShow: true, email: 'ludwig.beethoven@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
-		def userDev2 = new User(username:'asalieri', prename:'Antonio', name:'Salieri', enabled: true, emailShow: true, email: 'antonio.salieri@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
-		def userDev3 = new User(username:'jbach', prename:'Johann', name:'Bach', enabled: true, emailShow: true, email: 'johann.bach@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
-		def userClient1 = new User(username:'hmuster', prename:'Hans', name:'Muster', enabled: true, emailShow: true, email: 'hans.muster@skramboord.org', password: springSecurityService.encodePassword("1234")).save()
-
+		def userDevChief = createUser('wmozart', 'Wolfgang', 'Mozart', true, true, 'wolfgang.mozart@skramboord.org', "1234")
+		def userDev1 = createUser('lbeethoven', 'Ludwig', 'Beethoven', true, true, 'ludwig.beethoven@skramboord.org', "1234")
+		def userDev2 = createUser('asalieri', 'Antonio', 'Salieri', true, true, 'antonio.salieri@skramboord.org', "1234")
+		def userDev3 = createUser('jbach', 'Johann', 'Bach', true, true, 'johann.bach@skramboord.org', "1234")
+		def userClient1 = createUser('hmuster', 'Hans', 'Muster', true, true, 'hans.muster@skramboord.org', "1234")
+		
 		// Adding user to roles
 		UserRole.create(userDevChief, roleAdmin)
 		UserRole.create(userDev1, roleUser)
@@ -193,7 +194,7 @@ class BootStrap {
 		
 		// SuperUser
 		if (UserRole.withRole(roleSuperUser).list()?.isEmpty()) {
-			userAdmin = new User(username:'admin', prename:'YourPrename', name:'YourName', enabled: true, emailShow: true, email: 'youremail@internet.com', password: springSecurityService.encodePassword("admin")).save()
+			userAdmin = createUser('admin', 'YourPrename', 'YourName', true, true, 'youremail@internet.com', "admin")
 			UserRole.create(userAdmin, roleSuperUser)
 		}
 		
@@ -221,5 +222,25 @@ class BootStrap {
 	def createTask(User user, Sprint sprint, String name, String description, Double effort, String url, StateTask state, Priority priority, Date finished) {
 		Task task = new Task(user: user, name: name, description: description, effort: effort, url: url, state: state, priority: priority, finishedDate: finished, sprint: sprint, project: null)
 		task.save()
+	}
+	
+	/**
+	 * Creates a new user and initializes his dashboard.
+	 * 
+	 * @param username
+	 * @param prename
+	 * @param name
+	 * @param enabled
+	 * @param emailShow
+	 * @param email
+	 * @param password
+	 * @return
+	 */
+	User createUser(String username, String prename, String name, boolean enabled, boolean emailShow, String email, String password) {
+		User user = new User(username: username, prename: prename, name: name, enabled: enabled, emailShow: emailShow, email: email, password: springSecurityService.encodePassword(password)).save()
+		user.addToPortlets(new DashboardPortlet(name: DashboardPortlet.PORTLET_TASKS, portletsOrder: 0, owner: user))
+		user.addToPortlets(new DashboardPortlet(name: DashboardPortlet.PORTLET_SPRINTS, portletsOrder: 1, owner: user))
+		user.addToPortlets(new DashboardPortlet(name: DashboardPortlet.PORTLET_PROJECTS, portletsOrder: 2, owner: user))
+		return user.save()
 	}
 }

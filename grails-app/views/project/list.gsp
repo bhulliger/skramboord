@@ -142,7 +142,7 @@
 			
 			<div style="padding-top: 10px;">
 				<div class="column">
-					<div class="portlet" id="tasks">
+					<div class="portlet" id="${org.skramboord.DashboardPortlet.PORTLET_TASKS}">
 						<div class="portlet-header"><g:message code="dashboard.myTasks"/></div>
 						<div class="portlet-content">
 							<g:if test="${flash.myTasks.isEmpty()}">
@@ -180,7 +180,7 @@
 						</div>
 					</div>
 					
-					<div class="portlet" id="sprints">
+					<div class="portlet" id="${org.skramboord.DashboardPortlet.PORTLET_SPRINTS}">
 						<div class="portlet-header"><g:message code="dashboard.activeSprints"/></div>
 						<div class="portlet-content">
 							<g:if test="${flash.runningSprintsList.isEmpty()}">
@@ -230,7 +230,7 @@
 						</div>
 					</div>
 					
-					<div class="portlet" id="projects">
+					<div class="portlet" id="${org.skramboord.DashboardPortlet.PORTLET_PROJECTS}">
 						<div class="portlet-header"><g:message code="project.projects"/></div>
 						<div class="portlet-content">
 							<g:if test="${flash.projectList.isEmpty()}">

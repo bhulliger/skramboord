@@ -27,12 +27,12 @@ class User {
 	String prename
 	String name
 	String password
-	boolean enabled
+	boolean enabled = true
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
 	String email
-	boolean emailShow
+	boolean emailShow = true
 	String description = ''
 	SortedSet portlets
 	Color color
@@ -74,18 +74,7 @@ class User {
 		}
 	}
 	
-	def initDashboard() {
-		addToPortlets(new DashboardPortlet(name: "tasks", portletsOrder: 0, owner: this))
-		addToPortlets(new DashboardPortlet(name: "sprints", portletsOrder: 1, owner: this))
-		addToPortlets(new DashboardPortlet(name: "projects", portletsOrder: 2, owner: this))
-	}
-	
 	def getUserDashboard() {
-		if (portlets.size() == 0) {
-			// init dashboard first
-			initDashboard()
-		}
-		
 		String portletString = ""
 		boolean first = true
 		for (DashboardPortlet portlet : portlets) {
@@ -101,11 +90,6 @@ class User {
 	}
 	
 	def getPortletStates() {
-		if (portlets.size() == 0) {
-			// init dashboard first
-			initDashboard()
-		}
-		
 		String state = ""
 		boolean first = true
 		for (DashboardPortlet portlet : portlets) {

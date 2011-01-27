@@ -28,23 +28,23 @@ import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
 
 class ProjectController extends BaseController {
-	
+
 	def index = {
 		redirect(controller:'project', action:'list')
 	}
-	
+
 	def list = {
 		flash.allUsers = User.list()
-		
+
 		if (!params.sort) {
 			params.sort = 'name'
 			params.order = 'asc'
 		}
 		Date today = Today.getInstance()
-		
+
 		// get all project the user belongs to
 		flash.projectList = Project.projectsUserBelongsTo(session.user, params.sort, params.order, springSecurityService).listDistinct()
-		
+
 		flash.ownerOfAProject = false
 		for (project in flash.projectList) {
 			if (session.user.equals(project.owner)) {
@@ -52,7 +52,7 @@ class ProjectController extends BaseController {
 				break
 			}
 		}
-		
+
 		// get all running sprints the user belongs to
 		flash.runningSprintsList = Sprint.createCriteria().listDistinct {
 			le('startDate', today)
@@ -74,13 +74,13 @@ class ProjectController extends BaseController {
 				}
 			}
 		}
-		
+
 		flash.myTasks = Task.fromUser(session.user).list()
 		if(params.sort == 'sprints'){
 			flash.projectList.sort{it.sprints.size() * (params?.order == "asc"? 1 : -1)}
 		}
 	}
-	
+
 	/**
 	 * Project delete action
 	 */
@@ -89,30 +89,30 @@ class ProjectController extends BaseController {
 			if (params.project) {
 				def project = Project.get(params.project)
 				project.delete()
-				
+
 				flash.message = message(code:"project.deleted", args:[project.name])
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'project', action:'list')
 	}
-	
+
 	def edit = {
 		if (params.project) {
 			def project = Project.get(params.project)
-			
+
 			if (projectEditPermission(session.user, project)) {
 				flash.projectEdit = project
 			} else {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-		
+
 		redirect(controller:params.fwdTo, action:'list')
 	}
-	
+
 	/**
 	 * Project edit action
 	 */
@@ -121,14 +121,14 @@ class ProjectController extends BaseController {
 			def project = Project.get(params.projectId)
 			if (projectEditPermission(session.user, project)) {
 				project.name = params.projectName
-				
+
 				// Twitter
 				if (!params.twitterAccount.isEmpty() && !params.twitterPassword.isEmpty()) {
 					project.twitter = new TwitterAccount(token: params.twitterAccount, tokenSecret: params.twitterPassword).save()
 				} else {
 					project.twitter = null
 				}
-				
+
 				if (!project.save()) {
 					flash.objectToSave=project
 				}
@@ -136,17 +136,17 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-		
+
 		redirect(controller:params.fwdTo, action:'list')
 	}
-	
+
 	/**
 	 * Add new project
 	 */
 	def addProject = {
 		if (projectNewPermission()) {
 			def projectName = params.projectName
-			
+
 			Project project = new Project(name: projectName, owner: session.user, master: User.get(params.projectMaster))
 			if (!project.save()) {
 				flash.objectToSave=project
@@ -154,10 +154,10 @@ class ProjectController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'project', action:'list')
 	}
-	
+
 	/**
 	 * Disable Twitter account
 	 */
@@ -166,7 +166,7 @@ class ProjectController extends BaseController {
 			def project = Project.get(params.projectId)
 			if (projectEditPermission(session.user, project)) {
 				project.twitter.enabled = false
-				
+
 				if (!project.twitter.save()) {
 					flash.objectToSave = project.twitter
 				}
@@ -174,10 +174,10 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Enable Twitter account
 	 */
@@ -186,7 +186,7 @@ class ProjectController extends BaseController {
 			def project = Project.get(params.projectId)
 			if (projectEditPermission(session.user, project)) {
 				project.twitter.enabled = true
-				
+
 				if (!project.twitter.save()) {
 					flash.objectToSave = project.twitter
 				}
@@ -194,10 +194,10 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Remove Twitter account
 	 */
@@ -214,10 +214,10 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Add Twitter account
 	 */
@@ -238,10 +238,10 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Create Twitter account with pin
 	 */
@@ -264,10 +264,10 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.twitter.noPin")
 			}
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Saving dashboard elements order
 	 */
@@ -289,29 +289,32 @@ class ProjectController extends BaseController {
 			}
 			++index
 		}
-		
+
 		redirect(controller:'project', action:'list')
 	}
-	
+
 	/**
 	 * Save portlet state (enabled/disabled)
 	 */
 	def savePortletState = {
+		session.user.refresh()
 		DashboardPortlet portlet = DashboardPortlet.withCriteria(uniqueResult:true) {
 			eq('name', params.portlet)
 			eq('owner', session.user)
 		}
 		
-		portlet.enabled = !portlet.enabled
-		portlet.save()
-		
+		if (portlet) {
+			portlet.enabled = !portlet.enabled
+			portlet.save()
+		}
+
 		redirect(controller:'project', action:'list')
 	}
-	
+
 	private boolean projectNewPermission() {
 		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || springSecurityService.ifAnyGranted(Role.ROLE_ADMIN)
 	}
-	
+
 	private boolean projectEditPermission(User user, Project project) {
 		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(project.owner.id)
 	}

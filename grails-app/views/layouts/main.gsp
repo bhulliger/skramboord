@@ -3,14 +3,15 @@
     <head>
         <title><g:meta name="app.name"/></title>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/skramboord',file:'jquery.ui.all.css')}" ></link>
+         
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'main.css')}" ></link>
-        <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" ></link>
+        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
         
-       	<link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
-
-		<script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-1.4.2.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/ui',file:'jquery.ui.core.js')}"></script>
+		<g:javascript library="jquery" plugin="jquery"/>
+		<jqui:resources themeCss="css/themes/skramboord/jquery.ui.all.css"/>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/colorpicker',file:'colorpicker.js')}"></script>
+        
+        <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" ></link>
         <g:layoutHead />
     </head>
     <body>

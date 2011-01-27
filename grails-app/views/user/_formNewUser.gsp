@@ -6,7 +6,7 @@
 			height: 440,
 </sec:ifNotGranted>
 <sec:ifAnyGranted roles="ROLE_SUPERUSER">
-			height: 500,
+			height: 520,
 </sec:ifAnyGranted>
 			width: 500,
 			modal: true,

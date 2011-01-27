@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-project-edit").dialog({
 			autoOpen: true,
-			height: 120,
+			height: 140,
 			width: 500,
 			modal: true,
 			buttons: {

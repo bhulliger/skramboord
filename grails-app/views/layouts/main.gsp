@@ -2,13 +2,13 @@
 <html>
     <head>
         <title><g:meta name="app.name"/></title>
-        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/skramboord',file:'jquery.ui.all.css')}" ></link>
+        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/skramboord',file:'jquery-ui-1.8rc3.custom.css')}" ></link>
          
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'main.css')}" ></link>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
         
 		<g:javascript library="jquery" plugin="jquery"/>
-		<jqui:resources themeCss="css/themes/skramboord/jquery.ui.all.css"/>
+		<jqui:resources themeCss="css/themes/skramboord/jquery-ui-1.8rc3.custom.css"/>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/colorpicker',file:'colorpicker.js')}"></script>
         
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" ></link>

@@ -3,7 +3,7 @@
     <head>
         <title><g:meta name="app.name"/></title>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/',file: session.theme?.css)}" ></link>
-         
+        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/' + session.theme.name + '/',file: 'theme.css')}" ></link>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'main.css')}" ></link>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
         

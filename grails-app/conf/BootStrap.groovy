@@ -167,10 +167,11 @@ class BootStrap {
 		// System Preferences
 		if (SystemPreferences.list()?.isEmpty()) {
 			// Themes
-			Theme defaultTheme = new Theme(name: "skramboord", css: "skramboord/jquery-ui-1.8rc3.custom.css", background: "postit.skramboord.jpg").save()
-			new Theme(name: "shark", css: "shark/jquery-ui-1.8.9.custom.css", background: "postit.shark.jpg").save()
-			new Theme(name: "sunflower", css: "sunflower/jquery-ui-1.8.9.custom.css", background: "postit.sunflower.jpg").save()
-			new Theme(name: "chili", css: "chili/jquery-ui-1.8.9.custom.css", background: "postit.chili.jpg").save()
+			Theme defaultTheme = new Theme(name: "skramboord", css: "jquery-ui-1.8rc3.custom.css", background: "postit.skramboord.jpg").save()
+			new Theme(name: "shark", css: "jquery-ui-1.8.9.custom.css", background: "postit.shark.jpg").save()
+			new Theme(name: "sunflower", css: "jquery-ui-1.8.9.custom.css", background: "postit.sunflower.jpg").save()
+			new Theme(name: "chili", css: "jquery-ui-1.8.9.custom.css", background: "postit.chili.jpg").save()
+			new Theme(name: "zebra", css: "jquery-ui-1.8.9.custom.css", background: "postit.zebra.jpg").save()
 			
 			SystemPreferences systemPreferences = new SystemPreferences(name: SystemPreferences.APPLICATION_NAME, theme: defaultTheme).save()
 		}

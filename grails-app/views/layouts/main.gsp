@@ -2,13 +2,13 @@
 <html>
     <head>
         <title><g:meta name="app.name"/></title>
-        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/',file: session.theme?.css)}" ></link>
-        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/' + session.theme.name + '/',file: 'theme.css')}" ></link>
+        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/' + session.theme?.name + '/',file: session.theme?.css)}" ></link>
+        <link rel="stylesheet" type="text/css" href="${resource(dir:'css/themes/' + session.theme?.name + '/',file: 'theme.css')}" ></link>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css',file:'main.css')}" ></link>
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
         
 		<g:javascript library="jquery" plugin="jquery"/>
-		<jqui:resources themeCss="css/themes/${session.theme?.css}"/>
+		<jqui:resources themeCss="css/themes/${session.theme?.name}/${session.theme?.css}"/>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/colorpicker',file:'colorpicker.js')}"></script>
         
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" ></link>

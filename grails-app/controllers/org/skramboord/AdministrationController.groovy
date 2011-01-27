@@ -45,7 +45,7 @@ class AdministrationController extends BaseController {
 			if (params.priorities) {
 				order(params.sort, params.order)
 			} else {
-				order('id', 'asc')
+				order('name', 'asc')
 			}
 		}
 		

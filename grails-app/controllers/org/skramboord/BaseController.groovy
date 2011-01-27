@@ -23,6 +23,11 @@ abstract class BaseController {
 	def beforeInterceptor = [action:this.&doBefore]
 	
 	def doBefore() {
+		if (!session.theme) {
+			def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+			session.theme = systemPreferences.theme
+		}
+		
 		if (springSecurityService && springSecurityService.isLoggedIn()) {
 			def username = springSecurityService.getPrincipal().username
 			if (username && !username.equals(session.username)) {

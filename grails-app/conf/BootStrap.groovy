@@ -15,32 +15,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-import grails.util.GrailsUtil;
+import grails.util.GrailsUtil
 
-import java.awt.Color;
-import java.util.Calendar;
+import java.awt.Color
+import java.util.Calendar
 
 import org.skramboord.SystemPreferences
-import org.skramboord.StateTask;
-import org.skramboord.StateTaskCheckedOut;
-import org.skramboord.StateTaskDone;
-import org.skramboord.StateTaskNext;
-import org.skramboord.StateTaskOpen;
-import org.skramboord.StateTaskStandBy;
-import org.skramboord.Task;
-import org.skramboord.Today;
-import org.skramboord.DashboardPortlet;
-import org.skramboord.Priority;
-import org.skramboord.Sprint;
-import org.skramboord.Project;
-import org.skramboord.User;
-import org.skramboord.UserRole;
-import org.skramboord.Role;
-import org.skramboord.Membership;
-import org.skramboord.Follow;
-import org.skramboord.Requestmap;
+import org.skramboord.Theme
+import org.skramboord.StateTask
+import org.skramboord.StateTaskCheckedOut
+import org.skramboord.StateTaskDone
+import org.skramboord.StateTaskNext
+import org.skramboord.StateTaskOpen
+import org.skramboord.StateTaskStandBy
+import org.skramboord.Task
+import org.skramboord.Today
+import org.skramboord.DashboardPortlet
+import org.skramboord.Priority
+import org.skramboord.Sprint
+import org.skramboord.Project
+import org.skramboord.User
+import org.skramboord.UserRole
+import org.skramboord.Role
+import org.skramboord.Membership
+import org.skramboord.Follow
+import org.skramboord.Requestmap
 import org.apache.commons.codec.digest.DigestUtils
-import org.skramboord.Release;
+import org.skramboord.Release
 
 class BootStrap {
 
@@ -165,7 +166,12 @@ class BootStrap {
 	def initBasics() {
 		// System Preferences
 		if (SystemPreferences.list()?.isEmpty()) {
-			SystemPreferences systemPreferences = new SystemPreferences(name: SystemPreferences.APPLICATION_NAME).save()
+			// Themes
+			Theme defaultTheme = new Theme(name: "skramboord", css: "skramboord/jquery-ui-1.8rc3.custom.css", background: "postit.skramboord.jpg").save()
+			new Theme(name: "shark", css: "shark/jquery-ui-1.8.9.custom.css", background: "postit.shark.jpg").save()
+			new Theme(name: "sunflower", css: "sunflower/jquery-ui-1.8.9.custom.css", background: "postit.sunflower.jpg").save()
+			
+			SystemPreferences systemPreferences = new SystemPreferences(name: SystemPreferences.APPLICATION_NAME, theme: defaultTheme).save()
 		}
 		
 		// Initialize states

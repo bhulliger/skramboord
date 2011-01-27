@@ -33,16 +33,20 @@
 			<div id="tabs">
 				<ul>
 					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '0'])}"><g:message code="admin.userList"/></a></li>
-					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.priorities"/></a></li>
-					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '2'])}"><g:message code="twitter"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.themes"/></a></li>
+					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '2'])}"><g:message code="admin.priorities"/></a></li>
+					<li><a href="#tab-3" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '3'])}"><g:message code="twitter"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="users"/>
 				</div>
 				<div id="tab-1">
-					<g:render template="priorities"/>
+					<g:render template="themes"/>
 				</div>
 				<div id="tab-2">
+					<g:render template="priorities"/>
+				</div>
+				<div id="tab-3">
 					<g:render template="twitter"/>
 				</div>
 			</div>

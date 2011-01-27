@@ -29,7 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
-class LoginController {
+class LoginController extends BaseController{
 
 	/**
 	 * Dependency injection for the authenticationTrustResolver.

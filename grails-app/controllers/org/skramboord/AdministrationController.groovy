@@ -27,11 +27,21 @@ class AdministrationController extends BaseController {
 	}
 	
 	def list = {
-		flash.twitterAppSettings = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()?.twitterSettings
+		SystemPreferences systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()
+		flash.twitterAppSettings = systemPreferences?.twitterSettings
 		flash.userRoles = Role.list()
 		flash.userRoleDefault = Role.withAuthority(Role.ROLE_USER).list().first()
 		
 		flash.priorities = Priority.withCriteria {
+			if (params.priorities) {
+				order(params.sort, params.order)
+			} else {
+				order('id', 'asc')
+			}
+		}
+		
+		flash.themeActually = systemPreferences?.theme
+		flash.themes = Theme.withCriteria {
 			if (params.priorities) {
 				order(params.sort, params.order)
 			} else {
@@ -63,6 +73,19 @@ class AdministrationController extends BaseController {
 			flash.message = message(code:"admin.hexValues")
 		}
 		
+		redirect(controller:'administration', action:'list')
+	}
+	
+	def saveThemes = {
+		Theme theme = Theme.get(params.themes)
+		
+		if (theme) {
+			SystemPreferences systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()
+			systemPreferences.theme = theme
+			systemPreferences.save()
+			session.theme = theme
+		}
+
 		redirect(controller:'administration', action:'list')
 	}
 	

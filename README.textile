@@ -1,7 +1,7 @@
-<img src="http://github.com/pablohess/skramboord/raw/master/web-app/images/skramboord/skramboord.logo.glossy.medium.png" height="100px" alt="logo skramboord">
+<img src="https://github.com/pablohess/skramboord/raw/master/web-app/images/skramboord/skramboord.logo.glossy.medium.png" height="100px" alt="logo skramboord">
 
 <h2>Description</h2>
-"Skramboord":http://wiki.github.com/pablohess/skramboord/  is an open source multi user scrum board web application.
+"Skramboord":http://wiki.github.com/pablohess/skramboord/  is an open source multi user scrum web application.
 
 <h2>License</h2>
 Skramboord is licensed under the "GNU AFFERO GENERAL PUBLIC LICENSE v3.":http://www.opensource.org/licenses/agpl-v3.html

@@ -23,5 +23,6 @@ class Theme {
 	String background
 
     static constraints = {
+		name(nullable:false, blank:false, unique: true)
     }
 }

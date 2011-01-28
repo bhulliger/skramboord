@@ -225,7 +225,7 @@ class ProjectController extends BaseController {
 		if (params.projectId) {
 			def project = Project.get(params.projectId)
 			if (projectEditPermission(session.user, project)) {
-				def twitterAppSettings = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()?.twitterSettings
+				def twitterAppSettings = getSystemPreferences().twitterSettings
 				try {
 					session.twitter = new TwitterFactory().getInstance()
 					session.twitter.setOAuthConsumer(twitterAppSettings.consumerKey, twitterAppSettings.consumerSecret)

@@ -24,7 +24,7 @@ abstract class BaseController {
 	
 	def doBefore() {
 		if (!session.theme) {
-			def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+			def systemPreferences = getSystemPreferences()
 			session.theme = systemPreferences.theme
 		}
 		
@@ -37,5 +37,9 @@ abstract class BaseController {
 				session.user = user
 			}
 		}
+	}
+	
+	protected SystemPreferences getSystemPreferences() {
+		return SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
 	}
 }

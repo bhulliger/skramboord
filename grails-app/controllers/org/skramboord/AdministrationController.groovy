@@ -27,7 +27,7 @@ class AdministrationController extends BaseController {
 	}
 	
 	def list = {
-		SystemPreferences systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()
+		SystemPreferences systemPreferences = getSystemPreferences()
 		flash.twitterAppSettings = systemPreferences?.twitterSettings
 		flash.userRoles = Role.list()
 		flash.userRoleDefault = Role.withAuthority(Role.ROLE_USER).list().first()
@@ -80,7 +80,7 @@ class AdministrationController extends BaseController {
 		Theme theme = Theme.get(params.themes)
 		
 		if (theme) {
-			SystemPreferences systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()
+			SystemPreferences systemPreferences = getSystemPreferences()
 			systemPreferences.theme = theme
 			systemPreferences.save()
 			session.theme = theme
@@ -90,7 +90,7 @@ class AdministrationController extends BaseController {
 	}
 	
 	def saveTwitterSettings = {
-		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		def systemPreferences = getSystemPreferences()
 		
 		if (!systemPreferences.twitterSettings) {
 			systemPreferences.twitterSettings = new TwitterAppSettings()
@@ -105,7 +105,7 @@ class AdministrationController extends BaseController {
 	}
 	
 	def removeTwitterSettings = {
-		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		def systemPreferences = getSystemPreferences()
 		systemPreferences.twitterSettings = null
 		systemPreferences.save()
 		
@@ -113,7 +113,7 @@ class AdministrationController extends BaseController {
 	}
 	
 	def enableTwitterSettings = {
-		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		def systemPreferences = getSystemPreferences()
 		systemPreferences.twitterSettings.enabled = true
 		systemPreferences.twitterSettings.save()
 		
@@ -121,7 +121,7 @@ class AdministrationController extends BaseController {
 	}
 	
 	def disableTwitterSettings = {
-		def systemPreferences = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
+		def systemPreferences = getSystemPreferences()
 		systemPreferences.twitterSettings.enabled = false
 		systemPreferences.twitterSettings.save()
 		

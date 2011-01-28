@@ -326,7 +326,7 @@ class TaskController extends BaseController {
 	 * @param message
 	 */
 	private void sendTwitterMessage(Project project, String message) {
-		def twitterAppSettings = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()?.twitterSettings
+		def twitterAppSettings = getSystemPreferences().twitterSettings
 		if (project.twitter && project.twitter.enabled  && twitterAppSettings && twitterAppSettings.enabled) {
 			ConfigurationBuilder cb = new ConfigurationBuilder()
 			cb.setDebugEnabled(true)

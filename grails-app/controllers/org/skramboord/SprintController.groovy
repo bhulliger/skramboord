@@ -25,7 +25,7 @@ class SprintController extends BaseController {
 	}
 	
 	def list = {
-		flash.twitterAppSettings = SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list()?.first()?.twitterSettings
+		flash.twitterAppSettings = getSystemPreferences().twitterSettings
 		
 		if (params.project) {
 			session.project = Project.get(params.project)

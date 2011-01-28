@@ -200,6 +200,19 @@ class UserController extends BaseController {
 		}
 	}
 	
+	def showImage = {
+		def image = Image.get(params.id)
+		if (!image || !image.image || !image.imageType) {
+		  return;
+		}
+		
+		response.setContentType(image.imageType)
+		response.setContentLength(image.image.size())
+		OutputStream out = response.getOutputStream();
+		out.write(image.image);
+		out.close();
+	  }
+	
 	private boolean userWritePermission(User user, User userToChange) {
 		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(user.id)
 	}

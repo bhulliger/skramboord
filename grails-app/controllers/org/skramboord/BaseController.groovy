@@ -28,6 +28,11 @@ abstract class BaseController {
 			session.theme = systemPreferences.theme
 		}
 		
+		if (!session.logo) {
+			def systemPreferences = getSystemPreferences()
+			session.logo = systemPreferences.logo
+		}
+		
 		if (springSecurityService && springSecurityService.isLoggedIn()) {
 			def username = springSecurityService.getPrincipal().username
 			if (username && !username.equals(session.username)) {

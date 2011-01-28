@@ -33,7 +33,13 @@
 	        <div id="grailsLogo" class="logo">
 	        	<div style="float: left;">
 		        	<a href="http://www.skramboord.org" onclick="return ! window.open(this.href);">
-		        		<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord"/>
+		        	
+        				<g:if test="${session.logo}">
+							<img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="60px"/>
+						</g:if>
+						<g:else>
+		        			<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="60px"/>
+		        		</g:else>
 		        	</a>
 	        	</div>
 	        	<div style="float: right;">

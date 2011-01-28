@@ -17,23 +17,13 @@
 
 package org.skramboord
 
-class SystemPreferences {
-	static String APPLICATION_NAME = "skramboord"
+class Image {
 	String name
-	TwitterAppSettings twitterSettings
-	Theme theme
-	Image logo
+	byte[] image
+	String imageType
 
-	static constraints = {
-		name blank: false, unique: true
-		twitterSettings nullable: true
-		theme nullable: false
-		logo nullable: true
-	}
-	
-	static namedQueries = {
-		getPreferences { appName ->
-			eq('name', appName)
-		}
-	}
+    static constraints = {
+		image(nullable:false, maxSize: 32768 /* 32K */)
+		imageType(nullable:false)
+    }
 }

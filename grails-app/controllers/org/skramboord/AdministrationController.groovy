@@ -76,7 +76,8 @@ class AdministrationController extends BaseController {
 		redirect(controller:'administration', action:'list')
 	}
 	
-	def saveThemes = {
+	def saveAppearance = {
+		// save theme
 		Theme theme = Theme.get(params.themes)
 		
 		if (theme) {
@@ -85,7 +86,32 @@ class AdministrationController extends BaseController {
 			systemPreferences.save()
 			session.theme = theme
 		}
-
+		
+		// save logo
+		if (SystemPreferences.APPLICATION_NAME.equals(params.logo)) {
+			SystemPreferences systemPreferences = getSystemPreferences()
+			systemPreferences.logo = null
+			systemPreferences.save()
+			session.logo = null
+		} else if ("newLogo".equals(params.logo)) {
+			def logo = request.getFile('logoFile')
+			
+			// List of OK mime-types
+			def okcontents = ['image/png', 'image/jpeg', 'image/gif']
+			if (okcontents.contains(logo.getContentType())) {
+				// and save
+				if (!params.logoName) {
+					params.logoName = logo.getOriginalFilename()
+				}
+				SystemPreferences systemPreferences = getSystemPreferences()
+				systemPreferences.logo = new Image(name: params.logoName, image: logo.getBytes(), imageType: logo.getContentType()).save()
+				systemPreferences.save()
+				session.logo = systemPreferences.logo
+			} else {
+				flash.message = message(code:"appearance.fileType", args:[okcontents])
+			}
+		}
+		
 		redirect(controller:'administration', action:'list')
 	}
 	

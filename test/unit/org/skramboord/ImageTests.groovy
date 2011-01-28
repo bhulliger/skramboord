@@ -17,23 +17,18 @@
 
 package org.skramboord
 
-class SystemPreferences {
-	static String APPLICATION_NAME = "skramboord"
-	String name
-	TwitterAppSettings twitterSettings
-	Theme theme
-	Image logo
+import grails.test.*
 
-	static constraints = {
-		name blank: false, unique: true
-		twitterSettings nullable: true
-		theme nullable: false
-		logo nullable: true
-	}
-	
-	static namedQueries = {
-		getPreferences { appName ->
-			eq('name', appName)
-		}
-	}
+class ImageTests extends GrailsUnitTestCase {
+    protected void setUp() {
+        super.setUp()
+    }
+
+    protected void tearDown() {
+        super.tearDown()
+    }
+
+    void testSomething() {
+
+    }
 }

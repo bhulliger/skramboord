@@ -33,7 +33,7 @@
 			<div id="tabs">
 				<ul>
 					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '0'])}"><g:message code="admin.userList"/></a></li>
-					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.themes"/></a></li>
+					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.appearance"/></a></li>
 					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '2'])}"><g:message code="admin.priorities"/></a></li>
 					<li><a href="#tab-3" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '3'])}"><g:message code="twitter"/></a></li>
 				</ul>
@@ -41,7 +41,7 @@
 					<g:render template="users"/>
 				</div>
 				<div id="tab-1">
-					<g:render template="themes"/>
+					<g:render template="appearance"/>
 				</div>
 				<div id="tab-2">
 					<g:render template="priorities"/>

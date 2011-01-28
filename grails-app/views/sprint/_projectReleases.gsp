@@ -12,12 +12,12 @@
 
 	function deleteRelease(releaseId, message){
 		if (confirm(message)){
-			location.href="/${meta(name: "app.name")}/release/delete?release=" + releaseId;
+			location.href="${request.contextPath}/release/delete?release=" + releaseId;
 		}
 	}
 
 	function editRelease(releaseId){
-		location.href="/${meta(name: "app.name")}/release/edit?release=" + releaseId;
+		location.href="${request.contextPath}/release/edit?release=" + releaseId;
 	}
 </script>
 

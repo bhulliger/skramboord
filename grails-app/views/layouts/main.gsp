@@ -15,7 +15,7 @@
         
         <style type="text/css">
 			body {
-				background: #fff url('/skramboord/images/skramboord/${session.theme?.background}') repeat-x;
+				background: #fff url('${request.contextPath}/images/skramboord/${session.theme?.background}') repeat-x;
 				color: #333;
 				font: 11px verdana, arial, helvetica, sans-serif;
 				font-size: 62.5%;

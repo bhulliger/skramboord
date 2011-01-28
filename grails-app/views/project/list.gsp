@@ -18,7 +18,7 @@
 			var setSelector = ".column";
 
 			function getOrder() {
-		        location.href="/${meta(name: "app.name")}/project/saveDashboardOrder?dashboard=" + $(setSelector).sortable("toArray");
+		        location.href="${request.contextPath}/project/saveDashboardOrder?dashboard=" + $(setSelector).sortable("toArray");
 			}
 
 			function restoreOrder() {
@@ -107,7 +107,7 @@
 					$(this).toggleClass("ui-icon-minusthick");
 					$(this).parents(".portlet:first").find(".portlet-content").toggle();
 					
-					location.href="/${meta(name: "app.name")}/project/savePortletState?portlet=" + this.parentNode.parentNode.id;
+					location.href="${request.contextPath}/project/savePortletState?portlet=" + this.parentNode.parentNode.id;
 				});
 	
 				$(".column").disableSelection();

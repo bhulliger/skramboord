@@ -29,7 +29,7 @@
 	});
 
 	function changeTo(event, ui, stateMethod){
-		location.href="/${meta(name: "app.name")}/sprint/" + stateMethod + "?personId=" + $(ui.item).attr("id");
+		location.href="${request.contextPath}/sprint/" + stateMethod + "?personId=" + $(ui.item).attr("id");
 	}
 </g:if>
 </script>

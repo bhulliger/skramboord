@@ -48,7 +48,7 @@
 	
 <g:if test="${flash.teammate}">
 	function changeTo(event, ui, stateMethod){
-		location.href="/${meta(name: "app.name")}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
+		location.href="${request.contextPath}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
 	}
 
 	function openNewTaskForm(){

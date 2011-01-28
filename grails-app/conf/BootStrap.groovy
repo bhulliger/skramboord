@@ -194,10 +194,25 @@ class BootStrap {
 		}
 		
 		// Adding Roles
-		if (Role.list()?.isEmpty()) {
+		def superuserList = Role.withAuthority(Role.ROLE_SUPERUSER).list()
+		if (superuserList.isEmpty()) {
 			roleSuperUser = new Role(authority:Role.ROLE_SUPERUSER, description:'superuser').save()
+		} else {
+			roleSuperUser = superuserList.first()
+		}
+
+		def adminList = Role.withAuthority(Role.ROLE_ADMIN).list()
+		if (adminList.isEmpty()) {
 			roleAdmin = new Role(authority:Role.ROLE_ADMIN, description:'administration').save()
-			roleUser = new Role(authority:Role.ROLE_USER, description:'user').save()
+		} else {
+			roleAdmin = adminList.first()
+		}
+		
+		def userList = Role.withAuthority(Role.ROLE_USER).list()
+		if (userList.isEmpty()) {
+			roleUser = new Role(authority:Role.ROLE_USER, description:'user').save()						
+		} else {
+			roleUser = userList.first()
 		}
 		
 		// SuperUser

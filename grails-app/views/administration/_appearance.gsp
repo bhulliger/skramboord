@@ -34,6 +34,7 @@
 			<tr>
 				<th style="width: 20px;"></th>
 				<g:sortableColumn params="[priorities:true]" property="name" defaultOrder="asc" title="${message(code:'appearance.name')}"/>
+				<th><g:message code="task.link"/></th>
 				<th></th>
 				<th></th>
 			</tr>
@@ -47,6 +48,7 @@
 					</g:else>
 				</td>
 				<td style="vertical-align: middle;">${org.skramboord.SystemPreferences.APPLICATION_NAME}</td>
+				<td style="vertical-align: middle;">http://www.skramboord.org</td>
 				<td style="vertical-align: middle;"><img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="40px"/></td>
 				<td></td>
 			</tr>
@@ -54,6 +56,9 @@
 				<tr>
 					<td style="vertical-align: middle;"><g:radio id="logo" name="logo" value="logo" checked="true"/></td>
 					<td style="vertical-align: middle;">${session.logo.name}</td>
+					<td style="vertical-align: middle;">
+						<input type="text" name="logoLink" id="logoLink" value="${session.logoUrl}" class="text ui-widget-content ui-corner-all"/>
+					</td>
 					<td style="vertical-align: middle;"><img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="40px"/></td>
 					<td></td>
 				</tr>
@@ -61,7 +66,10 @@
 			<tr>
 				<td style="vertical-align: middle;"><g:radio id="newLogo" name="logo" value="newLogo"/></td>
 				<td style="vertical-align: middle;">
-					<input type="text" name="logoName" id="logoName" onClick="checkRadioButton()" class="text ui-widget-content ui-corner-all"/>
+					<input type="text" name="newLogoName" id="newLogoName" onClick="checkRadioButton()" class="text ui-widget-content ui-corner-all"/>
+				</td>
+				<td style="vertical-align: middle;">
+					<input type="text" name="newLogoLink" id="newLogoLink" onClick="checkRadioButton()" class="text ui-widget-content ui-corner-all"/>
 				</td>
 				<td style="vertical-align: middle;">
 					<input type="file" name="logoFile" id="logoFile" onClick="checkRadioButton()"/>

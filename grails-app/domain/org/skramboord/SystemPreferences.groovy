@@ -22,13 +22,16 @@ class SystemPreferences {
 	String name
 	TwitterAppSettings twitterSettings
 	Theme theme
+	
 	Image logo
+	String logoUrl
 
 	static constraints = {
 		name blank: false, unique: true
 		twitterSettings nullable: true
 		theme nullable: false
 		logo nullable: true
+		logoUrl(url:true)
 	}
 	
 	static namedQueries = {

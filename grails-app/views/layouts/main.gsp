@@ -32,15 +32,26 @@
 	        </div>
 	        <div id="grailsLogo" class="logo">
 	        	<div style="float: left;">
-		        	<a href="http://www.skramboord.org" onclick="return ! window.open(this.href);">
-		        	
-        				<g:if test="${session.logo}">
-							<img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="60px"/>
-						</g:if>
-						<g:else>
-		        			<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="60px"/>
-		        		</g:else>
-		        	</a>
+	        		<g:if test="${session.logoUrl}">
+	        			<a href="${session.logoUrl}" onclick="return ! window.open(this.href);">
+	        				<g:if test="${session.logo}">
+								<img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="60px"/>
+							</g:if>
+							<g:else>
+			        			<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="60px"/>
+			        		</g:else>
+	        			</a>
+	        		</g:if>
+	        		<g:else>
+		        		<g:link controller="project" action="list">
+			        		<g:if test="${session.logo}">
+								<img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="60px"/>
+							</g:if>
+							<g:else>
+			        			<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="60px"/>
+			        		</g:else>
+		        		</g:link>
+	        		</g:else>		        	
 	        	</div>
 	        	<div style="float: right;">
 	        		<sec:ifLoggedIn>

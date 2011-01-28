@@ -173,7 +173,7 @@ class BootStrap {
 			new Theme(name: "chili", css: "jquery-ui-1.8.9.custom.css", background: "postit.chili.jpg").save()
 			new Theme(name: "zebra", css: "jquery-ui-1.8.9.custom.css", background: "postit.zebra.jpg").save()
 			
-			SystemPreferences systemPreferences = new SystemPreferences(name: SystemPreferences.APPLICATION_NAME, theme: defaultTheme).save()
+			SystemPreferences systemPreferences = new SystemPreferences(name: SystemPreferences.APPLICATION_NAME, theme: defaultTheme, logoUrl: "http://www.skramboord.org").save()
 		}
 		
 		// Initialize states

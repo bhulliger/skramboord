@@ -33,6 +33,11 @@ abstract class BaseController {
 			session.logo = systemPreferences.logo
 		}
 		
+		if (!session.logoUrl) {
+			def systemPreferences = getSystemPreferences()
+			session.logoUrl = systemPreferences.logoUrl
+		}
+		
 		if (springSecurityService && springSecurityService.isLoggedIn()) {
 			def username = springSecurityService.getPrincipal().username
 			if (username && !username.equals(session.username)) {

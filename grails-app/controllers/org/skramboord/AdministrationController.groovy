@@ -88,28 +88,39 @@ class AdministrationController extends BaseController {
 		}
 		
 		// save logo
-		if (SystemPreferences.APPLICATION_NAME.equals(params.logo)) {
-			SystemPreferences systemPreferences = getSystemPreferences()
-			systemPreferences.logo = null
-			systemPreferences.save()
-			session.logo = null
-		} else if ("newLogo".equals(params.logo)) {
-			def logo = request.getFile('logoFile')
-			
-			// List of OK mime-types
-			def okcontents = ['image/png', 'image/jpeg', 'image/gif']
-			if (okcontents.contains(logo.getContentType())) {
-				// and save
-				if (!params.logoName) {
-					params.logoName = logo.getOriginalFilename()
-				}
-				SystemPreferences systemPreferences = getSystemPreferences()
-				systemPreferences.logo = new Image(name: params.logoName, image: logo.getBytes(), imageType: logo.getContentType()).save()
+		SystemPreferences systemPreferences = getSystemPreferences()
+		switch(params.logo) {
+			case SystemPreferences.APPLICATION_NAME:
+				systemPreferences.logo = null
+				systemPreferences.logoUrl = "http://www.skramboord.org"
 				systemPreferences.save()
-				session.logo = systemPreferences.logo
-			} else {
-				flash.message = message(code:"appearance.fileType", args:[okcontents])
-			}
+				session.logo = null
+				session.logoUrl = systemPreferences.logoUrl
+				break
+			case "newLogo":
+				def logo = request.getFile('logoFile')
+				
+				// List of OK mime-types
+				def okcontents = ['image/png', 'image/jpeg', 'image/gif']
+				if (okcontents.contains(logo.getContentType())) {
+					// and save
+					if (!params.newLogoName) {
+						params.newLogoName = logo.getOriginalFilename()
+					}
+					systemPreferences.logo = new Image(name: params.newLogoName, image: logo.getBytes(), imageType: logo.getContentType()).save()
+					systemPreferences.logoUrl = params.newLogoLink
+					systemPreferences.save()
+					session.logo = systemPreferences.logo
+					session.logoUrl = systemPreferences.logoUrl
+				} else {
+					flash.message = message(code:"appearance.fileType", args:[okcontents])
+				}
+				break
+			case "logo":
+				systemPreferences.logoUrl = params.logoLink
+				systemPreferences.save()
+				session.logoUrl = systemPreferences.logoUrl
+				break
 		}
 		
 		redirect(controller:'administration', action:'list')

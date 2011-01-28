@@ -3,7 +3,7 @@
 		$("#dialog-form-user-edit").dialog({
 			autoOpen: true,
 <sec:ifNotGranted roles="ROLE_SUPERUSER">
-			height: 440,
+			height: 460,
 </sec:ifNotGranted>
 <sec:ifAnyGranted roles="ROLE_SUPERUSER">
 			height: 500,

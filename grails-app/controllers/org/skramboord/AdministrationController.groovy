@@ -107,7 +107,14 @@ class AdministrationController extends BaseController {
 					if (!params.newLogoName) {
 						params.newLogoName = logo.getOriginalFilename()
 					}
-					systemPreferences.logo = new Image(name: params.newLogoName, image: logo.getBytes(), imageType: logo.getContentType()).save()
+					if (!systemPreferences.logo) {
+						systemPreferences.logo = new Image()
+					}
+					systemPreferences.logo.name = params.newLogoName
+					systemPreferences.logo.image = logo.getBytes()
+					systemPreferences.logo.imageType = logo.getContentType()
+					systemPreferences.logo.save()
+					
 					systemPreferences.logoUrl = params.newLogoLink
 					systemPreferences.save()
 					session.logo = systemPreferences.logo

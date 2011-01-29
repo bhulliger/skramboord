@@ -122,13 +122,6 @@ class ProjectController extends BaseController {
 			if (projectEditPermission(session.user, project)) {
 				project.name = params.projectName
 
-				// Twitter
-				if (!params.twitterAccount.isEmpty() && !params.twitterPassword.isEmpty()) {
-					project.twitter = new TwitterAccount(token: params.twitterAccount, tokenSecret: params.twitterPassword).save()
-				} else {
-					project.twitter = null
-				}
-
 				if (!project.save()) {
 					flash.objectToSave=project
 				}

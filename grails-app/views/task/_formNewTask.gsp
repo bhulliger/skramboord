@@ -37,7 +37,7 @@
 				</tr>
 				<tr>
 					<td><label><g:message code="task.priority"/></label></td>
-					<td><g:select name="taskPriority" from="${flash.priorityList}" valueMessagePrefix="priorities"/></td>
+					<td><g:select name="taskPriority" from="${flash.priorityList}" valueMessagePrefix="priorities" value="${org.skramboord.Priority.NORMAL}"/></td>
 				</tr>
 				<tr>
 					<td style="vertical-align: top;"><label><g:message code="task.description"/></label></td>

@@ -59,10 +59,10 @@
 
 <div>
 	<g:if test="${flash.taskEdit}">
-		<g:render template="formEditTask"/>
+		<g:render template="formEditTask" model="['fwdTo': 'task']"/>
 	</g:if>
 	<g:elseif test="${session.sprint.isSprintActive()}">
-		<g:render template="formNewTask"/>
+		<g:render template="formNewTask" model="['fwdTo': 'task', 'target': 'sprint']"/>
 	</g:elseif>
 
 	<div class="buttons">
@@ -86,7 +86,7 @@
 				<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
 			</g:else>
 				<g:each var="task" in="${flash.projectBacklog}" status="i">
-					<g:render template="task" model="['task':task]"/>
+					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
 				</g:each>
 			</ul>
 		</div>
@@ -102,7 +102,7 @@
 				<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
 			</g:else>
 				<g:each var="task" in="${flash.taskListOpen}" status="i">
-					<g:render template="task" model="['task':task]"/>
+					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
 				</g:each>
 			</ul>
 		</div>
@@ -116,7 +116,7 @@
 				<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
 			</g:else>
 				<g:each var="task" in="${flash.taskListCheckout}" status="i">
-					<g:render template="task" model="['task':task]"/>
+					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
 				</g:each>
 			</ul>
 		</div>
@@ -130,7 +130,7 @@
 				<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
 			</g:else>
 				<g:each var="task" in="${flash.taskListDone}" status="i">
-					<g:render template="task" model="['task':task]"/>
+					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
 				</g:each>
 			</ul>
 		</div>
@@ -145,7 +145,7 @@
 					<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
 				</g:else>
 					<g:each var="task" in="${flash.taskListNext}" status="i">
-						<g:render template="task" model="['task':task]"/>
+						<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
 					</g:each>
 				</ul>
 			</div>
@@ -159,7 +159,7 @@
 					<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
 				</g:else>
 					<g:each var="task" in="${flash.taskListStandBy}" status="i">
-						<g:render template="task" model="['task':task]"/>
+						<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
 					</g:each>
 				</ul>
 			</div>

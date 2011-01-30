@@ -28,53 +28,57 @@ import twitter4j.http.RequestToken;
 
 class TaskController extends BaseController {
 	def twitterService
-	
-	def index = { redirect(controller:'task', action:'list')
+
+	def index = {
+		redirect(controller:'task', action:'list')
 	}
-	
+
 	def list = {
 		if (params.sprint) {
 			session.sprint = Sprint.get(params.sprint)
 			session.project = session.sprint.release.project
 		}
-				
+
 		// check if this user has access rights
 		if (!taskViewPermission(session.user, session.project)) {
 			redirect(controller:'project', action:'list')
 		}
-		
+
 		// teammate or follower?
 		if (taskWorkPermission(session.user, session.project)) {
 			flash.teammate = true
 		}
-		
+
 		flash.priorityList=Priority.list()
-		
+
 		flash.projectBacklog = Task.projectBacklog(session.project).list()
-		
+
 		flash.taskListOpen = Task.fromSprint(session.sprint, StateTask.getStateOpen()).list()
 		flash.taskListCheckout = Task.fromSprint(session.sprint, StateTask.getStateCheckedOut()).list()
 		flash.taskListDone = Task.fromSprint(session.sprint, StateTask.getStateDone()).list()
 		flash.taskListStandBy = Task.fromSprint(session.sprint, StateTask.getStateStandBy()).list()
 		flash.taskListNext = Task.fromSprint(session.sprint, StateTask.getStateNext()).list()
-		
+
 		flash.numberOfTasks = flash.taskListOpen.size() + flash.taskListCheckout.size() + flash.taskListDone.size() + flash.taskListStandBy.size()
 
 		def totalEffort = Task.effortTasksTotal(session.sprint).list()?.first()
 		def totalEffortDone = Task.effortTasksDone(session.sprint).list()?.first()
-		
+
 		flash.totalEffort = totalEffort ? totalEffort : 0
 		flash.totalEffortDone = totalEffortDone ? totalEffortDone : 0
-		
+
 		// Burn down target
 		def datesXTarget = []
 		def burnDownEffort = flash.totalEffort
 		flash.burndownReal = []
-		flash.burndownReal.add([session.sprint.startDate.getTime(), burnDownEffort])
+		flash.burndownReal.add([
+			session.sprint.startDate.getTime(),
+			burnDownEffort
+		])
 		def lastEffort = 0
 		for (Date startDate = session.sprint.startDate; startDate <= session.sprint.endDate; startDate++) {
 			datesXTarget.add(startDate.getTime())
-			
+
 			def taskListDone = Task.withCriteria {
 				eq('state', StateTask.getStateDone())
 				eq('sprint', session.sprint)
@@ -88,33 +92,44 @@ class TaskController extends BaseController {
 
 			if (tmpEffort > 0) {
 				lastEffort = burnDownEffort
-				flash.burndownReal.add([startDate.getTime(), burnDownEffort])
+				flash.burndownReal.add([
+					startDate.getTime(),
+					burnDownEffort
+				])
 			} else if (Today.isDateToday(startDate)) {
 				// if there is no task done yet today, paint a horizontal line for the rest.
-				flash.burndownReal.add([Today.getInstance().getTime(), lastEffort])
+				flash.burndownReal.add([
+					Today.getInstance().getTime(),
+					lastEffort
+				])
 			}
 		}
 		flash.burndownTargetXSize = datesXTarget.size()-1
 		flash.burndownTargetX = datesXTarget
 		flash.today = Today.getInstance().getTime()
 	}
-	
+
 	/**
 	 * Add task
 	 */
 	def addTask = {
 		if (taskWorkPermission(session.user, session.project)) {
-			Task task = new Task(name: params.taskName, description: params.taskDescription, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.byName(params.taskPriority).list().first(), sprint: Sprint.find(session.sprint))
+			Task task = new Task(name: params.taskName, description: params.taskDescription, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.byName(params.taskPriority).list().first())
+			if ("sprint".equals(params.target)) {
+				task.sprint= Sprint.find(session.sprint)
+			} else {
+				task.project = Project.get(session.project.id)
+			}
 			if (!task.save()) {
 				flash.objectToSave = task
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
-		redirect(controller:'task', action:'list')
+
+		redirect(controller:params.fwdTo, action:'list')
 	}
-	
+
 	/**
 	 * Task delete action
 	 */
@@ -123,16 +138,16 @@ class TaskController extends BaseController {
 			if (params.task) {
 				def task = Task.get(params.task)
 				task.delete()
-				
+
 				flash.message = message(code:"task.deleted", args:[task.name])
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
-		redirect(controller:'task', action:'list')
+
+		redirect(controller:params.fwdTo, action:'list')
 	}
-	
+
 	def edit = {
 		if (taskWritePermission(session.user, session.project)) {
 			if (params.task) {
@@ -141,10 +156,10 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
-		redirect(controller:'task', action:'list')
+
+		redirect(controller:params.fwdTo, action:'list')
 	}
-	
+
 	/**
 	 * Task edit action
 	 */
@@ -152,7 +167,7 @@ class TaskController extends BaseController {
 		if (taskWritePermission(session.user, session.project)) {
 			if (params.taskId) {
 				def task = Task.get(params.taskId)
-				
+
 				task.name = params.taskName
 				task.description = params.taskDescription
 				task.effort = params.taskEffort?.toDouble()
@@ -166,10 +181,10 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
-		redirect(controller:'task', action:'list')
+
+		redirect(controller:params.fwdTo, action:'list')
 	}
-	
+
 	/**
 	 * Changes status of a task to open
 	 */
@@ -190,10 +205,10 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'task', action:'list')
 	}
-	
+
 	/**
 	 * Changes status of a task to checkout
 	 */
@@ -206,10 +221,10 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'task', action:'list')
 	}
-	
+
 	/**
 	 * Changes status of a task to done
 	 */
@@ -218,16 +233,16 @@ class TaskController extends BaseController {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.state.done(task)
 			task.save()
-			
+
 			// tweet it!
 			sendTwitterMessage(session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'task', action:'list')
 	}
-	
+
 	/**
 	 * Changes status of a task to next
 	 */
@@ -239,10 +254,10 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'task', action:'list')
 	}
-	
+
 	/**
 	 * Changes status of a task to standby
 	 */
@@ -254,27 +269,42 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'task', action:'list')
 	}
-	
+
 	/**
 	 * Copy Task to Backlog
 	 */
 	def copyTaskToBacklog = {
 		if (taskWorkPermission(session.user, session.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
-	
+
 			task.sprint = null
 			task.project = Project.get(session.project.id)
 			task.save()
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'task', action:'list')
 	}
-	
+
+	/**
+	 * Changes task priority
+	 */
+	def changeTaskPrio = {
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+			task.priority = Priority.byName(params.taskPrio).list()?.first()
+			task.save()
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
+
+		redirect(controller:'sprint', action:'list')
+	}
+
 	/**
 	 * Removes prefix 'taskId_'
 	 * 
@@ -284,7 +314,7 @@ class TaskController extends BaseController {
 	private String removeTaskPrefix(String taskId) {
 		return taskId.replaceFirst("taskId_", "")
 	}
-	
+
 	/**
 	 * Returns true if the user is allowed to access this sprint.
 	 * 
@@ -295,7 +325,7 @@ class TaskController extends BaseController {
 	private boolean taskViewPermission(User user, Project project) {
 		return Project.accessRight(session.project, session.user, springSecurityService).list().first() != 0
 	}
-	
+
 	/**
 	 * Returns true if this user is allowed to change the state of the tasks.
 	 * 
@@ -306,7 +336,7 @@ class TaskController extends BaseController {
 	private boolean taskWorkPermission(User user, Project project) {
 		return Project.changeRight(session.project, session.user, springSecurityService).list().first() != 0
 	}
-	
+
 	/**
 	 * Returns true if this user is allowed to change and delete the existing tasks.
 	 * 
@@ -317,7 +347,7 @@ class TaskController extends BaseController {
 	private boolean taskWritePermission(User user, Project project) {
 		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(project.owner.id) || user.id.equals(project.master.id)
 	}
-	
+
 	/**
 	 * Sends Twitter message if project has a Twitter account.
 	 * 
@@ -330,10 +360,10 @@ class TaskController extends BaseController {
 		if (project.twitter && project.twitter.enabled  && twitterAppSettings && twitterAppSettings.enabled) {
 			ConfigurationBuilder cb = new ConfigurationBuilder()
 			cb.setDebugEnabled(true)
-			  .setOAuthConsumerKey(twitterAppSettings.consumerKey)
-			  .setOAuthConsumerSecret(twitterAppSettings.consumerSecret)
-			  .setOAuthAccessToken(project.twitter.token)
-			  .setOAuthAccessTokenSecret(project.twitter.tokenSecret)
+					.setOAuthConsumerKey(twitterAppSettings.consumerKey)
+					.setOAuthConsumerSecret(twitterAppSettings.consumerSecret)
+					.setOAuthAccessToken(project.twitter.token)
+					.setOAuthAccessTokenSecret(project.twitter.tokenSecret)
 			TwitterFactory tf = new TwitterFactory(cb.build())
 			Twitter twitter = tf.getInstance()
 			Status status = twitter.updateStatus(message)

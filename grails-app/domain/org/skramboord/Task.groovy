@@ -61,6 +61,11 @@ class Task {
 			eq('project', fromProject)
 			order('priority',"desc")
 		}
+		projectBacklogWithPriority { fromProject, withPriority ->
+			eq('project', fromProject)
+			eq('priority', withPriority)
+			order('name',"asc")
+		}
 		fromUser { fromUser ->
 			eq('user', fromUser)
 			eq('state', StateTask.getStateCheckedOut())

@@ -16,10 +16,10 @@
 			<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.colorAsString()};">${task.name}</g:link>
 			<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.id.equals(session.project.owner.id) || session.user.id.equals(session.project.master.id)}">
 				<div id="icons_${task.id}" class="iconsTaskEditNone" style="float: right;">
-					<g:link controller="task" action="edit" params="[task: task.id]">
+					<g:link controller="task" action="edit" params="[task: task.id, fwdTo: fwdTo]">
 						<span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span><span class="icon"></span>
 					</g:link>
-					<g:link controller="task" action="delete" params="[task: task.id]" onclick="return confirm('${message(code:'task.delete', args: [task.name])}');">
+					<g:link controller="task" action="delete" params="[task: task.id, fwdTo: fwdTo]" onclick="return confirm('${message(code:'task.delete', args: [task.name])}');">
 						<span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon"></span>
 					</g:link>
 				</div>

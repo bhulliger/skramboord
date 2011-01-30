@@ -20,44 +20,58 @@ package org.skramboord
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 
 class SprintController extends BaseController {
-	
-	def index = { redirect(controller:'sprint', action:'list')
+
+	def index = {
+		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	def list = {
 		flash.twitterAppSettings = getSystemPreferences().twitterSettings
-		
+
 		if (params.project) {
 			session.project = Project.get(params.project)
 		} else {
 			session.project = Project.get(session.project.id)
 		}
-		
+
 		// check if this user has access rights
 		if (sprintViewPermission(session.user, session.project)) {
 			redirect(controller:'project', action:'list')
 		}
-		
+
 		flash.watchList = User.followers(session.project).list()
 		flash.teamList = User.projectTeam(session.project).list()
-		
+
 		flash.fullList = new HashSet<User>()
 		flash.fullList.addAll(flash.watchList)
 		flash.fullList.addAll(flash.teamList)
 		flash.fullList.add(session.project.owner)
 		flash.fullList.add(session.project.master)
-		flash.fullList = flash.fullList.sort{it.username
-		}
-		
+		flash.fullList = flash.fullList.sort{it.username }
+
 		flash.personList = User.list(params)
 		flash.personList.removeAll(flash.fullList)
-		
+
 		flash.releaseList = Release.withCriteria {
 			eq('project', session.project)
 			order('name','asc')
 		}
+
+		// teammate or follower?
+		if (sprintWritePermission(session.user, session.project)) {
+			flash.teammate = true
+		}
+
+		flash.priorityList=Priority.list()
+
+		// product backlog
+		flash.backlogLow = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.LOW).list()?.first()).list()
+		flash.backlogNormal = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.NORMAL).list()?.first()).list()
+		flash.backlogHigh = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.HIGH).list()?.first()).list()
+		flash.backlogUrgent = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.URGENT).list()?.first()).list()
+		flash.backlogImmediate = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.IMMEDIATE).list()?.first()).list()
 	}
-	
+
 	/**
 	 * Add new sprint
 	 */
@@ -68,7 +82,7 @@ class SprintController extends BaseController {
 			def startDate = params.startDateHidden ? new Date(params.startDateHidden) : null
 			def endDate = params.endDateHidden ? new Date(params.endDateHidden) : null
 			Release release = Release.get(params.releaseId)
-			
+
 			Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, release: release)
 			if (!sprint.save()) {
 				flash.objectToSave=sprint
@@ -76,10 +90,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	def edit = {
 		if (sprintWritePermission(session.user, session.project)) {
 			if (params.sprint) {
@@ -88,10 +102,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Sprint edit action
 	 */
@@ -101,7 +115,7 @@ class SprintController extends BaseController {
 				def sprint = Sprint.get(params.sprintId)
 				sprint.name = params.sprintName
 				sprint.goal = params.sprintGoal
-				
+
 				if (params.startDateHidden) {
 					sprint.startDate = new Date(params.startDateHidden)
 				}
@@ -115,10 +129,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Sprint delete action
 	 */
@@ -127,16 +141,16 @@ class SprintController extends BaseController {
 			if (params.sprint) {
 				def sprint = Sprint.get(params.sprint)
 				sprint.delete()
-				
+
 				flash.message = message(code:"sprint.deleted", args:[sprint.name])
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Sets a new scrum master.
 	 */
@@ -153,7 +167,7 @@ class SprintController extends BaseController {
 					// Remove as follower
 					Follow.unlink(session.project, user)
 				}
-				
+
 				session.project.master = user
 				session.project.save()
 			} else {
@@ -162,10 +176,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Sets a new product owner.
 	 */
@@ -173,7 +187,7 @@ class SprintController extends BaseController {
 		if (sprintWritePermission(session.user, session.project)) {
 			User user = User.get(removePersonPrefix(params.personId))
 			session.project.refresh()
-			if (session.project.master.id != user.id) {				
+			if (session.project.master.id != user.id) {
 				if (User.projectTeam(session.project).list().contains(user)) {
 					// Remove as developer
 					removeDeveloper(user, session.project)
@@ -182,7 +196,7 @@ class SprintController extends BaseController {
 					// Remove as follower
 					Follow.unlink(session.project, user)
 				}
-				
+
 				session.project.owner = user
 				session.project.save()
 			} else {
@@ -191,10 +205,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Moves a person back to the user list.
 	 */
@@ -211,7 +225,7 @@ class SprintController extends BaseController {
 					// Remove as follower
 					Follow.unlink(session.project, user)
 				}
-				
+
 				session.project.save()
 			} else {
 				flash.message = message(code:"project.error.masterOrOwnerRemoved")
@@ -219,10 +233,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Adds a person to a project as follower.
 	 */
@@ -243,10 +257,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Adds a person to a project as developer.
 	 */
@@ -267,10 +281,10 @@ class SprintController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		
+
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	/**
 	 * Removes a developer froma project. Set checked out task back to open.
 	 * 
@@ -285,10 +299,10 @@ class SprintController extends BaseController {
 			task.state = StateTask.getStateOpen()
 			task.save()
 		}
-		
+
 		Membership.unlink(project, user)
 	}
-	
+
 	/**
 	 * Removes prefix 'personId_'
 	 *
@@ -298,11 +312,11 @@ class SprintController extends BaseController {
 	private String removePersonPrefix(String personId) {
 		return personId.replaceFirst("personId_", "")
 	}
-	
+
 	private boolean sprintViewPermission(User user, Project project) {
 		return Project.accessRight(project, user, springSecurityService).list().first() == 0
 	}
-	
+
 	private boolean sprintWritePermission(User user, Project project) {
 		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || user.id.equals(project.owner.id) || user.id.equals(project.master.id)
 	}

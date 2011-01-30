@@ -217,17 +217,17 @@ class BootStrap {
 		
 		// SuperUser
 		if (UserRole.withRole(roleSuperUser).list()?.isEmpty()) {
-			userAdmin = createUser('admin', 'YourPrename', 'YourName', true, true, 'youremail@internet.com', "admin")
+			userAdmin = createUser('admin', 'Hans', 'Boss', true, true, 'info@skramboord.org', "admin")
 			UserRole.create(userAdmin, roleSuperUser)
 		}
 		
 		// Initialize priorities
 		if (Priority.list()?.isEmpty()) {
-			low = new Priority("low", Color.decode("0x808080")).save()
-			normal = new Priority("normal", Color.decode("0x42a642")).save()
-			high = new Priority("high", Color.decode("0x3d3da8")).save()
-			urgent = new Priority("urgent", Color.decode("0x968136")).save()
-			immediate = new Priority("immediate", Color.decode("0xad3e3e")).save()
+			low = new Priority(Priority.LOW, Color.decode("0x808080")).save()
+			normal = new Priority(Priority.NORMAL, Color.decode("0x42a642")).save()
+			high = new Priority(Priority.HIGH, Color.decode("0x3d3da8")).save()
+			urgent = new Priority(Priority.URGENT, Color.decode("0x968136")).save()
+			immediate = new Priority(Priority.IMMEDIATE, Color.decode("0xad3e3e")).save()
 		}
 	}
 	

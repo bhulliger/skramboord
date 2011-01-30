@@ -20,6 +20,12 @@ package org.skramboord
 import java.awt.Color;
 
 class Priority {
+	static String LOW = "low"
+	static String NORMAL = "normal"
+	static String HIGH = "high"
+	static String URGENT = "urgent"
+	static String IMMEDIATE = "immediate"
+	
 	String name
 	Color color
 	

@@ -20,7 +20,7 @@
 </script>
 
 <div id="dialog-form-edit" title="${message(code:'task.formNameEditTask')}" class="form">
-	<g:form action="update" name="formEditTask">
+	<g:form url="[ controller: 'task', action: 'update', params: [ fwdTo: fwdTo ]]" name='formEditTask'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
 				<tr>

@@ -448,6 +448,22 @@ th.desc a {
 	width: 190px;
 }
 
+.connectedSortableProductBacklog {
+	list-style-type: none;
+	margin: 0;
+	float: left;
+	width: 180px;
+	
+	padding: 2px 0 0 0;
+}
+
+.connectedSortableProductBacklog li {
+	margin: 1px;
+	padding: 4px;
+	font-size: 1.2em;
+	width: 170px;
+}
+
 .twitter {
 	line-height:2em;
 }
@@ -470,6 +486,12 @@ div.open, div.checkout, div.done {
 	margin-top: 5px;
 }
 
+div.immediate, div.urgent, div.high, div.normal, div.low {
+	float: left;
+	width: 20%;
+	margin-top: 5px;
+}
+
 div.nextStandBy {
 	float: right;
 	width: 68%;
@@ -489,6 +511,20 @@ div.next {
 }
 
 .scrumboard {
+	float: right;
+	margin: 5px;
+	padding-bottom: 7px;
+	padding-top: 7px;
+	padding-left: 7px;
+	padding-right: 7px;
+	border: 1px solid gray;
+	min-height: 500px;
+	background-color: #eee;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.productBacklog {
 	float: right;
 	margin: 5px;
 	padding-bottom: 7px;

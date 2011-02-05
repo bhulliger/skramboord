@@ -34,13 +34,13 @@
 			</g:if>
 			
 			<div class="taskInfo">
-				<g:message code="task.effort"/>: ${task.effort}<br/>
+				<g:message code="task.effort"/>: ${task.effort},
 				<g:if test="${task.user}">
 					<g:if test="${session.user.equals(task.user)}">
-						<g:message code="task.person"/>: <span style="color: #${task.user.taskColor}; font-weight:bold">${task.user.userRealName}</span>
+						<g:message code="task.person"/>: <span style="color: #${task.user.taskColor}; font-weight:bold">${task.user.prename} ${task.user.name[0]}.</span>
 					</g:if>
 					<g:else>
-						<g:message code="task.person"/>: ${task.user.userRealName}
+						<g:message code="task.person"/>: ${task.user.prename} ${task.user.name[0]}.
 					</g:else>
 				</g:if>
 			</div>

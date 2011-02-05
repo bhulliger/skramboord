@@ -5,6 +5,25 @@
 
 		<script type="text/javascript">
 			$(function() {
+				xOffset = 15;
+				yOffset = 15;
+				$("li.tooltip").hover(function(e){	
+						this.t = this.title;
+						this.title = "";									  
+						$("body").append("<p id='tooltip' style='width:260pt;'>"+ this.t +"</p>");
+						$("#tooltip").css("top",(e.pageY - xOffset) + "px")
+                                     .css("left",(e.pageX + yOffset) + "px")
+                                     .fadeIn("fast");
+			    	},
+					function(){
+						this.title = this.t;		
+						$("#tooltip").remove();});	
+				$("li.tooltip").mousemove(function(e){
+					$("#tooltip")
+						.css("top",(e.pageY - xOffset) + "px")
+						.css("left",(e.pageX + yOffset) + "px");
+				});
+				
 				var selectTab = ${session?.tabs?.get('sprint')?session.tabs.get('sprint'):'0'};
 				$("#tabs").tabs({
 					selected: selectTab

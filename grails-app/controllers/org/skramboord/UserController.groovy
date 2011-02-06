@@ -185,6 +185,7 @@ class UserController extends BaseController {
 				UserRole.create(person, Role.withAuthority(Role.ROLE_USER).list().first())
 			}
 		} else {
+			flash.userIncomplete=person
 			flash.objectToSave=person
 		}
 		

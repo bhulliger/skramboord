@@ -30,11 +30,11 @@
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<td><label><g:message code="release.release"/></label></td>
-					<td><input type="text" name="releaseName" id="releaseName" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="releaseName" id="releaseName" value="${flash.releaseIncomplete?.name}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="release.goal"/></label></td>
-					<td><input type="text" name="releaseGoal" id="releaseGoal" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="releaseGoal" id="releaseGoal" value="${flash.releaseIncomplete?.goal}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 			</table>
 		</fieldset>

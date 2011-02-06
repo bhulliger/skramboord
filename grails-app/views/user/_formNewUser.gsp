@@ -35,15 +35,15 @@
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<td align="right"><label><g:message code="user.loginName"/></label></td>
-					<td><input type="text" name="userLoginName" id="userLoginName" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="userLoginName" id="userLoginName" value="${flash.userIncomplete?.username}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td align="right"><label><g:message code="user.name"/></label></td>
-					<td><input type="text" name="userName" id="userName" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="userName" id="userName" value="${flash.userIncomplete?.name}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="user.prename"/></label></td>
-					<td><input type="text" name="userPrename" id="userPrename" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="userPrename" id="userPrename" value="${flash.userIncomplete?.prename}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="user.password"/></label></td>
@@ -55,11 +55,11 @@
 				</tr>
 				<tr>
 					<td><label><g:message code="user.description"/></label></td>
-					<td><input type="text" name="userDescription" id="userDescription" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="userDescription" id="userDescription" value="${flash.userIncomplete?.description}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="user.email"/></label></td>
-					<td><input type="text" name="userEmail" id="userEmail" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="userEmail" id="userEmail" value="${flash.userIncomplete?.email}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<sec:ifAnyGranted roles="ROLE_SUPERUSER">
 					<tr>
@@ -79,7 +79,7 @@
 							$(function() {
 								$('#colorpickerHolderNewUser').ColorPicker({
 									flat: true,
-									color: "009700",
+									color: "${flash.userIncomplete?.taskColor ? flash.userIncomplete?.taskColor : '009700'}",
 									onSubmit: function(hsb, hex, rgb, el) {
 										document.getElementById("taskColorNewUser").value = hex;
 									},
@@ -96,7 +96,7 @@
 				</tr>
 			</table>
 			
-			<input type="hidden" maxlength="6" size="6" name="taskColorNewUser" id="taskColorNewUser" value="009700"/>
+			<input type="hidden" maxlength="6" size="6" name="taskColorNewUser" id="taskColorNewUser" value="${flash.userIncomplete?.taskColor ? flash.userIncomplete?.taskColor : '009700'}"/>
 		</fieldset>
 	</g:form>
 </div>

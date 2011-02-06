@@ -25,23 +25,23 @@
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<td><label><g:message code="task.name"/></label></td>
-					<td><input type="text" name="taskName" id="taskName" class="text ui-widget-content ui-corner-all" /></td>
+					<td><input type="text" name="taskName" id="taskName" value="${flash.taskIncomplete?.name}" class="text ui-widget-content ui-corner-all" /></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="task.effort"/></label></td>
-					<td><input type="text" name="taskEffort" id="taskEffort" value="" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" /></td>
+					<td><input type="text" name="taskEffort" id="taskEffort" value="${flash.taskIncomplete?.effort}" class="text ui-widget-content ui-corner-all" maxlength="4" size="4" /></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="task.link"/></label></td>
-					<td><input type="text" name="taskLink" id="taskLink" value="http://" class="text ui-widget-content ui-corner-all" /></td>
+					<td><input type="text" name="taskLink" id="taskLink" value="${flash.taskIncomplete?.url ? flash.taskIncomplete?.url : 'http://'}" class="text ui-widget-content ui-corner-all" /></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="task.priority"/></label></td>
-					<td><g:select name="taskPriority" from="${flash.priorityList}" valueMessagePrefix="priorities" value="${org.skramboord.Priority.NORMAL}"/></td>
+					<td><g:select name="taskPriority" from="${flash.priorityList}" valueMessagePrefix="priorities" value="${flash.taskIncomplete?.priority ? flash.taskIncomplete?.priority : org.skramboord.Priority.NORMAL}"/></td>
 				</tr>
 				<tr>
 					<td style="vertical-align: top;"><label><g:message code="task.description"/></label></td>
-					<td><textarea name="taskDescription" id="taskDescription" class="text ui-widget-content ui-corner-all" style="width: 356px;" rows="10"></textarea></td>
+					<td><textarea name="taskDescription" id="taskDescription" class="text ui-widget-content ui-corner-all" style="width: 356px;" rows="10">${flash.taskIncomplete?.description}</textarea></td>
 				</tr>
 			</table>
 		</fieldset>

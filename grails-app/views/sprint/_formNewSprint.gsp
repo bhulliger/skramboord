@@ -2,7 +2,7 @@
 	$(function() {		
 		$("#dialog-form-sprint").dialog({
 			autoOpen: false,
-			height: 370,
+			height: 380,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -23,6 +23,9 @@
 		$("#endDate").datepicker({dateFormat: 'yy-mm-dd', onSelect: function(dateStr) {
 			document.getElementById('endDateHidden').value=$.datepicker.parseDate('yy-mm-dd', dateStr);
 		}});
+
+		$('#startDate').datepicker("setDate", "${flash.sprintStartDate}");
+		$('#endDate').datepicker("setDate", "${flash.sprintEndDate}");
 	});
 
 	function openFormNewSprint(id){
@@ -38,11 +41,11 @@
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<td><label><g:message code="sprint.sprint"/></label></td>
-					<td><input type="text" name="sprintName" id="sprintName" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="sprintName" id="sprintName" value="${flash.sprintIncomplete?.name}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="sprint.goal"/></label></td>
-					<td><input type="text" name="sprintGoal" id="sprintGoal" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="text" name="sprintGoal" id="sprintGoal" value="${flash.sprintIncomplete?.goal}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 			</table>
 			<br>

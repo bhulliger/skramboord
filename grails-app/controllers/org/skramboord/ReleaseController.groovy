@@ -52,6 +52,7 @@ class ReleaseController extends BaseController {
 			
 			Release release = new Release(name: releaseName, goal: releaseGoal, project: session.project)
 			if (!release.save()) {
+				flash.releaseIncomplete=release
 				flash.objectToSave=release
 			}
 			

@@ -121,6 +121,7 @@ class TaskController extends BaseController {
 				task.project = Project.get(session.project.id)
 			}
 			if (!task.save()) {
+				flash.taskIncomplete = task
 				flash.objectToSave = task
 			}
 		} else {

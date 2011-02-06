@@ -17,6 +17,8 @@
 
 package org.skramboord
 
+import java.text.Format
+import java.text.SimpleDateFormat
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 
 class SprintController extends BaseController {
@@ -85,6 +87,11 @@ class SprintController extends BaseController {
 
 			Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, release: release)
 			if (!sprint.save()) {
+				Format formatter = new SimpleDateFormat("yy-MM-dd")
+				flash.sprintStartDate = formatter.format(startDate)
+				flash.sprintEndDate = formatter.format(endDate)
+
+				flash.sprintIncomplete=sprint
 				flash.objectToSave=sprint
 			}
 		} else {

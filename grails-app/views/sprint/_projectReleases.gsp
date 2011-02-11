@@ -80,8 +80,9 @@
 							<tr>
 								<th><g:message code="sprint.sprint"/></th>
 								<th><g:message code="sprint.goal"/></th>
-								<th><g:message code="sprint.start"/></th>
-								<th><g:message code="sprint.end"/></th>
+								<th style="text-align:center; width: 90px;"><g:message code="sprint.personDays"/></th>
+								<th style="width: 70px;"><g:message code="sprint.start"/></th>
+								<th style="width: 70px;"><g:message code="sprint.end"/></th>
 								<th style="text-align:center;"><g:message code="task.tasks"/></th>
 								<th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
 								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
@@ -95,6 +96,7 @@
 										<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
 									</td>
 									<td style="vertical-align: middle;">${sprint.goal}</td>
+									<td style="vertical-align: middle;text-align:center;">${sprint.personDays}</td>
 									<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.startDate}"/></td>
 									<td style="vertical-align: middle;"><g:formatDate format="dd.MM.yyyy" date="${sprint.endDate}"/></td>
 									<td style="vertical-align: middle;text-align:center;">${sprint.tasks.size()}</td>

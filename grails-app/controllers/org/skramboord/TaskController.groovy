@@ -67,6 +67,10 @@ class TaskController extends BaseController {
 		flash.totalEffort = totalEffort ? totalEffort : 0
 		flash.totalEffortDone = totalEffortDone ? totalEffortDone : 0
 
+		if (flash.totalEffort > session.sprint.personDays) {
+			flash.message = message(code:"sprint.toMuchEffort", args:[flash.totalEffort, session.sprint.personDays])
+		}
+		
 		// Burn down target
 		def datesXTarget = []
 		def burnDownEffort = flash.totalEffort
@@ -171,7 +175,7 @@ class TaskController extends BaseController {
 
 				task.name = params.taskName
 				task.description = params.taskDescription
-				task.effort = params.taskEffort?.toDouble()
+				task.effort = params.taskEffort ? params.taskEffort.toDouble() : null
 				task.url = params.taskLink
 				task.priority = Priority.byName(params.taskPriority).list().first()
 

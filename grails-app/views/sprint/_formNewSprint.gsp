@@ -2,7 +2,7 @@
 	$(function() {		
 		$("#dialog-form-sprint").dialog({
 			autoOpen: false,
-			height: 380,
+			height: 400,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -46,6 +46,10 @@
 				<tr>
 					<td><label><g:message code="sprint.goal"/></label></td>
 					<td><input type="text" name="sprintGoal" id="sprintGoal" value="${flash.sprintIncomplete?.goal}" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+				<tr>
+					<td><label><g:message code="sprint.personDays"/></label></td>
+					<td><input type="text" name="sprintPersonDays" id="sprintPersonDays" value="${flash.sprintIncomplete?.personDays}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 			</table>
 			<br>

@@ -22,12 +22,14 @@ class Sprint {
 	String goal
 	Date startDate
 	Date endDate
+	Double personDays
 	static hasMany = [tasks:Task]
 	static belongsTo = [release:Release]
 
     static constraints = {
 		name(nullable:false, blank:false, unique: ['release'])
 		goal(nullable:true)
+		personDays(nullable:false)
 		startDate(nullable:false)
 		endDate(nullable:false, validator: {val, obj ->
 			if (val && val.before(obj.startDate)) {

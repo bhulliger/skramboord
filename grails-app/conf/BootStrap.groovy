@@ -110,7 +110,7 @@ class BootStrap {
 		Release release1_1 = new Release(name: "1.1", goal: "Usability Improvements")
 
 		// Sprint 1
-		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", startDate: date4, endDate: date3, tasks: [])
+		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", personDays: 26, startDate: date4, endDate: date3, tasks: [])
 		createTask(userDev1, sprint1_0, "Mantis 1812", "Long names of the tasks should be shortened.", 2.0, url, taskStateDone, normal, date4 + 1)
 		createTask(userDev3, sprint1_0, "Mantis 1798", "Change CSS style of the whole application to blue/white.", 4.0, url, taskStateDone, normal, date4 + 3)
 		createTask(userDev1, sprint1_0, "Mantis 1765", null, 4.5, url, taskStateDone, high, date4 + 4)
@@ -121,7 +121,7 @@ class BootStrap {
 		createTask(userDev2, sprint1_0, "Mantis 1700", null, 4, url, taskStateDone, low, date4 + 10)
 
 		// Sprint 2
-		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", startDate: date3, endDate: date2, tasks: [])
+		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", personDays: 28.5, startDate: date3, endDate: date2, tasks: [])
 		createTask(userDev2, sprint1_1, "Mantis 1980", null, 5.5, url, taskStateDone, normal, date3 + 2)
 		createTask(userDev3, sprint1_1, "Mantis 2100", null, 2.0, url, taskStateDone, immediate, date3 + 4)
 		createTask(null, sprint1_1, "Mantis 2001", null, 2.0, url, taskStateOpen, normal, null)
@@ -133,11 +133,11 @@ class BootStrap {
 		createTask(null, sprint1_1, "Mantis 2014", "Change CSS style of the whole application to orange/white.", 5.0, url, taskStateNext, low, null)
 
 		// Sprint 1
-		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", startDate: date2, endDate: date1, tasks: [])
+		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", personDays: null, startDate: date2, endDate: date1, tasks: [])
 		sprint1_2.save()
 
 		// Sprint 2
-		Sprint sprint1_3 = new Sprint(name: "#2", goal: "Usability Improvements", startDate: date1, endDate: date0, tasks: [])
+		Sprint sprint1_3 = new Sprint(name: "#2", goal: "Usability Improvements", personDays: null, startDate: date1, endDate: date0, tasks: [])
 		sprint1_3.save()
 
 		// Initialize Project skramboord

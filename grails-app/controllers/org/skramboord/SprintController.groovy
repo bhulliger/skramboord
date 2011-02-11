@@ -79,13 +79,10 @@ class SprintController extends BaseController {
 	 */
 	def addSprint = {
 		if (sprintWritePermission(session.user, session.project)) {
-			def sprintName = params.sprintName
-			def sprintGoal = params.sprintGoal
 			def startDate = params.startDateHidden ? new Date(params.startDateHidden) : null
 			def endDate = params.endDateHidden ? new Date(params.endDateHidden) : null
-			Release release = Release.get(params.releaseId)
 
-			Sprint sprint = new Sprint(name: sprintName, goal: sprintGoal, startDate: startDate, endDate: endDate, release: release)
+			Sprint sprint = new Sprint(name: params.sprintName, goal: params.sprintGoal, personDays: params.sprintPersonDays, startDate: startDate, endDate: endDate, release: Release.get(params.releaseId))
 			if (!sprint.save()) {
 				Format formatter = new SimpleDateFormat("yy-MM-dd")
 				flash.sprintStartDate = formatter.format(startDate)
@@ -122,6 +119,7 @@ class SprintController extends BaseController {
 				def sprint = Sprint.get(params.sprintId)
 				sprint.name = params.sprintName
 				sprint.goal = params.sprintGoal
+				sprint.personDays = params.sprintPersonDays ?  params.sprintPersonDays.toDouble() : null
 
 				if (params.startDateHidden) {
 					sprint.startDate = new Date(params.startDateHidden)

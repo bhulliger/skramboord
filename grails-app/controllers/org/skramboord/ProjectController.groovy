@@ -305,7 +305,7 @@ class ProjectController extends BaseController {
 	}
 
 	private boolean projectNewPermission() {
-		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || springSecurityService.ifAnyGranted(Role.ROLE_ADMIN)
+		return SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER) || SpringSecurityUtils.ifAnyGranted(Role.ROLE_ADMIN)
 	}
 
 	private boolean projectEditPermission(User user, Project project) {

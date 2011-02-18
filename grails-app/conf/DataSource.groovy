@@ -47,7 +47,7 @@ environments {
 			username = "changeme"
 			password = "changeme"
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-			url = "jdbc:mysql://localhost:3306/skramboord"
+			url = "jdbc:mysql://localhost:3306/skramboord?autoReconnect=true"
 		}
 	}
 }

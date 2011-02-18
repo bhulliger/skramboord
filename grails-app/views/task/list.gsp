@@ -4,11 +4,11 @@
 		<meta name="layout" content="main" />
 
 		<script type="text/javascript" src="${resource(dir:'js/jquery/flot',file:'jquery.flot.js')}"></script>
-		<script type="text/javascript" src="${resource(dir:'js/jquery/cookie',file:'jquery.cookie.js')}"></script>
 		
 		<script type="text/javascript">
 			var showBurndown = false;
 			$(function() {
+				// Task tooltip
 				xOffset = 15;
 				yOffset = 15;
 				$("li.tooltip").hover(function(e){	
@@ -27,14 +27,6 @@
 						.css("top",(e.pageY - xOffset) + "px")
 						.css("left",(e.pageX + yOffset) + "px");
 				});	
-				
-				var showProductBacklog = $.cookie('showProductBacklog'); 
-				if (showProductBacklog != 'show') {
-					$("#productBacklog").hide();
-					document.getElementById("scrumboard").style.width = "900px";
-				} else {
-					document.getElementById("scrumboard").style.width = "660px";
-				}
 
 				var selectTab = ${session?.tabs?.get('tasks')?session.tabs.get('tasks'):'0'};
 				$("#tabs").tabs({

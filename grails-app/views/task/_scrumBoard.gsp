@@ -32,17 +32,26 @@
 			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToStandBy') }
 		}).disableSelection();
 </g:if>
+
+// Product Backlog
+<g:if test="${session.enableBacklog}">
+		document.getElementById("scrumboard").style.width = "660px";
+</g:if>
+<g:else>
+$("#productBacklog").hide();
+		document.getElementById("scrumboard").style.width = "900px";
+</g:else>
 	});
 
 	function toggleProductBacklog(){
 		if ($("#productBacklog").is(":hidden")) {
-    		$.cookie('showProductBacklog', 'show')
-    		document.getElementById("scrumboard").style.width = "660px";
+			document.getElementById("scrumboard").style.width = "660px";
     		$("#productBacklog").toggle(500);
+			${remoteFunction(controller: 'task', action:'enableBacklog', params:[enableBacklog: 'true'])}
     	} else {
-    		$.cookie('showProductBacklog', 'hide')
     		document.getElementById("scrumboard").style.width = "900px";
     		$("#productBacklog").toggle();
+    		${remoteFunction(controller: 'task', action:'enableBacklog', params:[enableBacklog: 'false'])}
     	}
 	}
 	

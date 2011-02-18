@@ -309,6 +309,12 @@ class TaskController extends BaseController {
 
 		redirect(controller:'sprint', action:'list')
 	}
+	
+	def enableBacklog = {
+		if (params.enableBacklog) {
+			session.enableBacklog = Boolean.valueOf(params.enableBacklog)
+		}
+	}
 
 	/**
 	 * Removes prefix 'taskId_'

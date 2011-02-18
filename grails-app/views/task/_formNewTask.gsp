@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form").dialog({
 			autoOpen: false,
-			height: 400,
+			height: 440,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -16,7 +16,7 @@
 				}
 			}
 		});
-	});							
+	});
 </script>
 
 <div id="dialog-form" title="${message(code:'task.formNameCreateTask')}" class="form">
@@ -40,7 +40,11 @@
 					<td><g:select name="taskPriority" from="${flash.priorityList}" valueMessagePrefix="priorities" value="${flash.taskIncomplete?.priority ? flash.taskIncomplete?.priority : org.skramboord.Priority.NORMAL}"/></td>
 				</tr>
 				<tr>
-					<td style="vertical-align: top;"><label><g:message code="task.description"/></label></td>
+					<td><label><g:message code="task.type"/></label></td>
+					<td><g:select name="taskType" from="${flash.taskTypes}" valueMessagePrefix="taskTypes" value="${flash.taskIncomplete?.type ? flash.taskIncomplete?.type : org.skramboord.TaskType.FEATURE}"/></td>
+				</tr>
+				<tr>
+					<td style="vertical-align: top; padding-top: 5px;"><label><g:message code="task.description"/></label></td>
 					<td><textarea name="taskDescription" id="taskDescription" class="text ui-widget-content ui-corner-all" style="width: 356px;" rows="10">${flash.taskIncomplete?.description}</textarea></td>
 				</tr>
 			</table>

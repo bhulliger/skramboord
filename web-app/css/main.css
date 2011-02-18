@@ -358,7 +358,6 @@ th.desc a {
 }
 
 .form select {
-	margin-bottom: 12px;
 	width: 97%;
 	padding: .3em;
 }
@@ -411,24 +410,72 @@ th.desc a {
 	color: black;
 }
 
-.postit-right {
-	height: 60px;
-	margin: 0;
-	padding: 0;
-	background: transparent url(../images/skramboord/postit-right.png) no-repeat top right;
-	cursor: move;
-}
-
 .readonly {
 	cursor: default;
 }
 
-.postit {
+.postit-right-yellow {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/skramboord/postit-yellow-right.png) no-repeat top right;
+	cursor: move;
+}
+
+.postit-yellow {
 	height: 60px;
 	padding-top: 5px;
 	padding-left: 5px;
 	margin: 0;
-	background: transparent url(../images/skramboord/postit-fill.png) repeat-x top left;
+	background: transparent url(../images/skramboord/postit-yellow-fill.png) repeat-x top left;
+}
+
+.postit-right-green {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/skramboord/postit-green-right.png) no-repeat top right;
+	cursor: move;
+}
+
+.postit-green {
+	height: 60px;
+	padding-top: 5px;
+	padding-left: 5px;
+	margin: 0;
+	background: transparent url(../images/skramboord/postit-green-fill.png) repeat-x top left;
+}
+
+.postit-right-purple {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/skramboord/postit-purple-right.png) no-repeat top right;
+	cursor: move;
+}
+
+.postit-purple {
+	height: 60px;
+	padding-top: 5px;
+	padding-left: 5px;
+	margin: 0;
+	background: transparent url(../images/skramboord/postit-purple-fill.png) repeat-x top left;
+}
+
+.postit-right-blue {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/skramboord/postit-blue-right.png) no-repeat top right;
+	cursor: move;
+}
+
+.postit-blue {
+	height: 60px;
+	padding-top: 5px;
+	padding-left: 5px;
+	margin: 0;
+	background: transparent url(../images/skramboord/postit-blue-fill.png) repeat-x top left;
 }
 
 .connectedSortable {

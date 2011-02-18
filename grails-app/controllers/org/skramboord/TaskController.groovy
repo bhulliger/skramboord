@@ -50,6 +50,7 @@ class TaskController extends BaseController {
 		}
 
 		flash.priorityList=Priority.list()
+		flash.taskTypes=TaskType.list()
 
 		flash.projectBacklog = Task.projectBacklog(session.project).list()
 
@@ -118,7 +119,10 @@ class TaskController extends BaseController {
 	 */
 	def addTask = {
 		if (taskWorkPermission(session.user, session.project)) {
-			Task task = new Task(name: params.taskName, description: params.taskDescription, effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(), priority: Priority.byName(params.taskPriority).list().first())
+			Task task = new Task(name: params.taskName, description: params.taskDescription,
+									effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(),
+									priority: Priority.byName(params.taskPriority).list().first(),
+									type: TaskType.byName(params.taskType).list().first())
 			if ("sprint".equals(params.target)) {
 				task.sprint= Sprint.find(session.sprint)
 			} else {
@@ -178,6 +182,7 @@ class TaskController extends BaseController {
 				task.effort = params.taskEffort ? params.taskEffort.toDouble() : null
 				task.url = params.taskLink
 				task.priority = Priority.byName(params.taskPriority).list().first()
+				task.type = TaskType.byName(params.taskType).list().first()
 
 				if (!task.save()) {
 					flash.objectToSave=task

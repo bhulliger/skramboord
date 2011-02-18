@@ -5,14 +5,14 @@
 	<li id="taskId_${task.id}" style="margin: 0; padding: 0;">
 </g:else>
 	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.id.equals(session.project.owner.id) || session.user.id.equals(session.project.master.id)}">
-		<div class="postit-right" onmouseover="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEdit')"
+		<div class="postit-right-${task.type.color}" onmouseover="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEdit')"
 	                              onmouseout="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEditNone')">
     </g:if>
     <g:else>
-		<div class="postit-right readonly" onmouseover="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEdit')"
+		<div class="postit-right-${task.type.color} readonly" onmouseover="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEdit')"
 	                              onmouseout="document.getElementById('icons_${task.id}').setAttribute('class', 'iconsTaskEditNone')">
     </g:else>
-		<div class="postit">
+		<div class="postit-${task.type.color}">
 			<g:if test="${task.name.size() < 40}">
 				<g:link url="${task.url}" onclick="return ! window.open(this.href);" style="color: #${task.priority.colorAsString()}; font-size: 1em;">${task.name}</g:link>
 			</g:if>

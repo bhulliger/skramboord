@@ -26,6 +26,7 @@ class Task {
 	String url
 	StateTask state
 	Priority priority
+	TaskType type
 	Date finishedDate
 	static belongsTo = [sprint:Sprint, project:Project, user:User]
 	
@@ -35,6 +36,7 @@ class Task {
 	
 	static mapping = {
 		priority lazy:false
+		type lazy:false
 		sprint lazy:false
 	}
 	                    
@@ -45,6 +47,7 @@ class Task {
 		url(url:true)
 		state(nullable:false)
 		priority(nullable:false)
+		type(nullable:false)
 		finishedDate(nullable:true)
 		user(nullable:true)
 		sprint(nullable:true)

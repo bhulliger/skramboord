@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-edit").dialog({
 			autoOpen: true,
-			height: 400,
+			height: 440,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -38,6 +38,10 @@
 				<tr>
 					<td><label><g:message code="task.priority"/></label></td>
 					<td><g:select name="taskPriority" from="${flash.priorityList}" value="${flash.taskEdit.priority.name}" valueMessagePrefix="priorities"/></td>
+				</tr>
+				<tr>
+					<td><label><g:message code="task.type"/></label></td>
+					<td><g:select name="taskType" from="${flash.taskTypes}" value="${flash.taskEdit.type.name}" valueMessagePrefix="taskTypes"/></td>
 				</tr>
 				<tr>
 					<td style="vertical-align: top;"><label><g:message code="task.description"/></label></td>

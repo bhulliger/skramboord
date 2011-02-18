@@ -40,6 +40,9 @@ class AdministrationController extends BaseController {
 			}
 		}
 		
+		flash.taskTypes=TaskType.list()
+		flash.taskTypeColors=["blue","green","purple","yellow"]
+		
 		flash.themeActually = systemPreferences?.theme
 		flash.themes = Theme.withCriteria {
 			if (params.priorities) {
@@ -65,7 +68,6 @@ class AdministrationController extends BaseController {
 		
 		try {
 			for (Priority prio : priorities) {
-				
 				prio.color = Color.decode("0x" + params["priority_${prio.id}"])
 				prio.save()
 			}
@@ -73,6 +75,16 @@ class AdministrationController extends BaseController {
 			flash.message = message(code:"admin.hexValues")
 		}
 		
+		redirect(controller:'administration', action:'list')
+	}
+	
+	def saveTaskTypes = {
+		def types = TaskType.list()
+		
+		for (TaskType type : types) {
+			type.color = params["taskType_${type.id}"]
+			type.save()
+		}
 		redirect(controller:'administration', action:'list')
 	}
 	

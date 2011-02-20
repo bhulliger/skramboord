@@ -30,6 +30,9 @@ grails.project.dependency.resolution = {
         grailsPlugins()
         grailsHome()
 
+	// buildserver needs this
+        grailsCentral()
+
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
         //mavenLocal()

@@ -65,7 +65,8 @@ class SprintController extends BaseController {
 		}
 
 		flash.priorityList=Priority.list()
-
+		flash.taskTypes=TaskType.list()
+		
 		// product backlog
 		flash.backlogLow = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.LOW).list()?.first()).list()
 		flash.backlogNormal = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.NORMAL).list()?.first()).list()

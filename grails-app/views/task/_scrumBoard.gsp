@@ -1,11 +1,33 @@
 <script type="text/javascript">
 	$(function() {
-<g:if test="${flash.teammate}">
+		// Task tooltip
+		xOffset = 15;
+		yOffset = 15;
+		$("li.tooltip").hover(function(e){	
+				this.t = this.title;
+				this.title = "";									  
+				$("body").append("<p id='tooltip' style='width:260pt;'>"+ this.t +"</p>");
+				$("#tooltip").css("top",(e.pageY - xOffset) + "px")
+                             .css("left",(e.pageX + yOffset) + "px")
+                             .fadeIn("fast");
+	    	},
+			function(){
+				this.title = this.t;
+				$("#tooltip").remove();});	
+		$("li.tooltip").mousemove(function(e){
+			$("#tooltip")
+				.css("top",(e.pageY - xOffset) + "px")
+				.css("left",(e.pageX + yOffset) + "px");
+		});
+		
+<g:if test="${flash.scrumMaster}">
 		$("#backlog").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
 			receive: function(event, ui) { changeTo(event, ui, 'copyTaskToBacklog') }
-		}).disableSelection();
+		}).disableSelection();	
+</g:if>
+<g:if test="${flash.teammate}">
 		$("#open").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,

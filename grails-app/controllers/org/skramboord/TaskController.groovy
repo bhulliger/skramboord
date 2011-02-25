@@ -48,6 +48,10 @@ class TaskController extends BaseController {
 		if (taskWorkPermission(session.user, session.project)) {
 			flash.teammate = true
 		}
+		// Scrum master, product owner or superuser
+		if (taskWritePermission(session.user, session.project)) {
+			flash.scrumMaster = true
+		}
 
 		flash.priorityList=Priority.list()
 		flash.taskTypes=TaskType.list()

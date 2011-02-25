@@ -47,11 +47,11 @@
 				</tr>
 				<tr>
 					<td><label><g:message code="user.password"/></label></td>
-					<td><input type="password" type="text" name="userPassword" id="userPassword" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="password" name="userPassword" id="userPassword" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="user.password2"/></label></td>
-					<td><input type="password" type="text" name="userPassword2" id="userPassword2" class="text ui-widget-content ui-corner-all"/></td>
+					<td><input type="password" name="userPassword2" id="userPassword2" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="user.description"/></label></td>
@@ -69,7 +69,7 @@
 				</sec:ifAnyGranted>
 			</table>
 
-			<br>
+			<br/>
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<td style="vertical-align: top; width: 100%;"><label><g:message code="task.taskColor"/></label></td>

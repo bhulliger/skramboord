@@ -18,7 +18,7 @@
 		<td style="vertical-align: middle;text-align:center;">${session.project.sprints.size()}</td>
 		<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner)}">
 			<td>
-				<g:link controller="project" action="edit" params="[project: session.project.id, fwdTo: 'sprint']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span><span class="icon"></span></g:link>
+				<g:link controller="project" action="edit" params="[project: session.project.id, fwdTo: 'sprint']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span></g:link>
 			</td>
 		</g:if>
 	</tr>

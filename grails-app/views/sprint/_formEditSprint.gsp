@@ -45,7 +45,7 @@
 					<td><input type="text" name="sprintPersonDays" id="sprintPersonDays" value="${flash.sprintEdit?.personDays}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 			</table>
-			<br>
+			<br/>
 			<table>
 				<tr>
 					<td><label><g:message code="sprint.start"/>:</label></td>

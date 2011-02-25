@@ -19,10 +19,10 @@
 			<g:each var="theme" in="${flash.themes}" status="i">
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 					<g:if test="${flash.themeActually.id.equals(theme.id)}">
-						<td style="vertical-align: middle;"><g:radio name="themes" value="${theme.id}" checked="true"/></td>
+						<td style="vertical-align: middle;"><g:radio name="themes" value="${theme.id}" checked="true" id="themes_${theme.name}"/></td>
 					</g:if>
 					<g:else>
-						<td style="vertical-align: middle;"><g:radio name="themes" value="${theme.id}"/></td>
+						<td style="vertical-align: middle;"><g:radio name="themes" value="${theme.id}" id="themes_${theme.name}"/></td>
 					</g:else>
 					<td style="vertical-align: middle;"><g:message code="${theme.name}"/></td>
 				</tr>
@@ -49,7 +49,7 @@
 				</td>
 				<td style="vertical-align: middle;">${org.skramboord.SystemPreferences.APPLICATION_NAME}</td>
 				<td style="vertical-align: middle;">http://www.skramboord.org</td>
-				<td style="vertical-align: middle;"><img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="40px"/></td>
+				<td style="vertical-align: middle;"><img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="40"/></td>
 				<td></td>
 			</tr>
 			<g:if test="${session.logo}">
@@ -59,7 +59,7 @@
 					<td style="vertical-align: middle;">
 						<input type="text" name="logoLink" id="logoLink" value="${session.logoUrl}" class="text ui-widget-content ui-corner-all"/>
 					</td>
-					<td style="vertical-align: middle;"><img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="40px"/></td>
+					<td style="vertical-align: middle;"><img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="40"/></td>
 					<td></td>
 				</tr>
 			</g:if>

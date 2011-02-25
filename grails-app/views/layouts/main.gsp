@@ -35,10 +35,10 @@
 	        		<g:if test="${session.logoUrl}">
 	        			<a href="${session.logoUrl}" onclick="return ! window.open(this.href);">
 	        				<g:if test="${session.logo}">
-								<img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="60px"/>
+								<img src="${createLink(controller:'user', action:'showImage', id: session.logo.id)}" height="60"/>
 							</g:if>
 							<g:else>
-			        			<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="60px"/>
+			        			<img src="${resource(dir:'images/skramboord',file:'skramboord.logo.glossy.small.png')}" alt="Logo Skramboord" height="60"/>
 			        		</g:else>
 	        			</a>
 	        		</g:if>

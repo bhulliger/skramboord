@@ -21,7 +21,7 @@
 					<td style="vertical-align: middle;">${person.email?.encodeAsHTML()}</td>
 					<td style="vertical-align: middle;">${person.description?.encodeAsHTML()}</td>
 					<td>
-						<g:link controller="user" action="delete" params="[id: person.id, fwdTo: '/administration/list']" onclick="return confirm('${message(code:'default.button.delete.confirm.message')}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span><span class="icon"></span></g:link>
+						<g:link controller="user" action="delete" params="[id: person.id, fwdTo: '/administration/list']" onclick="return confirm('${message(code:'default.button.delete.confirm.message')}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span></g:link>
 					</td>
 				</tr>
 			</g:each>

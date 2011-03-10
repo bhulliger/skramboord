@@ -42,12 +42,9 @@ environments {
 	}
 	production {
 		dataSource {
-			pooled = true
-			driverClassName = "com.mysql.jdbc.Driver"
-			username = "changeme"
-			password = "changeme"
-			dbCreate = "update" // one of 'create', 'create-drop','update'
-			url = "jdbc:mysql://localhost:3306/skramboord?autoReconnect=true"
+			pooled = false
+			dbCreate = "update"
+			jndiName = "java:comp/env/jdbc/skramboord"
 		}
 	}
 }

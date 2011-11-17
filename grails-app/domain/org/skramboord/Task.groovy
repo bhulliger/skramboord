@@ -84,7 +84,7 @@ class Task {
 			}
 		}
 		effortTasksTotal { fromSprint ->
-			'in'('state', [StateTask.getStateOpen(), StateTask.getStateCheckedOut(), StateTask.getStateDone(), StateTask.getStateStandBy()])
+			'in'('state', [StateTask.getStateOpen(), StateTask.getStateCheckedOut(), StateTask.getStateCodereview(), StateTask.getStateDone(), StateTask.getStateStandBy()])
 			eq('sprint', fromSprint)
 			projections {
 				sum("effort")

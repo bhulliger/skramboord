@@ -20,6 +20,7 @@ import grails.util.GrailsUtil
 import java.awt.Color
 import java.util.Calendar
 
+import org.skramboord.StateTaskCodereview;
 import org.skramboord.SystemPreferences
 import org.skramboord.Theme
 import org.skramboord.StateTask
@@ -54,6 +55,7 @@ class BootStrap {
 	User userAdmin
 	StateTaskOpen taskStateOpen
 	StateTaskCheckedOut taskStateChecked
+	StateTaskCodereview taskCodereview
 	StateTaskDone taskStateDone
 	StateTaskNext taskStateNext
 	StateTaskStandBy taskStateStandBy
@@ -186,6 +188,9 @@ class BootStrap {
 		}
 		if (StateTaskCheckedOut.list()?.isEmpty()) {
 			taskStateChecked = new StateTaskCheckedOut().save()
+		}
+		if (StateTaskCodereview.list()?.isEmpty()) {
+			taskCodereview = new StateTaskCodereview().save()
 		}
 		if (StateTaskDone.list()?.isEmpty()) {
 			taskStateDone = new StateTaskDone().save()

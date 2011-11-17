@@ -38,6 +38,11 @@
 			dropOnEmpty: true,
 			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToCheckOut') }
 		}).disableSelection();
+		$("#codereview").sortable({
+            connectWith: '.connectedSortable',
+            dropOnEmpty: true,
+            receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToCodereview') }
+        }).disableSelection();
 		$("#done").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
@@ -219,6 +224,20 @@ $("#productBacklog").hide();
 				</g:each>
 			</ul>
 		</div>
+		
+		<div class="codereview">
+            <div class="boardheader"><g:message code="task.codereview"/></div>
+            <g:if test="${flash.taskListCheckout.size() > 0}">
+                <ul id="codereview" class="connectedSortable">
+            </g:if>
+            <g:else>
+                <ul id="codereview" class="connectedSortable" style="padding-bottom: 100px;">
+            </g:else>
+                <g:each var="task" in="${flash.taskListCodereview}" status="i">
+                    <g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
+                </g:each>
+            </ul>
+        </div>
 		
 		<div class="done">
 			<div class="boardheader"><g:message code="task.done"/></div>

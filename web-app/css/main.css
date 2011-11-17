@@ -531,9 +531,9 @@ div.projectTeam {
 	margin-top: 5px;	
 }
 
-div.open, div.checkout, div.done {
+div.open, div.checkout, div.codereview, div.done {
 	float: left;
-	width: 32%;
+	width: 24%;
 	margin-top: 5px;
 }
 

@@ -76,11 +76,12 @@ class TaskController extends BaseController {
 
 		flash.taskListOpen = Task.fromSprint(session.sprint, StateTask.getStateOpen()).list()
 		flash.taskListCheckout = Task.fromSprint(session.sprint, StateTask.getStateCheckedOut()).list()
+		flash.taskListCodereview = Task.fromSprint(session.sprint, StateTask.getStateCodereview()).list()
 		flash.taskListDone = Task.fromSprint(session.sprint, StateTask.getStateDone()).list()
 		flash.taskListStandBy = Task.fromSprint(session.sprint, StateTask.getStateStandBy()).list()
 		flash.taskListNext = Task.fromSprint(session.sprint, StateTask.getStateNext()).list()
 
-		flash.numberOfTasks = flash.taskListOpen.size() + flash.taskListCheckout.size() + flash.taskListDone.size() + flash.taskListStandBy.size()
+		flash.numberOfTasks = flash.taskListOpen.size() + flash.taskListCheckout.size() + flash.taskListCodereview.size() + flash.taskListDone.size() + flash.taskListStandBy.size()
 
 		def totalEffort = Task.effortTasksTotal(session.sprint).list()?.first()
 		def totalEffortDone = Task.effortTasksDone(session.sprint).list()?.first()
@@ -462,6 +463,24 @@ class TaskController extends BaseController {
 		redirect(controller:'task', action:'list')
 	}
 
+	/**
+	* Changes status of a task to done
+	*/
+   def changeTaskStateToCodereview = {
+	   if (taskWorkPermission(session.user, session.project)) {
+		   Task task = Task.get(removeTaskPrefix(params.taskId))
+		   task.state.codereview(task)
+		   task.save()
+
+		   // tweet it!
+		   sendTwitterMessage(session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
+	   } else {
+		   flash.message = message(code:"error.insufficientAccessRights")
+	   }
+
+	   redirect(controller:'task', action:'list')
+   }
+	
 	/**
 	 * Changes status of a task to done
 	 */

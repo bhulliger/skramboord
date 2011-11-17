@@ -17,17 +17,29 @@
 
 package org.skramboord
 
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
-import twitter4j.TwitterFactory;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.conf.*;
-import twitter4j.http.AccessToken;
-import twitter4j.http.RequestToken;
+import org.codehaus.groovy.grails.exceptions.InvalidPropertyException
+
+import twitter4j.Status
+import twitter4j.Twitter
+import twitter4j.TwitterFactory
+import twitter4j.conf.*
 
 class TaskController extends BaseController {
 	def twitterService
+
+	final CSV_DATA_FIELDS = [
+		'Id',
+		'Project',
+		'Category',
+		'Description',
+		'Schätzung in PT',
+		'Priority',
+		'Status',
+		'Assigned To',
+		'ignore on skramboord'
+	]
+
+	final CSV_URL_TEMPLATE = 'https://mantis.puzzle.ch/view.php?id=%1s'
 
 	def index = {
 		redirect(controller:'task', action:'list')
@@ -73,9 +85,12 @@ class TaskController extends BaseController {
 		flash.totalEffortDone = totalEffortDone ? totalEffortDone : 0
 
 		if (flash.totalEffort > session.sprint.personDays) {
-			flash.message = message(code:"sprint.toMuchEffort", args:[flash.totalEffort, session.sprint.personDays])
+			flash.message = message(code:"sprint.toMuchEffort", args:[
+				flash.totalEffort,
+				session.sprint.personDays
+			])
 		}
-		
+
 		// Burn down target
 		def datesXTarget = []
 		def burnDownEffort = flash.totalEffort
@@ -124,9 +139,9 @@ class TaskController extends BaseController {
 	def addTask = {
 		if (taskWorkPermission(session.user, session.project)) {
 			Task task = new Task(name: params.taskName, description: params.taskDescription,
-									effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(),
-									priority: Priority.byName(params.taskPriority).list().first(),
-									type: TaskType.byName(params.taskType).list().first())
+					effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(),
+					priority: Priority.byName(params.taskPriority).list().first(),
+					type: TaskType.byName(params.taskType).list().first())
 			if ("sprint".equals(params.target)) {
 				task.sprint= Sprint.find(session.sprint)
 			} else {
@@ -200,6 +215,211 @@ class TaskController extends BaseController {
 	}
 
 	/**
+	 * Parse CSV entry
+	 */
+	def parseCSVEntry(map) throws InvalidPropertyException{
+
+		def data = [:]
+
+		if (map.Id == null || map.Id.size() < 1) {
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Id']))
+		}
+
+		// map state
+		def state = StateTask.getStateOpen()
+		switch (map.Status) {
+			case 'feedback':
+				state = StateTask.getStateStandBy()
+				break
+			case 'assigned':
+				state = StateTask.getStateCheckedOut()
+				break
+			case [
+				'resolved',
+				'closed',
+				'inList'
+			]:
+				state = StateTask.getStateDone()
+				break
+		}
+
+		// map priority
+		def priority = Priority.byName(map.Priority.toLowerCase()).list()
+		if (priority != null && priority.size() == 1) {
+			priority = priority.first()
+		}else {
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Priority']))
+		}
+
+		// map task type
+		def taskType = null
+		if (map.Project == 'Wartung') {
+			if (map.Category == 'Fehler') {
+				taskType = TaskType.byName(TaskType.BUG).list().first()
+			} else {
+				taskType = TaskType.byName(TaskType.DOCUMENTATION).list().first()
+			}
+		} else if(map.Project == 'Entwicklung') {
+			if(map.Category == 'Erweiterung'){
+				taskType = TaskType.byName(TaskType.FEATURE).list().first()
+			} else if(map.Category == 'Garantie') {
+				taskType = TaskType.byName(TaskType.BUG).list().first()
+			} else {
+				taskType = TaskType.byName(TaskType.DOCUMENTATION).list().first()
+			}
+		} else {
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Project']))
+		}
+
+		// map effort
+		def effort = 0
+
+		if (!map['Schätzung in PT'].isNumber()) {
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Schätzung in PT']))
+		} else {
+			effort = map['Schätzung in PT']
+		}
+
+		def user
+		// map user
+		if(User.findByUsername(map['Assigned To']) == null){
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Assigned To']))
+		}else{
+			user = User.findByUsername(map['Assigned To'])
+		}
+
+		data.user = user
+		data.name = map.Id
+		data.description = map.Description?:''
+		data.effort = effort.toDouble()
+		data.url = String.format(CSV_URL_TEMPLATE, map.Id)
+		data.state = state
+		data.priority = priority
+		data.type = taskType
+
+		return data
+	}
+
+	/**
+	 * Import tasks from CSV
+	 */
+	def importCSV = {
+		if (taskWorkPermission(session.user, session.project)) {
+
+			if (params.importtaskid) {
+				for (task in session[params.importtaskid]) {
+					def taskObject
+
+					// decide if update or new
+					if(Task.findByName(task.name) == null){
+						taskObject = new Task()
+					}else{
+						taskObject = Task.findByName(task.name)
+					}
+					
+					taskObject.user = task.user
+					taskObject.name = task.name
+					taskObject.description = task.description
+					taskObject.effort = task.effort
+					taskObject.url = task.url
+					taskObject.priority = task.priority
+					taskObject.type = task.type
+					
+					// update status on new tasks only
+					if(taskObject.state == null){
+						taskObject.state = task.state
+					}
+					
+					// decide if task should go into the backlog
+					if(taskObject.state.name == "Open"){
+						taskObject.project = Sprint.find(session.sprint).release.project
+					}else{
+						taskObject.sprint= Sprint.find(session.sprint)
+					}
+					
+					if (!taskObject.save()) {
+						flash.taskIncomplete = taskObject
+						flash.objectToSave = taskObject
+					}
+					
+					// cleanup session
+					session.removeAttribute(params.importtaskid)
+					flash.message = message(code:"sprint.importDone")
+				}
+			} else {
+				def csv = request.getFile('cvsFile')
+				def errors = []
+				if (!csv.empty) {
+
+					def reader = csv.inputStream.toCsvReader(['charset':'UTF-8'])
+					def formatError = false
+					def importReport = ['errors':[:], 'stats': ['new': 0, 'update': 0, 'ignore': 0]]
+					def task
+					def importtaskid = UUID.randomUUID().toString()
+
+					session[importtaskid] = []
+
+					try {
+						new CSVMapReader(reader).eachWithIndex{ map, i ->
+
+							// check fields
+							if (i==0) {
+								if (map.keySet() as String[] != CSV_DATA_FIELDS) {
+									flash.message = message(code:"error.invalidCSVColumns")
+									formatError = true
+								}
+							}
+
+							// process tasks
+							if (!formatError) {
+								def data
+
+								// check if the task can be ignored
+								if((map['ignore on skramboord']?:'false').toLowerCase() == 'true'){
+									importReport.stats.ignore += 1
+									return
+								}
+
+								try {
+									data = parseCSVEntry(map)
+								} catch (InvalidPropertyException ipe) {
+									importReport.errors[(i+2)] = ipe.message
+								}
+
+								// calc stats
+								if(Task.findByName(map.Id) == null){
+									importReport.stats['new'] += 1
+								}else{
+									importReport.stats.update += 1
+								}
+
+								// store data to session as long as there are no parse errors
+								if (importReport.errors.size() == 0) {
+									session[importtaskid] << data
+								}else{
+									session.removeAttribute(importtaskid)
+								}
+							}
+						}
+
+						// render the import or parse report
+						flash.importtaskid = importtaskid
+						flash.importReport = importReport
+					} catch (ArrayIndexOutOfBoundsException e) {
+						flash.message = message(code:"error.invalidCSVFormat")
+					}
+				} else {
+					flash.message = message(code:"error.emptyFile")
+				}
+			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
+
+		redirect(controller:params.fwdTo, action:'list')
+	}
+
+	/**
 	 * Changes status of a task to open
 	 */
 	def changeTaskStateToOpen = {
@@ -219,7 +439,6 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-
 		redirect(controller:'task', action:'list')
 	}
 
@@ -318,7 +537,7 @@ class TaskController extends BaseController {
 
 		redirect(controller:'sprint', action:'list')
 	}
-	
+
 	def enableBacklog = {
 		if (params.enableBacklog) {
 			session.enableBacklog = Boolean.valueOf(params.enableBacklog)

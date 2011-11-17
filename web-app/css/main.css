@@ -346,6 +346,11 @@ th.desc a {
 	padding-left: 28px;
 }
 
+.buttons input.import {
+	background: transparent url(../images/icons/import.png) 5px 50% no-repeat;
+	padding-left: 28px;
+}
+
 /* FORMS */
 .form input.text {
 	width: 95%;

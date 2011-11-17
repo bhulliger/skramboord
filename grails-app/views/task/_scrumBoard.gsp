@@ -85,15 +85,82 @@ $("#productBacklog").hide();
 	function openNewTaskForm(){
 		$('#dialog-form').dialog('open');
 	}
+	
+	function openImportTasksForm(){
+		$('#dialog-import-form').dialog('open');
+	}
+</g:if>
+<g:if test="${flash.importReport}">
+	$(function() {
+	    $("#dialog-csv-form").dialog({
+	        width: 500,
+	        modal: true,
+	        buttons: {
+	            '<g:message code="default.button.import.label"/>': function() {
+	                document.getElementById("formImportTasks").submit();
+	                $(this).dialog('close');
+	            },
+	            '<g:message code="default.button.cancel.label"/>': function() {
+	                location.reload(true);
+	                $(this).dialog('close');
+	            }
+	        }
+	    });
+	});
 </g:if>
 </script>
 
 <div>
+    <g:if test="${flash.importReport}">
+        <div id="dialog-csv-form" title="${message(code:'task.formNameImportTasks')}" class="form">
+	        <g:if test="${flash.importReport.errors}">
+		        <table style="padding-bottom: 40px;">
+		            <thead>
+		                <th>Zeile</th>
+		                <th>Fehler</th>
+		            </thead>
+				    <g:each var="error" in="${flash.importReport.errors}" status="i">
+				       <tr>
+				           <td>${error.key}</td>
+				           <td>${error.value}</td>
+				       </tr>
+				    </g:each>
+			    </table>
+			    <g:form url="[ controller: 'task', action: 'importCSV', params: ['fwdTo': 'task', 'target': 'sprint']]" name='formImportTasks' enctype="multipart/form-data" method="post">
+			        <fieldset>
+			            <input type="file" name="cvsFile" id="cvsFile" />
+			        </fieldset>
+			    </g:form>
+	        </g:if>
+	        <g:elseif test="${flash.importReport.stats}">
+                <table>
+                    <tr>
+                        <td width="20%">${message(code:'sprint.importStateNew')}:</td>
+                        <td>${flash.importReport.stats.new}</td>
+                    </tr>
+                    <tr>
+                        <td>${message(code:'sprint.importStateUpdate')}:</td>
+                        <td>${flash.importReport.stats.update}</td>
+                    </tr>
+                    <tr>
+                        <td>${message(code:'sprint.importStateIgnore')}:</td>
+                        <td>${flash.importReport.stats.ignore}</td>
+                    </tr>
+	            </table>
+	            <g:form url="[ controller: 'task', action: 'importCSV', params: ['fwdTo': 'task', 'target': 'sprint']]" name='formImportTasks' enctype="multipart/form-data" method="post">
+                    <fieldset>
+                        <input type="hidden" name="importtaskid" id="importtaskid" value="${flash.importtaskid}" />
+                    </fieldset>
+                </g:form>
+	        </g:elseif>
+	   </div>
+    </g:if>
 	<g:if test="${flash.taskEdit}">
 		<g:render template="formEditTask" model="['fwdTo': 'task']"/>
 	</g:if>
 	<g:elseif test="${session.sprint.isSprintActive()}">
 		<g:render template="formNewTask" model="['fwdTo': 'task', 'target': 'sprint']"/>
+		<g:render template="formImportTasks" model="['fwdTo': 'task', 'target': 'sprint']"/>
 	</g:elseif>
 
 	<div class="buttons">
@@ -101,6 +168,7 @@ $("#productBacklog").hide();
 			<g:if test="${flash.teammate}">
 				<g:actionSubmit class="add" onclick="openNewTaskForm();" value="${message(code:'task.createTask')}"/>
 			</g:if>
+			<g:actionSubmit class="import" onclick="openImportTasksForm();" value="${message(code:'task.importTasks')}"/>
 			<g:actionSubmit class="table" onclick="toggleProductBacklog();" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}" />
 		</span>
 	</div>

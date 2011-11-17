@@ -106,7 +106,7 @@ environments {
 	test {
 		log4j = {
 			appenders {
-			   null name:'stacktrace'
+			   console name:'stacktrace'
 			}
 		}
 	}

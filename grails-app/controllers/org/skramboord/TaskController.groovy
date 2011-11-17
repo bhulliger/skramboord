@@ -31,16 +31,38 @@ import twitter4j.http.RequestToken;
 class TaskController extends BaseController {
 	def twitterService
 
+	final PROJECT_SERVICE = 'Wartung'
+	final PROJECT_DEVELOPMENT = 'Entwicklung'
+
+	final CATEGORY_ERROR = 'Fehler'
+	final CATEGORY_EXTENSION = 'Erweiterung'
+	final CATEGORY_WARRANTY = 'Garantie'
+
+	final STATE_FEEDBACK = 'feedback'
+	final STATE_ASSIGNED = 'assigned'
+	final STATE_RESOLVED = 'resolved'
+	final STATE_CLOSED = 'closed'
+
+	final FIELD_ID = 'Id'
+	final FIELD_PROJECT = 'Project'
+	final FIELD_CATEGORY = 'Category'
+	final FIELD_DESCRIPTION = 'Description'
+	final FIELD_ESTIMATE = 'Schätzung in PT'
+	final FIELD_PRIORITY = 'Priority'
+	final FIELD_STATE = 'Status'
+	final FIELD_USER = 'Assigned To'
+	final FIELD_IGNORE = 'ignore on skramboord'
+
 	final CSV_DATA_FIELDS = [
-		'Id',
-		'Project',
-		'Category',
-		'Description',
-		'Schätzung in PT',
-		'Priority',
-		'Status',
-		'Assigned To',
-		'ignore on skramboord'
+		FIELD_ID,
+		FIELD_PROJECT,
+		FIELD_CATEGORY,
+		FIELD_DESCRIPTION,
+		FIELD_ESTIMATE,
+		FIELD_PRIORITY,
+		FIELD_STATE,
+		FIELD_USER,
+		FIELD_IGNORE
 	]
 
 	final CSV_URL_TEMPLATE = 'https://mantis.puzzle.ch/view.php?id=%1s'
@@ -227,21 +249,21 @@ class TaskController extends BaseController {
 		def data = [:]
 
 		if (map.Id == null || map.Id.size() < 1) {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Id']))
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_ID]))
 		}
 
 		// map state
 		def state = StateTask.getStateOpen()
 		switch (map.Status) {
-			case 'feedback':
+			case STATE_FEEDBACK:
 				state = StateTask.getStateStandBy()
 				break
-			case 'assigned':
+			case STATE_ASSIGNED:
 				state = StateTask.getStateCheckedOut()
 				break
 			case [
-				'resolved',
-				'closed',
+				STATE_RESOLVED,
+				STATE_CLOSED,
 				'inList'
 			]:
 				state = StateTask.getStateDone()
@@ -252,45 +274,46 @@ class TaskController extends BaseController {
 		def priority = Priority.byName(map.Priority.toLowerCase()).list()
 		if (priority != null && priority.size() == 1) {
 			priority = priority.first()
-		}else {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Priority']))
+		} else {
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_PRIORITY]))
 		}
 
-		// map task type
+		// map task type and project
 		def taskType = null
-		if (map.Project == 'Wartung') {
-			if (map.Category == 'Fehler') {
+		def project = map.Project
+		if (project == PROJECT_SERVICE) {
+			if (map.Category == CATEGORY_ERROR) {
 				taskType = TaskType.byName(TaskType.BUG).list().first()
 			} else {
 				taskType = TaskType.byName(TaskType.DOCUMENTATION).list().first()
 			}
-		} else if(map.Project == 'Entwicklung') {
-			if(map.Category == 'Erweiterung'){
+		} else if(project == PROJECT_DEVELOPMENT) {
+			if (map.Category == CATEGORY_EXTENSION) {
 				taskType = TaskType.byName(TaskType.FEATURE).list().first()
-			} else if(map.Category == 'Garantie') {
+			} else if(map.Category == CATEGORY_WARRANTY) {
 				taskType = TaskType.byName(TaskType.BUG).list().first()
 			} else {
 				taskType = TaskType.byName(TaskType.DOCUMENTATION).list().first()
 			}
 		} else {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Project']))
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_PROJECT]))
 		}
 
 		// map effort
 		def effort = 0
 
-		if (!map['Schätzung in PT'].isNumber()) {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Schätzung in PT']))
+		if (!map[FIELD_ESTIMATE].isNumber()) {
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_ESTIMATE]))
 		} else {
-			effort = map['Schätzung in PT']
+			effort = map[FIELD_ESTIMATE]
 		}
 
 		def user
 		// map user
-		if(User.findByUsername(map['Assigned To']) == null){
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:['Assigned To']))
-		}else{
-			user = User.findByUsername(map['Assigned To'])
+		if (User.findByUsername(map[FIELD_USER]) == null) {
+			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_USER]))
+		} else {
+			user = User.findByUsername(map[FIELD_USER])
 		}
 
 		data.user = user
@@ -300,6 +323,7 @@ class TaskController extends BaseController {
 		data.url = String.format(CSV_URL_TEMPLATE, map.Id)
 		data.state = state
 		data.priority = priority
+		data.project = project
 		data.type = taskType
 
 		return data
@@ -312,16 +336,24 @@ class TaskController extends BaseController {
 		if (taskWorkPermission(session.user, session.project)) {
 
 			if (params.importtaskid) {
+
+				def tokenTaskType = TaskType.byName(TaskType.TOKEN).list().first()
+				def tokenTask = null
+
+				if (Task.findAllByType(tokenTaskType).size() == 1) {
+					tokenTask = Task.findAllByType(tokenTaskType).first()
+				}
+
 				for (task in session[params.importtaskid]) {
 					def taskObject
 
 					// decide if update or new
-					if(Task.findByName(task.name) == null){
+					if (Task.findByName(task.name) == null) {
 						taskObject = new Task()
-					}else{
+					} else {
 						taskObject = Task.findByName(task.name)
 					}
-					
+
 					taskObject.user = task.user
 					taskObject.name = task.name
 					taskObject.description = task.description
@@ -329,24 +361,30 @@ class TaskController extends BaseController {
 					taskObject.url = task.url
 					taskObject.priority = task.priority
 					taskObject.type = task.type
-					
+
 					// update status on new tasks only
-					if(taskObject.state == null){
+					if (taskObject.state == null) {
 						taskObject.state = task.state
 					}
-					
+
 					// decide if task should go into the backlog
-					if(taskObject.state.name == "Open"){
+					if (taskObject.state.name == "Open") {
 						taskObject.project = Sprint.find(session.sprint).release.project
-					}else{
+					} else {
 						taskObject.sprint= Sprint.find(session.sprint)
 					}
-					
+
+					// if PROJECT_SERVICE subtract current effort form token task if any
+					if (task.project == PROJECT_SERVICE && tokenTask) {
+						tokenTask.effort -= task.effort
+						tokenTask.save()
+					}
+
 					if (!taskObject.save()) {
 						flash.taskIncomplete = taskObject
 						flash.objectToSave = taskObject
 					}
-					
+
 					// cleanup session
 					session.removeAttribute(params.importtaskid)
 					flash.message = message(code:"sprint.importDone")
@@ -380,7 +418,7 @@ class TaskController extends BaseController {
 								def data
 
 								// check if the task can be ignored
-								if((map['ignore on skramboord']?:'false').toLowerCase() == 'true'){
+								if ((map['ignore on skramboord']?:'false').toLowerCase() == 'true') {
 									importReport.stats.ignore += 1
 									return
 								}
@@ -392,16 +430,16 @@ class TaskController extends BaseController {
 								}
 
 								// calc stats
-								if(Task.findByName(map.Id) == null){
+								if (Task.findByName(map.Id) == null) {
 									importReport.stats['new'] += 1
-								}else{
+								} else {
 									importReport.stats.update += 1
 								}
 
 								// store data to session as long as there are no parse errors
 								if (importReport.errors.size() == 0) {
 									session[importtaskid] << data
-								}else{
+								} else {
 									session.removeAttribute(importtaskid)
 								}
 							}
@@ -464,23 +502,23 @@ class TaskController extends BaseController {
 	}
 
 	/**
-	* Changes status of a task to done
-	*/
-   def changeTaskStateToCodereview = {
-	   if (taskWorkPermission(session.user, session.project)) {
-		   Task task = Task.get(removeTaskPrefix(params.taskId))
-		   task.state.codereview(task)
-		   task.save()
+	 * Changes status of a task to codereview
+	 */
+	def changeTaskStateToCodereview = {
+		if (taskWorkPermission(session.user, session.project)) {
+			Task task = Task.get(removeTaskPrefix(params.taskId))
+			task.state.codereview(task)
+			task.save()
 
-		   // tweet it!
-		   sendTwitterMessage(session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
-	   } else {
-		   flash.message = message(code:"error.insufficientAccessRights")
-	   }
+			// tweet it!
+			sendTwitterMessage(session.project, (String)"Task '${task.name}' by '${task.user?.userRealName}' ready to review, ${new Date()}")
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
+		}
 
-	   redirect(controller:'task', action:'list')
-   }
-	
+		redirect(controller:'task', action:'list')
+	}
+
 	/**
 	 * Changes status of a task to done
 	 */

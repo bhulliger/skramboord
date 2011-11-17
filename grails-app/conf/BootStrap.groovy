@@ -67,6 +67,7 @@ class BootStrap {
 	TaskType bug
 	TaskType feature
 	TaskType documentation
+	TaskType token
 	
 	def init = { servletContext ->
 		switch (GrailsUtil.environment) {
@@ -244,6 +245,7 @@ class BootStrap {
 			bug = new TaskType(name: TaskType.BUG, color: "green").save()
 			feature = new TaskType(name: TaskType.FEATURE, color: "yellow").save()
 			documentation = new TaskType(name: TaskType.DOCUMENTATION, color: "purple").save()
+			token = new TaskType(name: TaskType.TOKEN, color: "blue").save()
 		}
 	}
 	

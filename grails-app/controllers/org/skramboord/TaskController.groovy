@@ -30,42 +30,7 @@ import twitter4j.http.RequestToken;
 
 class TaskController extends BaseController {
 	def twitterService
-
-	final PROJECT_SERVICE = 'Wartung'
-	final PROJECT_DEVELOPMENT = 'Entwicklung'
-
-	final CATEGORY_ERROR = 'Fehler'
-	final CATEGORY_EXTENSION = 'Erweiterung'
-	final CATEGORY_WARRANTY = 'Garantie'
-
-	final STATE_FEEDBACK = 'feedback'
-	final STATE_ASSIGNED = 'assigned'
-	final STATE_RESOLVED = 'resolved'
-	final STATE_CLOSED = 'closed'
-
-	final FIELD_ID = 'Id'
-	final FIELD_PROJECT = 'Project'
-	final FIELD_CATEGORY = 'Category'
-	final FIELD_DESCRIPTION = 'Description'
-	final FIELD_ESTIMATE = 'Schätzung in PT'
-	final FIELD_PRIORITY = 'Priority'
-	final FIELD_STATE = 'Status'
-	final FIELD_USER = 'Assigned To'
-	final FIELD_IGNORE = 'ignore on skramboord'
-
-	final CSV_DATA_FIELDS = [
-		FIELD_ID,
-		FIELD_PROJECT,
-		FIELD_CATEGORY,
-		FIELD_DESCRIPTION,
-		FIELD_ESTIMATE,
-		FIELD_PRIORITY,
-		FIELD_STATE,
-		FIELD_USER,
-		FIELD_IGNORE
-	]
-
-	final CSV_URL_TEMPLATE = 'https://mantis.puzzle.ch/view.php?id=%1s'
+	def csvParser
 
 	def index = {
 		redirect(controller:'task', action:'list')
@@ -242,98 +207,6 @@ class TaskController extends BaseController {
 	}
 
 	/**
-	 * Parse CSV entry
-	 * 
-	 * @param csvData raw CSV data
-	 * @return normalized task data
-	 * 
-	 */
-	def parseCSVEntry(csvData) throws InvalidPropertyException{
-
-		def data = [:]
-
-		if (csvData.Id == null || csvData.Id.size() < 1) {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_ID]))
-		}
-
-		// map state
-		def state = StateTask.getStateOpen()
-		switch (csvData.Status) {
-			case STATE_FEEDBACK:
-				state = StateTask.getStateStandBy()
-				break
-			case STATE_ASSIGNED:
-				state = StateTask.getStateCheckedOut()
-				break
-			case [
-				STATE_RESOLVED,
-				STATE_CLOSED,
-				'inList'
-			]:
-				state = StateTask.getStateDone()
-				break
-		}
-
-		// map priority
-		def priority = Priority.byName(csvData.Priority.toLowerCase()).list()
-		if (priority != null && priority.size() == 1) {
-			priority = priority.first()
-		} else {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_PRIORITY]))
-		}
-
-		// map task type and project
-		def taskType = null
-		def project = csvData.Project
-		if (project == PROJECT_SERVICE) {
-			if (csvData.Category == CATEGORY_ERROR) {
-				taskType = TaskType.byName(TaskType.BUG).list().first()
-			} else {
-				taskType = TaskType.byName(TaskType.DOCUMENTATION).list().first()
-			}
-		} else if(project == PROJECT_DEVELOPMENT) {
-			if (csvData.Category == CATEGORY_EXTENSION) {
-				taskType = TaskType.byName(TaskType.FEATURE).list().first()
-			} else if(csvData.Category == CATEGORY_WARRANTY) {
-				taskType = TaskType.byName(TaskType.BUG).list().first()
-			} else {
-				taskType = TaskType.byName(TaskType.DOCUMENTATION).list().first()
-			}
-		} else {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_PROJECT]))
-		}
-
-		// map effort
-		def effort = 0
-
-		if (!csvData[FIELD_ESTIMATE].isNumber()) {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_ESTIMATE]))
-		} else {
-			effort = csvData[FIELD_ESTIMATE]
-		}
-
-		def user
-		// map user
-		if (User.findByUsername(csvData[FIELD_USER]) == null) {
-			throw new InvalidPropertyException(message(code:"error.csvInvalidField", args:[FIELD_USER]))
-		} else {
-			user = User.findByUsername(csvData[FIELD_USER])
-		}
-
-		data.user = user
-		data.name = csvData.Id
-		data.description = csvData.Description?:''
-		data.effort = effort.toDouble()
-		data.url = String.format(CSV_URL_TEMPLATE, csvData.Id)
-		data.state = state
-		data.priority = priority
-		data.project = project
-		data.type = taskType
-
-		return data
-	}
-
-	/**
 	 * Import tasks from CSV
 	 */
 	def importCSV = {
@@ -378,8 +251,8 @@ class TaskController extends BaseController {
 						taskObject.sprint= Sprint.find(session.sprint)
 					}
 
-					// if PROJECT_SERVICE subtract current effort form token task if any
-					if (task.project == PROJECT_SERVICE && tokenTask) {
+					// subtract current effort form token task if any
+					if (task.subtractFromToken && tokenTask) {
 						tokenTask.effort -= task.effort
 						tokenTask.save()
 					}
@@ -412,7 +285,7 @@ class TaskController extends BaseController {
 
 							// check fields
 							if (i==0) {
-								if (map.keySet() as String[] != CSV_DATA_FIELDS) {
+								if (! csvParser.isValidHeader(map.keySet() as String[])) {
 									flash.message = message(code:"error.invalidCSVColumns")
 									formatError = true
 								}
@@ -429,13 +302,13 @@ class TaskController extends BaseController {
 								}
 
 								try {
-									data = parseCSVEntry(map)
-								} catch (InvalidPropertyException ipe) {
-									importReport.errors[(i+2)] = ipe.message
+									data = csvParser.parseEntry(map)
+								} catch (InvalidPropertyException ipe) {									
+									importReport.errors[(i+2)] = message(code:"error.csvInvalidField", args:[ipe.message])
 								}
-
+								
 								// calc stats
-								if (Task.findByName(map.Id) == null) {
+								if (Task.findByName(map[csvParser.nameColumn]) == null) {
 									importReport.stats['new'] += 1
 								} else {
 									importReport.stats.update += 1

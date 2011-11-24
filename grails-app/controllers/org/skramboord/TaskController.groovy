@@ -388,11 +388,12 @@ class TaskController extends BaseController {
 						flash.taskIncomplete = taskObject
 						flash.objectToSave = taskObject
 					}
-
-					// cleanup session
-					session.removeAttribute(params.importtaskid)
-					flash.message = message(code:"sprint.importDone")
 				}
+				
+				// cleanup session
+				session.removeAttribute(params.importtaskid)
+				flash.message = message(code:"sprint.importDone")
+				
 			} else {
 				def csv = request.getFile('cvsFile')
 				def errors = []

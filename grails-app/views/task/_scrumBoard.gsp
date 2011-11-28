@@ -227,7 +227,7 @@ $("#productBacklog").hide();
 		
 		<div class="codereview">
             <div class="boardheader"><g:message code="task.codereview"/></div>
-            <g:if test="${flash.taskListCheckout.size() > 0}">
+            <g:if test="${flash.taskListCodereview.size() > 0}">
                 <ul id="codereview" class="connectedSortable">
             </g:if>
             <g:else>

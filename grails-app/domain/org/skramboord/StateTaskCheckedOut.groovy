@@ -25,9 +25,9 @@ class StateTaskCheckedOut extends StateTask {
 		task.finishedDate = null
 	}
 
-	def done(Task task) {
-		task.state = super.getStateDone()
-		task.finishedDate = Today.getInstance()
+	def codereview(Task task) {
+		task.state = super.getStateCodereview()
+		task.finishedDate = null
 	}
 	
 	def next(Task task) {

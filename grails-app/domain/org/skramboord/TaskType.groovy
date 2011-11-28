@@ -21,6 +21,7 @@ class TaskType {
 	static String FEATURE = "feature"
 	static String BUG = "bug"
 	static String DOCUMENTATION = "documentation"
+	static String TOKEN = "token"
 
 	String name
 	String color

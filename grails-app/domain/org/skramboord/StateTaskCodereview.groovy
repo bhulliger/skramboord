@@ -17,62 +17,26 @@
 
 package org.skramboord
 
-class StateTask {
-	String name = "Abstract state"
-	
-	protected StateTask() {}
-	
-	def checkOut(Task task) {
-		// do nothing
-	}
+class StateTaskCodereview extends StateTask {
+	String name = "Codereview"
 	
 	def open(Task task) {
-		// do nothing
+		task.state = super.getStateOpen()
+		task.finishedDate = null
 	}
-	
-	def codereview(Task task) {
-		// do nothing
-	}
-	
+
 	def done(Task task) {
-		// do nothing
+		task.state = super.getStateDone()
+		task.finishedDate = Today.getInstance()
 	}
 	
 	def next(Task task) {
-		// do nothing
+		task.state = super.getStateNext()
+		task.finishedDate = null
 	}
 	
 	def standBy(Task task) {
-		// do nothing
-	}
-	
-	static StateTaskOpen getStateOpen() {
-		return StateTaskOpen.withCriteria(uniqueResult:true) {
-		}
-	}
-	
-	static StateTaskCheckedOut getStateCheckedOut() {
-		return StateTaskCheckedOut.withCriteria(uniqueResult:true) {
-		}
-	}
-	
-	static StateTaskCodereview getStateCodereview() {
-		return StateTaskCodereview.withCriteria(uniqueResult:true) {
-		}
-	}
-	
-	static StateTaskDone getStateDone() {
-		return StateTaskDone.withCriteria(uniqueResult:true) {
-		}
-	}
-	
-	static StateTaskNext getStateNext() {
-		return StateTaskNext.withCriteria(uniqueResult:true) {
-		}
-	}
-	
-	static StateTaskStandBy getStateStandBy() {
-		return StateTaskStandBy.withCriteria(uniqueResult:true) {
-		}
+		task.state = super.getStateStandBy()
+		task.finishedDate = null
 	}
 }

@@ -20,6 +20,7 @@ import grails.util.GrailsUtil
 import java.awt.Color
 import java.util.Calendar
 
+import org.skramboord.StateTaskCodereview;
 import org.skramboord.SystemPreferences
 import org.skramboord.Theme
 import org.skramboord.StateTask
@@ -54,6 +55,7 @@ class BootStrap {
 	User userAdmin
 	StateTaskOpen taskStateOpen
 	StateTaskCheckedOut taskStateChecked
+	StateTaskCodereview taskCodereview
 	StateTaskDone taskStateDone
 	StateTaskNext taskStateNext
 	StateTaskStandBy taskStateStandBy
@@ -65,6 +67,7 @@ class BootStrap {
 	TaskType bug
 	TaskType feature
 	TaskType documentation
+	TaskType token
 	
 	def init = { servletContext ->
 		switch (GrailsUtil.environment) {
@@ -187,6 +190,9 @@ class BootStrap {
 		if (StateTaskCheckedOut.list()?.isEmpty()) {
 			taskStateChecked = new StateTaskCheckedOut().save()
 		}
+		if (StateTaskCodereview.list()?.isEmpty()) {
+			taskCodereview = new StateTaskCodereview().save()
+		}
 		if (StateTaskDone.list()?.isEmpty()) {
 			taskStateDone = new StateTaskDone().save()
 		}
@@ -239,6 +245,7 @@ class BootStrap {
 			bug = new TaskType(name: TaskType.BUG, color: "green").save()
 			feature = new TaskType(name: TaskType.FEATURE, color: "yellow").save()
 			documentation = new TaskType(name: TaskType.DOCUMENTATION, color: "purple").save()
+			token = new TaskType(name: TaskType.TOKEN, color: "blue").save()
 		}
 	}
 	

@@ -346,6 +346,11 @@ th.desc a {
 	padding-left: 28px;
 }
 
+.buttons input.import {
+	background: transparent url(../images/icons/import.png) 5px 50% no-repeat;
+	padding-left: 28px;
+}
+
 /* FORMS */
 .form input.text {
 	width: 95%;
@@ -491,7 +496,7 @@ th.desc a {
 	margin: 1px;
 	padding: 4px;
 	font-size: 1.2em;
-	width: 190px;
+	width: 150px;
 }
 
 .connectedSortableProductBacklog {
@@ -526,9 +531,9 @@ div.projectTeam {
 	margin-top: 5px;	
 }
 
-div.open, div.checkout, div.done {
+div.open, div.checkout, div.codereview, div.done {
 	float: left;
-	width: 32%;
+	width: 24%;
 	margin-top: 5px;
 }
 

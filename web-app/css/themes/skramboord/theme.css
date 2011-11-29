@@ -5,6 +5,7 @@
 	background:#70f270;
 	padding:2px 5px;
 	color:#000000;
+	z-index: 1000;
 }
 
 .list th:hover,.list tr:hover {

@@ -22,7 +22,7 @@ img {
 }
 
 .content {
-	width: 992px;
+	width: 1102px;
 	height: 768px;
 	margin-left: auto;
 	margin-right: auto;
@@ -89,7 +89,7 @@ input:focus,select:focus,textarea:focus {
 }
 
 .body {
-	width: 962px;
+	width: 1072px;
 	float: left;
 	margin: 10px 15px 10px 15px;
 }
@@ -413,6 +413,8 @@ th.desc a {
 	font-weight: normal;
 	font-size:x-small;
 	color: black;
+	position: relative;
+	z-index: 1;
 }
 
 .readonly {
@@ -496,14 +498,14 @@ th.desc a {
 	margin: 1px;
 	padding: 4px;
 	font-size: 1.2em;
-	width: 150px;
+	width: 170px;
 }
 
 .connectedSortableProductBacklog {
 	list-style-type: none;
 	margin: 0;
 	float: left;
-	width: 180px;
+	width: 200px;
 	
 	padding: 2px 0 0 0;
 }
@@ -521,7 +523,7 @@ th.desc a {
 
 div.backlog {
 	float: left;
-	width: 24%;
+	width: 20%;
 	margin-top: 16px;
 }
 
@@ -606,4 +608,22 @@ div.clear {
 
 .iconsTaskEdit {
 	display: block;
+}
+
+div.taskNumber {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	white-space: nowrap;
+	width: 160px;
+	position: relative;
+	z-index: 1;
+}
+
+div.taskNumberShort {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	white-space: nowrap;
+	width: 120px;
+	position: relative;
+	z-index: 1;
 }

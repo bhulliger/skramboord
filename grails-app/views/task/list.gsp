@@ -69,7 +69,7 @@
 					<g:render template="sprintInformation"/>
 				</div>
 				<div id="tab-2">
-					<div id="burndown" style="width:920px;height:380px;"></div>
+					<div id="burndown" style="width:1100px;height:380px;"></div>
 				</div>
 			</div>
 		</div>

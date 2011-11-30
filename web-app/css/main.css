@@ -22,7 +22,7 @@ img {
 }
 
 .content {
-	width: 1102px;
+	width: 1152px;
 	height: 768px;
 	margin-left: auto;
 	margin-right: auto;
@@ -89,7 +89,7 @@ input:focus,select:focus,textarea:focus {
 }
 
 .body {
-	width: 1072px;
+	width: 1122px;
 	float: left;
 	margin: 10px 15px 10px 15px;
 }
@@ -489,8 +489,7 @@ th.desc a {
 	list-style-type: none;
 	margin: 0;
 	float: left;
-	width: 200px;
-	
+	width: 210px;
 	padding: 2px 0 0 0;
 }
 
@@ -498,15 +497,14 @@ th.desc a {
 	margin: 1px;
 	padding: 4px;
 	font-size: 1.2em;
-	width: 170px;
+	width: 190px;
 }
 
 .connectedSortableProductBacklog {
 	list-style-type: none;
 	margin: 0;
 	float: left;
-	width: 200px;
-	
+	width: 210px;
 	padding: 2px 0 0 0;
 }
 
@@ -514,7 +512,7 @@ th.desc a {
 	margin: 1px;
 	padding: 4px;
 	font-size: 1.2em;
-	width: 170px;
+	width:190px;
 }
 
 .twitter {
@@ -523,7 +521,7 @@ th.desc a {
 
 div.backlog {
 	float: left;
-	width: 20%;
+	width: 19%;
 	margin-top: 16px;
 }
 

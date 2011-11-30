@@ -62,21 +62,21 @@
 
 // Product Backlog
 <g:if test="${session.enableBacklog}">
-		document.getElementById("scrumboard").style.width = "790px";
+		document.getElementById("scrumboard").style.width = "840px";
 </g:if>
 <g:else>
 $("#productBacklog").hide();
-		document.getElementById("scrumboard").style.width = "1010px";
+		document.getElementById("scrumboard").style.width = "1060px";
 </g:else>
 	});
 
 	function toggleProductBacklog(){
 		if ($("#productBacklog").is(":hidden")) {
-			document.getElementById("scrumboard").style.width = "790px";
+			document.getElementById("scrumboard").style.width = "840px";
     		$("#productBacklog").toggle(500);
 			${remoteFunction(controller: 'task', action:'enableBacklog', params:[enableBacklog: 'true'])}
     	} else {
-    		document.getElementById("scrumboard").style.width = "1010px";
+    		document.getElementById("scrumboard").style.width = "1060px";
     		$("#productBacklog").toggle();
     		${remoteFunction(controller: 'task', action:'enableBacklog', params:[enableBacklog: 'false'])}
     	}

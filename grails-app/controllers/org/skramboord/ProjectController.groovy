@@ -121,6 +121,8 @@ class ProjectController extends BaseController {
 			def project = Project.get(params.projectId)
 			if (projectEditPermission(session.user, project)) {
 				project.name = params.projectName
+				project.taskNumberingEnabled = params.projectTaskNumberingEnabled != null ? Boolean.valueOf(params.projectTaskNumberingEnabled) : false
+				project.taskNumberingPattern = params.projectTaskNumberingPattern
 
 				if (!project.save()) {
 					flash.objectToSave=project

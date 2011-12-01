@@ -27,7 +27,8 @@ import twitter4j.conf.*
 
 class ExampleParser extends BaseParser {
 
-	final FIELD_NAME = 'name'
+	final FIELD_NUMBER = 'number'
+	final FIELD_TITLE = 'title'
 	final FIELD_DESCRIPTION = 'description'	
 	final FIELD_USER = 'user'
 	final FIELD_EFFORT = 'effort'
@@ -36,7 +37,8 @@ class ExampleParser extends BaseParser {
 	final FIELD_STATE = 'state'
 	
 	final CSV_DATA_FIELDS = [
-		FIELD_NAME,
+		FIELD_NUMBER,
+		FIELD_TITLE,
 		FIELD_DESCRIPTION,
 		FIELD_USER,
 		FIELD_EFFORT,
@@ -51,12 +53,13 @@ class ExampleParser extends BaseParser {
 	def parseEntry(csvData) throws InvalidPropertyException{
 
 		def data = [:]
-		data.name = getName(csvData[FIELD_NAME], FIELD_NAME)
+		data.numer = getNumber(csvData[FIELD_NUMBER], FIELD_NUMBER)
+		data.title = getTitle(csvData[FIELD_TITLE], FIELD_TITLE)
 		data.description = csvData[FIELD_DESCRIPTION]?:''
 		data.user = getUser(csvData[FIELD_USER], FIELD_USER)
 		data.effort = getEffort(csvData[FIELD_EFFORT], FIELD_EFFORT)
 		data.priority = getPriority(csvData[FIELD_PRIORITY], FIELD_PRIORITY)
-		data.url = String.format(CSV_URL_TEMPLATE, csvData[FIELD_NAME])
+		data.url = String.format(CSV_URL_TEMPLATE, csvData[FIELD_TITLE])
 		data.type = getTaskType(csvData[FIELD_TYPE], FIELD_TYPE)
 		data.state = getStateTask(csvData[FIELD_STATE], FIELD_STATE)
 		data.subtractFromToken = false // set this to true if you want to subtract the task effort from a token task

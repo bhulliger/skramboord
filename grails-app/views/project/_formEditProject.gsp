@@ -2,7 +2,7 @@
 	$(function() {
 		$("#dialog-form-project-edit").dialog({
 			autoOpen: true,
-			height: 140,
+			height: 200,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -26,6 +26,25 @@
 				<tr>
 					<td><label><g:message code="project.project"/></label></td>
 					<td><input type="text" name="projectName" id="projectName" value="${flash.projectEdit.name}" class="text ui-widget-content ui-corner-all"/></td>
+				</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding-bottom: 5px;"><b><label><g:message code="project.taskNumberingSettings"/></label></b></td>
+				</tr>
+				<tr>
+					<td><label><g:message code="project.taskNumberingEnabled"/></label></td>
+					<g:if test="${flash.projectEdit.taskNumberingEnabled}">
+						<td><input type="checkbox" name="projectTaskNumberingEnabled" id="projectTaskNumberingEnabled" value="true" checked="checked" class="checkbox ui-widget-content ui-corner-all"/></td>
+					</g:if>
+					<g:else>
+						<td><input type="checkbox" name="projectTaskNumberingEnabled" id="projectTaskNumberingEnabled" value="true" class="checkbox ui-widget-content ui-corner-all"/></td>
+					</g:else>
+				</tr>
+				<tr>
+					<td><label><g:message code="project.taskNumberingPattern"/></label></td>
+					<td><input type="text" name="projectTaskNumberingPattern" id="projectTaskNumberingPattern" value="${flash.projectEdit.taskNumberingPattern}" class="text ui-widget-content ui-corner-all"/></td>
 				</tr>
 			</table>
 

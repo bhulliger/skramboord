@@ -23,9 +23,15 @@
 	<g:form url="[ controller: 'task', action: 'addTask', params: [ fwdTo: fwdTo, target: target ]]" name='formNewTask'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
+				<g:if test="${!flash.taskNumberingEnabled}">
+					<tr>
+						<td><label><g:message code="task.number"/></label></td>
+						<td><input type="text" name="taskNumber" id="taskNumber" value="${flash.taskIncomplete?.number}" class="text ui-widget-content ui-corner-all" /></td>
+					</tr>
+				</g:if>
 				<tr>
-					<td><label><g:message code="task.name"/></label></td>
-					<td><input type="text" name="taskName" id="taskName" value="${flash.taskIncomplete?.name}" class="text ui-widget-content ui-corner-all" /></td>
+					<td><label><g:message code="task.title"/></label></td>
+					<td><input type="text" name="taskTitle" id="taskTitle" value="${flash.taskIncomplete?.title}" class="text ui-widget-content ui-corner-all" /></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="task.effort"/></label></td>

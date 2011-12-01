@@ -44,7 +44,14 @@ abstract class BaseParser {
 	 */
 	def isValidHeader(csvData)  {}
 	
-	def getName(value, field) throws InvalidPropertyException {
+	def getNumber(value, field) throws InvalidPropertyException {
+		if (value == null || value.size() < 1) {
+			throw new InvalidPropertyException(field)
+		}
+		return value;
+	}
+	
+	def getTitle(value, field) throws InvalidPropertyException {
 		if (value == null || value.size() < 1) {
 			throw new InvalidPropertyException(field)
 		}

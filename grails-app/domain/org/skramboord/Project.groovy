@@ -24,7 +24,10 @@ class Project {
 	TwitterAccount twitter
 	static hasMany = [releases:Release, sprints:Sprint, tasks:Task, team:Membership, follower:Follow]
 	static belongsTo = [owner:User, master:User]
-
+	Integer taskCounter = 1
+	String taskNumberingPattern = "%d"
+	boolean taskNumberingEnabled = true
+	
 	def teamList() {
 		return team.collect{it.user}
 	}
@@ -43,6 +46,7 @@ class Project {
 	
     static constraints = {
 		name(nullable:false, blank:false, unique: true)
+		taskNumberingPattern(nullable:true)
 		owner(nullable:false)
 		master(nullable:false)
 		twitter(nullable:true)

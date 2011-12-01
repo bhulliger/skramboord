@@ -23,9 +23,21 @@
 	<g:form url="[ controller: 'task', action: 'update', params: [ fwdTo: fwdTo ]]" name='formEditTask'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
+				<g:if test="${flash.taskNumberingEnabled}">
+					<tr>
+						<td><label><g:message code="task.number"/></label></td>
+						<td><input type="text" name="taskNumber" id="taskNumber" disabled="disabled" value="${flash.taskEdit.number}" class="text ui-widget-content ui-corner-all" /></td>
+					</tr>
+				</g:if>
+				<g:else>
+					<tr>
+						<td><label><g:message code="task.number"/></label></td>
+						<td><input type="text" name="taskNumber" id="taskNumber" value="${flash.taskEdit.number}" class="text ui-widget-content ui-corner-all" /></td>
+					</tr>
+				</g:else>
 				<tr>
-					<td><label><g:message code="task.name"/></label></td>
-					<td><input type="text" name="taskName" id="taskName" value="${flash.taskEdit.name}" class="text ui-widget-content ui-corner-all" /></td>
+					<td><label><g:message code="task.title"/></label></td>
+					<td><input type="text" name="taskTitle" id="taskTitle" value="${flash.taskEdit.title}" class="text ui-widget-content ui-corner-all" /></td>
 				</tr>
 				<tr>
 					<td><label><g:message code="task.effort"/></label></td>

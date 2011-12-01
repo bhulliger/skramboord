@@ -70,6 +70,8 @@ class TaskController extends BaseController {
 
 		flash.numberOfTasks = flash.taskListOpen.size() + flash.taskListCheckout.size() + flash.taskListCodereview.size() + flash.taskListDone.size() + flash.taskListStandBy.size()
 
+		flash.taskNumberingEnabled = session.project.taskNumberingEnabled
+		
 		def totalEffort = Task.effortTasksTotal(session.sprint).list()?.first()
 		def totalEffortDone = Task.effortTasksDone(session.sprint).list()?.first()
 
@@ -130,7 +132,14 @@ class TaskController extends BaseController {
 	 */
 	def addTask = {
 		if (taskWorkPermission(session.user, session.project)) {
-			Task task = new Task(name: params.taskName, description: params.taskDescription,
+			
+			def project = Project.get(session.project.id)
+			def number = params.taskNumber
+			if (project.taskNumberingEnabled) {
+				number = String.format(project.taskNumberingPattern, project.taskCounter)
+			}
+			
+			Task task = new Task(number: number, title: params.taskTitle, description: params.taskDescription,
 					effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(),
 					priority: Priority.byName(params.taskPriority).list().first(),
 					type: TaskType.byName(params.taskType).list().first())
@@ -142,6 +151,9 @@ class TaskController extends BaseController {
 			if (!task.save()) {
 				flash.taskIncomplete = task
 				flash.objectToSave = task
+			} else {
+				++project.taskCounter
+				project.save()
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
@@ -159,7 +171,7 @@ class TaskController extends BaseController {
 				def task = Task.get(params.task)
 				task.delete()
 
-				flash.message = message(code:"task.deleted", args:[task.name])
+				flash.message = message(code:"task.deleted", args:[task.number])
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
@@ -172,6 +184,7 @@ class TaskController extends BaseController {
 		if (taskWritePermission(session.user, session.project)) {
 			if (params.task) {
 				flash.taskEdit = Task.get(params.task)
+				flash.taskNumberingEnabled = session.project.taskNumberingEnabled
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
@@ -188,7 +201,12 @@ class TaskController extends BaseController {
 			if (params.taskId) {
 				def task = Task.get(params.taskId)
 
-				task.name = params.taskName
+				def project = Project.get(session.project.id)
+				if (!project.taskNumberingEnabled) {
+					task.number = params.taskNumber
+				}
+				
+				task.title = params.taskTitle
 				task.description = params.taskDescription
 				task.effort = params.taskEffort ? params.taskEffort.toDouble() : null
 				task.url = params.taskLink
@@ -225,14 +243,15 @@ class TaskController extends BaseController {
 					def taskObject
 
 					// decide if update or new
-					if (Task.findByName(task.name) == null) {
+					if (Task.findByName(task.number) == null) {
 						taskObject = new Task()
 					} else {
-						taskObject = Task.findByName(task.name)
+						taskObject = Task.findByName(task.number)
 					}
 
 					taskObject.user = task.user
-					taskObject.name = task.name
+					taskObject.number = task.number
+					taskObject.title = task.title
 					taskObject.description = task.description
 					taskObject.effort = task.effort
 					taskObject.url = task.url
@@ -389,7 +408,7 @@ class TaskController extends BaseController {
 			task.save()
 
 			// tweet it!
-			sendTwitterMessage(session.project, (String)"Task '${task.name}' by '${task.user?.userRealName}' ready to review, ${new Date()}")
+			sendTwitterMessage(session.project, (String)"Task '${task.number}' by '${task.user?.userRealName}' ready to review, ${new Date()}")
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
@@ -407,7 +426,7 @@ class TaskController extends BaseController {
 			task.save()
 
 			// tweet it!
-			sendTwitterMessage(session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
+			sendTwitterMessage(session.project, (String)"Task '${task.number}' done by '${task.user?.userRealName}', ${new Date()}")
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}

@@ -19,8 +19,9 @@ package org.skramboord
 
 import java.util.Date;
 
-class Task {	
-	String name
+class Task {
+	String number
+	String title
 	String description
 	Double effort
 	String url
@@ -41,7 +42,8 @@ class Task {
 	}
 	                    
 	static constraints = {
-		name(nullable:false, blank:false)
+		number(nullable:false, blank:false)
+		title(nullable:true)
 		description(nullable:true)
 		effort(nullable:false)
 		url(url:true)
@@ -67,14 +69,14 @@ class Task {
 		projectBacklogWithPriority { fromProject, withPriority ->
 			eq('project', fromProject)
 			eq('priority', withPriority)
-			order('name',"asc")
+			order('number',"asc")
 		}
 		fromUser { fromUser ->
 			eq('user', fromUser)
 			eq('state', StateTask.getStateCheckedOut())
 			order('priority',"desc")
 			order('project',"asc")
-			order('name',"asc")
+			order('number',"asc")
 		}
 		effortTasksDone { fromSprint ->
 			eq('state', StateTask.getStateDone())

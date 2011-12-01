@@ -165,7 +165,7 @@
 											<g:def var="sprintId" value="${task.sprint?.id}"/>
 											<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 												<td style="vertical-align: middle;">
-													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.name}</span></g:link>
+													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.number}</span></g:link>
 												</td>
 												<td style="vertical-align: middle;">${task.sprint?.release?.project?.name}</td>
 												<td style="vertical-align: middle;">${task.sprint?.release?.name}</td>

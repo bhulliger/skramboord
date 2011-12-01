@@ -602,10 +602,16 @@ div.clear {
 
 .iconsTaskEditNone {
 	display: none;
+	float: right;
+	top: -20px;
 }
 
 .iconsTaskEdit {
 	display: block;
+	float: right;
+	top: -20px;
+	position:relative;
+	z-index: 2; 
 }
 
 div.taskNumber {
@@ -621,7 +627,7 @@ div.taskNumberShort {
 	overflow-x: hidden;
 	overflow-y: hidden;
 	white-space: nowrap;
-	width: 120px;
+	width: 110px;
 	position: relative;
 	z-index: 1;
 }

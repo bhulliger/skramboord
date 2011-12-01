@@ -34,9 +34,8 @@
 				<ul>
 					<li><a href="#tab-0" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '0'])}"><g:message code="admin.userList"/></a></li>
 					<li><a href="#tab-1" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '1'])}"><g:message code="admin.appearance"/></a></li>
-					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '2'])}"><g:message code="admin.priorities"/></a></li>
-					<li><a href="#tab-3" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '3'])}"><g:message code="admin.taskTypes"/></a></li>
-					<li><a href="#tab-4" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '4'])}"><g:message code="twitter"/></a></li>
+					<li><a href="#tab-2" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '2'])}"><g:message code="admin.taskTypes"/></a></li>
+					<li><a href="#tab-3" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'administration', tabName: '3'])}"><g:message code="twitter"/></a></li>
 				</ul>
 				<div id="tab-0">
 					<g:render template="users"/>
@@ -45,12 +44,9 @@
 					<g:render template="appearance"/>
 				</div>
 				<div id="tab-2">
-					<g:render template="priorities"/>
-				</div>
-				<div id="tab-3">
 					<g:render template="taskTypes"/>
 				</div>
-				<div id="tab-4">
+				<div id="tab-3">
 					<g:render template="twitter"/>
 				</div>
 			</div>

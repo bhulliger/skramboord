@@ -27,14 +27,8 @@ class Priority {
 	static String IMMEDIATE = "immediate"
 	
 	String name
-	Color color
 	
 	Priority () {
-	}
-	
-	Priority (String name, Color color) {
-		this.name = name
-		this.color = color
 	}
 	
 	Priority (String name) {
@@ -45,18 +39,8 @@ class Priority {
 		return name
 	}
 	
-	String colorAsString() {
-		String hex = Integer.toHexString(color.getRGB() & 0x00ffffff)
-		// add leading zeros if necessary
-		while(hex.length() < 6) {
-			hex = "0" + hex
-		}
-		return hex
-	}
-	
 	static constraints = {
 		name(nullable:false)
-		color(nullable:false)
     }
 	
 	static namedQueries = {
@@ -69,7 +53,6 @@ class Priority {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}

@@ -32,20 +32,12 @@ class AdministrationController extends BaseController {
 		flash.userRoles = Role.list()
 		flash.userRoleDefault = Role.withAuthority(Role.ROLE_USER).list().first()
 		
-		flash.priorities = Priority.withCriteria {
-			if (params.priorities) {
-				order(params.sort, params.order)
-			} else {
-				order('id', 'asc')
-			}
-		}
-		
 		flash.taskTypes=TaskType.list()
 		flash.taskTypeColors=["blue","green","purple","yellow"]
 		
 		flash.themeActually = systemPreferences?.theme
 		flash.themes = Theme.withCriteria {
-			if (params.priorities) {
+			if (params.themes) {
 				order(params.sort, params.order)
 			} else {
 				order('name', 'asc')
@@ -61,21 +53,6 @@ class AdministrationController extends BaseController {
 		}
 
 		flash.twitterRandomAppName = "skramboord-" + Math.abs((new Random(System.currentTimeMillis())).nextInt().hashCode())
-	}
-	
-	def savePriorities = {
-		def priorities = Priority.list()
-		
-		try {
-			for (Priority prio : priorities) {
-				prio.color = Color.decode("0x" + params["priority_${prio.id}"])
-				prio.save()
-			}
-		} catch (NumberFormatException e) {
-			flash.message = message(code:"admin.hexValues")
-		}
-		
-		redirect(controller:'administration', action:'list')
 	}
 	
 	def saveTaskTypes = {

@@ -25,7 +25,7 @@ class Project {
 	static hasMany = [releases:Release, sprints:Sprint, tasks:Task, team:Membership, follower:Follow]
 	static belongsTo = [owner:User, master:User]
 	Integer taskCounter = 1
-	String taskNumberingPattern = "%d"
+	String taskNumberingPattern = "Task %d"
 	boolean taskNumberingEnabled = true
 	
 	def teamList() {

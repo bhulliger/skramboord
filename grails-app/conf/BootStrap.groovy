@@ -118,26 +118,26 @@ class BootStrap {
 
 		// Sprint 1
 		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", personDays: 26, startDate: date4, endDate: date3, tasks: [])
-		createTask(userDev1, sprint1_0, "Mantis 1812", "title abcd", "Long names of the tasks should be shortened.", 2.0, url, taskStateDone, normal, bug, date4 + 1)
-		createTask(userDev3, sprint1_0, "Mantis 1798", "title abcd", "Change CSS style of the whole application to blue/white.", 4.0, url, taskStateDone, normal, feature, date4 + 3)
-		createTask(userDev1, sprint1_0, "Mantis 1765", "title abcd", null, 4.5, url, taskStateDone, high, feature, date4 + 4)
-		createTask(userDev3, sprint1_0, "Mantis 1705", "title abcd", null, 3.5, url, taskStateDone, normal, feature, date4 + 5)
-		createTask(userDev3, sprint1_0, "Mantis 1731", "title abcd", "This is just a sentence about nothing to show how this tooltip works with a long text. Maybe this text should be much longer. Or maybe it should also has formatted stuff in it like <b>bold</b> or <i>italic</i>...", 2.0, url, taskStateDone, low, bug, date4 + 6)
-		createTask(userDev1, sprint1_0, "Mantis 1733", "title abcd", null, 2.5, url, taskStateDone, low, documentation, date4 + 8)
-		createTask(userDev2, sprint1_0, "Mantis 1722", "title abcd", null, 0.5, url, taskStateDone, low, feature, date4 + 9)
-		createTask(userDev2, sprint1_0, "Mantis 1700", "title abcd", null, 4, url, taskStateDone, low, feature, date4 + 10)
+		createTask(userDev1, sprint1_0, "Mantis 1812", "Long names", "Long names of the tasks should be shortened.", 2.0, url, taskStateDone, normal, bug, date4 + 1)
+		createTask(userDev3, sprint1_0, "Mantis 1798", "CSS style", "Change CSS style of the whole application to blue/white.", 4.0, url, taskStateDone, normal, feature, date4 + 3)
+		createTask(userDev1, sprint1_0, "Mantis 1765", "hmmm.... nothing", null, 4.5, url, taskStateDone, high, feature, date4 + 4)
+		createTask(userDev3, sprint1_0, "Mantis 1705", "nope! nothing.", null, 3.5, url, taskStateDone, normal, feature, date4 + 5)
+		createTask(userDev3, sprint1_0, "Mantis 1731", "tooltip", "This is just a sentence about nothing to show how this tooltip works with a long text. Maybe this text should be much longer. Or maybe it should also has formatted stuff in it like <b>bold</b> or <i>italic</i>...", 2.0, url, taskStateDone, low, bug, date4 + 6)
+		createTask(userDev1, sprint1_0, "Mantis 1733", "nada!", null, 2.5, url, taskStateDone, low, documentation, date4 + 8)
+		createTask(userDev2, sprint1_0, "Mantis 1722", "niente!", null, 0.5, url, taskStateDone, low, feature, date4 + 9)
+		createTask(userDev2, sprint1_0, "Mantis 1700", "nŸŸt!", null, 4, url, taskStateDone, low, feature, date4 + 10)
 
 		// Sprint 2
 		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", personDays: 28.5, startDate: date3, endDate: date2, tasks: [])
-		createTask(userDev2, sprint1_1, "Mantis 1980", "title abcd", null, 5.5, url, taskStateDone, normal, feature, date3 + 2)
-		createTask(userDev3, sprint1_1, "Mantis 2100", "title abcd", null, 2.0, url, taskStateDone, immediate, feature, date3 + 4)
-		createTask(null, sprint1_1, "Mantis 2001", "title abcd", null, 2.0, url, taskStateOpen, normal, feature, null)
-		createTask(null, sprint1_1, "Mantis 2015", "title abcd", "Change CSS style of the whole application to yellow/black/white.", 3.5, url, taskStateOpen, urgent, feature, null)
-		createTask(null, sprint1_1, "Mantis 1987", "title abcd", null, 0.5, url, taskStateOpen, high, documentation, null)
-		createTask(null, sprint1_1, "Mantis 1950", "title abcd", null, 2.5, url, taskStateOpen, normal, bug, null)
-		createTask(userDev1, sprint1_1, "Mantis 1999", "title abcd", null, 1.0, url, taskStateChecked, immediate, feature, null)
-		createTask(null, sprint1_1, "Mantis 2012", "title abcd", null, 1.5, url, taskStateNext, normal, feature, null)
-		createTask(null, sprint1_1, "Mantis 2014", "title abcd", "Change CSS style of the whole application to orange/white.", 5.0, url, taskStateNext, low, feature, null)
+		createTask(userDev2, sprint1_1, "Mantis 1980", "Leere Menge", null, 5.5, url, taskStateDone, normal, feature, date3 + 2)
+		createTask(userDev3, sprint1_1, "Mantis 2100", "maybe?! no, nothing.", null, 2.0, url, taskStateDone, immediate, feature, date3 + 4)
+		createTask(null, sprint1_1, "Mantis 2001", "nonononothing", null, 2.0, url, taskStateOpen, normal, feature, null)
+		createTask(null, sprint1_1, "Mantis 2015", "CSS style", "Change CSS style of the whole application to yellow/black/white.", 3.5, url, taskStateOpen, urgent, feature, null)
+		createTask(null, sprint1_1, "Mantis 1987", "this is a title", null, 0.5, url, taskStateOpen, high, documentation, null)
+		createTask(null, sprint1_1, "Mantis 1950", "message in a bottle", null, 2.5, url, taskStateOpen, normal, bug, null)
+		createTask(userDev1, sprint1_1, "Mantis 1999", "another title to read", null, 1.0, url, taskStateChecked, immediate, feature, null)
+		createTask(null, sprint1_1, "Mantis 2012", "Titugschicht", null, 1.5, url, taskStateNext, normal, feature, null)
+		createTask(null, sprint1_1, "Mantis 2014", "CSS style", "Change CSS style of the whole application to orange/white.", 5.0, url, taskStateNext, low, feature, null)
 
 		// Sprint 1
 		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", personDays: null, startDate: date2, endDate: date1, tasks: [])
@@ -233,11 +233,11 @@ class BootStrap {
 		
 		// Initialize priorities
 		if (Priority.list()?.isEmpty()) {
-			low = new Priority(Priority.LOW, Color.decode("0x808080")).save()
-			normal = new Priority(Priority.NORMAL, Color.decode("0x42a642")).save()
-			high = new Priority(Priority.HIGH, Color.decode("0x3d3da8")).save()
-			urgent = new Priority(Priority.URGENT, Color.decode("0x968136")).save()
-			immediate = new Priority(Priority.IMMEDIATE, Color.decode("0xad3e3e")).save()
+			low = new Priority(Priority.LOW).save()
+			normal = new Priority(Priority.NORMAL).save()
+			high = new Priority(Priority.HIGH).save()
+			urgent = new Priority(Priority.URGENT).save()
+			immediate = new Priority(Priority.IMMEDIATE).save()
 		}
 		
 		// Initialize task types

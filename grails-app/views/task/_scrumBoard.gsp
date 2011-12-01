@@ -125,8 +125,8 @@ $("#productBacklog").hide();
 	        <g:if test="${flash.importReport.errors}">
 		        <table style="padding-bottom: 40px;">
 		            <thead>
-		                <th>Zeile</th>
-		                <th>Fehler</th>
+		                <th><g:message code="csv.line"/></th>
+		                <th><g:message code="csv.error"/></th>
 		            </thead>
 				    <g:each var="error" in="${flash.importReport.errors}" status="i">
 				       <tr>

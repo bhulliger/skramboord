@@ -12,8 +12,8 @@
 	<li id="taskId_${task.id}" style="margin: 0; padding: 0;">
 </g:else>
 
-	<div class="postit-right-${task.type.color}" onmouseover="changeClass('icons_${task.id}', 'iconsTaskEdit'); changeClass('taskNumber_${task.id}', 'taskNumberShort');"
-	                              				onmouseout="changeClass('icons_${task.id}', 'iconsTaskEditNone'); changeClass('taskNumber_${task.id}', 'taskNumber');">
+	<div class="postit-right-${task.type.color}" onmouseover="changeClass('icons_${task.id}', 'iconsTaskEdit');"
+	                              				onmouseout="changeClass('icons_${task.id}', 'iconsTaskEditNone');">
 		<div class="postit-${task.type.color}">
 			<div style="float: left; padding-right: 5px;">
 				<img alt="priority" src="../images/skramboord/priorities/priority_${task.priority.name}.png">

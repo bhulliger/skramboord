@@ -622,12 +622,3 @@ div.taskNumber {
 	position: relative;
 	z-index: 1;
 }
-
-div.taskNumberShort {
-	overflow-x: hidden;
-	overflow-y: hidden;
-	white-space: nowrap;
-	width: 110px;
-	position: relative;
-	z-index: 1;
-}

@@ -20,7 +20,7 @@
 </script>
 
 <div id="dialog-form-project-edit" title="${message(code:'project.formNameEditProject')}" class="form">
-	<g:form url="[ controller: 'project', action: 'update', params: [ fwdTo: fwdTo ]]" name='formEditProject'>
+	<g:form url="${createLink(mapping: 'project', action: 'update', params: [project: flash.project ? flash.project?.id : 0, fwdTo: fwdTo])}" name='formEditProject'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
 				<tr>

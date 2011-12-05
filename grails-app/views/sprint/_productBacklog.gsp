@@ -28,10 +28,14 @@
 		}).disableSelection();
 </g:if>
 	});
+
+    function changeClass(id, clazz) {
+    	document.getElementById(id).setAttribute('class', clazz);
+    }
 	
 <g:if test="${flash.teammate}">
 	function changePrioTo(event, ui, stateMethod, priority){
-		location.href="${request.contextPath}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id") + "&taskPrio=" + priority;
+		location.href="${request.contextPath}/project/${flash.project.id}/sprint/0/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id") + "&taskPrio=" + priority;
 	}
 
 	function openNewTaskForm(){

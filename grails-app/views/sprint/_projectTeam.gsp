@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$(function() {
-<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 		$("#poductOwner").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
@@ -29,7 +29,7 @@
 	});
 
 	function changeTo(event, ui, stateMethod){
-		location.href="${request.contextPath}/sprint/" + stateMethod + "?personId=" + $(ui.item).attr("id");
+		location.href="${request.contextPath}/project/${flash.project.id}/sprint/" + stateMethod + "?personId=" + $(ui.item).attr("id");
 	}
 </g:if>
 </script>
@@ -38,8 +38,8 @@
 	<div class="poductOwner">
 		<div class="boardheader"><g:message code="project.owner"/></div>
 		<ul id="poductOwner" class="connectedSortable">
-			<li id="personId_${session.project.owner.id}" style="margin: 0; padding: 0;">
-				<g:render template="person" model="['person':session.project.owner]"/>
+			<li id="personId_${flash.project.owner.id}" style="margin: 0; padding: 0;">
+				<g:render template="person" model="['person':flash.project.owner]"/>
 			</li>
 		</ul>
 	</div>
@@ -48,8 +48,8 @@
 	<div class="scrumMaster">
 		<div class="boardheader"><g:message code="project.master"/></div>
 		<ul id="scrumMaster" class="connectedSortable">
-			<li id="personId_${session.project.master.id}" style="margin: 0; padding: 0;">
-				<g:render template="person" model="['person':session.project.master]"/>
+			<li id="personId_${flash.project.master.id}" style="margin: 0; padding: 0;">
+				<g:render template="person" model="['person':flash.project.master]"/>
 			</li>
 		</ul>
 	</div>
@@ -64,7 +64,7 @@
 			<ul id="developers" class="connectedSortable" style="padding-bottom: 100px;">
 		</g:else>
 			<g:each in="${flash.teamList}" status="i" var="person">
-				<g:if test="${(person.id != session.project.master.id) && (person.id != session.project.owner.id)}">
+				<g:if test="${(person.id != flash.project.master.id) && (person.id != flash.project.owner.id)}">
 					<li id="personId_${person.id}" style="margin: 0; padding: 0;">
 						<g:render template="person" model="['person':person]"/>
 					</li>

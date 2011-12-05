@@ -16,14 +16,14 @@
 	                              				onmouseout="changeClass('icons_${task.id}', 'iconsTaskEditNone');">
 		<div class="postit-${task.type.color}">
 			<div style="float: left; padding-right: 5px;">
-				<img alt="priority" src="../images/skramboord/priorities/priority_${task.priority.name}.png">
+				<img alt="priority" src="${resource(dir:'images/skramboord/priorities',file:'priority_' + task.priority.name + '.png')}">
 			</div>
 			<div id="taskNumber_${task.id}" class="taskNumber" style="position:relative; z-index: 1;">
 				<span style="color: black; font-size: 1em; font: bolder;">${task.number}</span>
 			</div>
 			
 			<% Integer width = 60; %>
-			<g:if test="${!(org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.id.equals(session.project.owner.id) || session.user.id.equals(session.project.master.id))}">
+			<g:if test="${!(org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.id.equals(flash.project.owner.id) || session.user.id.equals(flash.project.master.id))}">
 				<% width = width - 40; %>
 			</g:if>
 			<g:if test="${task.url?.size() == 0}">
@@ -37,11 +37,11 @@
 							<span class="icon"><img src="${resource(dir:'images/icons',file:'link_go.png')}" alt="task url"/></span>
 						</g:link>
 					</g:if>
-					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.id.equals(session.project.owner.id) || session.user.id.equals(session.project.master.id)}">
-						<g:link controller="task" action="edit" params="[task: task.id, fwdTo: fwdTo]">
+					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.id.equals(flash.project.owner.id) || session.user.id.equals(flash.project.master.id)}">
+						<g:link mapping="task" action="edit" params="[project: flash.project.id, sprint: flash.sprint?.id ? flash.sprint.id : 0, task: task.id, fwdTo: fwdTo]">
 							<span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="edit"/></span>
 						</g:link>
-						<g:link controller="task" action="delete" params="[task: task.id, fwdTo: fwdTo]" onclick="return confirm('${message(code:'task.delete', args: [task.number])}');">
+						<g:link mapping="task" action="delete" params="[project: flash.project.id, sprint: flash.sprint?.id ? flash.sprint.id : 0, task: task.id, fwdTo: fwdTo]" onclick="return confirm('${message(code:'task.delete', args: [task.number])}');">
 							<span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="delete"/></span>
 						</g:link>
 					</g:if>

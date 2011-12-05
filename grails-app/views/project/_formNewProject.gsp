@@ -25,7 +25,7 @@
 </script>
 
 <div id="dialog-form-project" title="${message(code:'project.formNameCreateProject')}" class="form">
-	<g:form action='addProject' name='formNewProject'>
+	<g:form url="${createLink(mapping: 'project', action: 'addProject')}" name='formNewProject'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
 				<tr>

@@ -24,43 +24,41 @@ import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 class SprintController extends BaseController {
 
 	def index = {
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	def list = {
+		flash.project = getProject()
+		
 		flash.twitterAppSettings = getSystemPreferences().twitterSettings
 
-		if (params.project) {
-			session.project = Project.get(params.project)
-		} else {
-			session.project = Project.get(session.project.id)
-		}
-
 		// check if this user has access rights
-		if (sprintViewPermission(session.user, session.project)) {
+		if (sprintViewPermission(session.user, flash.project)) {
 			redirect(controller:'project', action:'list')
 		}
 
-		flash.watchList = User.followers(session.project).list()
-		flash.teamList = User.projectTeam(session.project).list()
+		flash.watchList = User.followers(flash.project).list()
+		flash.teamList = User.projectTeam(flash.project).list()
 
 		flash.fullList = new HashSet<User>()
 		flash.fullList.addAll(flash.watchList)
 		flash.fullList.addAll(flash.teamList)
-		flash.fullList.add(session.project.owner)
-		flash.fullList.add(session.project.master)
+		flash.fullList.add(flash.project.owner)
+		flash.fullList.add(flash.project.master)
 		flash.fullList = flash.fullList.sort{it.username }
 
 		flash.personList = User.list(params)
 		flash.personList.removeAll(flash.fullList)
 
 		flash.releaseList = Release.withCriteria {
-			eq('project', session.project)
+			eq('project', flash.project)
 			order('name','asc')
 		}
 
+		flash.taskNumberingEnabled = flash.project.taskNumberingEnabled
+		
 		// teammate or follower?
-		if (sprintWritePermission(session.user, session.project)) {
+		if (sprintWritePermission(session.user, flash.project)) {
 			flash.teammate = true
 		}
 
@@ -68,18 +66,19 @@ class SprintController extends BaseController {
 		flash.taskTypes=TaskType.list()
 		
 		// product backlog
-		flash.backlogLow = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.LOW).list()?.first()).list()
-		flash.backlogNormal = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.NORMAL).list()?.first()).list()
-		flash.backlogHigh = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.HIGH).list()?.first()).list()
-		flash.backlogUrgent = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.URGENT).list()?.first()).list()
-		flash.backlogImmediate = Task.projectBacklogWithPriority(session.project, Priority.byName(Priority.IMMEDIATE).list()?.first()).list()
+		flash.backlogLow = Task.projectBacklogWithPriority(flash.project, Priority.byName(Priority.LOW).list()?.first()).list()
+		flash.backlogNormal = Task.projectBacklogWithPriority(flash.project, Priority.byName(Priority.NORMAL).list()?.first()).list()
+		flash.backlogHigh = Task.projectBacklogWithPriority(flash.project, Priority.byName(Priority.HIGH).list()?.first()).list()
+		flash.backlogUrgent = Task.projectBacklogWithPriority(flash.project, Priority.byName(Priority.URGENT).list()?.first()).list()
+		flash.backlogImmediate = Task.projectBacklogWithPriority(flash.project, Priority.byName(Priority.IMMEDIATE).list()?.first()).list()
 	}
 
 	/**
 	 * Add new sprint
 	 */
 	def addSprint = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			def startDate = params.startDateHidden ? new Date(params.startDateHidden) : null
 			def endDate = params.endDateHidden ? new Date(params.endDateHidden) : null
 
@@ -96,11 +95,12 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
-
+	
 	def edit = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			if (params.sprint) {
 				flash.sprintEdit = Sprint.get(params.sprint)
 			}
@@ -108,14 +108,15 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Sprint edit action
 	 */
 	def update = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			if (params.sprintId) {
 				def sprint = Sprint.get(params.sprintId)
 				sprint.name = params.sprintName
@@ -136,14 +137,15 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Sprint delete action
 	 */
 	def delete = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			if (params.sprint) {
 				def sprint = Sprint.get(params.sprint)
 				sprint.delete()
@@ -154,28 +156,29 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Sets a new scrum master.
 	 */
 	def movePersonToScrumMaster = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			User user = User.get(removePersonPrefix(params.personId))
-			session.project.refresh()
-			if (session.project.owner.id != user.id) {
-				if (User.projectTeam(session.project).list().contains(user)) {
+			flash.project.refresh()
+			if (flash.project.owner.id != user.id) {
+				if (User.projectTeam(flash.project).list().contains(user)) {
 					// Remove as developer
-					removeDeveloper(user, session.project)
+					removeDeveloper(user, flash.project)
 				}
-				if (User.followers(session.project).list().contains(user)) {
+				if (User.followers(flash.project).list().contains(user)) {
 					// Remove as follower
-					Follow.unlink(session.project, user)
+					Follow.unlink(flash.project, user)
 				}
 
-				session.project.master = user
-				session.project.save()
+				flash.project.master = user
+				flash.project.save()
 			} else {
 				flash.message = message(code:"project.error.masterOrOwnerRemoved")
 			}
@@ -183,28 +186,29 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Sets a new product owner.
 	 */
 	def movePersonToProdctOwner = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			User user = User.get(removePersonPrefix(params.personId))
-			session.project.refresh()
-			if (session.project.master.id != user.id) {
-				if (User.projectTeam(session.project).list().contains(user)) {
+			flash.project.refresh()
+			if (flash.project.master.id != user.id) {
+				if (User.projectTeam(flash.project).list().contains(user)) {
 					// Remove as developer
-					removeDeveloper(user, session.project)
+					removeDeveloper(user, flash.project)
 				}
-				if (User.followers(session.project).list().contains(user)) {
+				if (User.followers(flash.project).list().contains(user)) {
 					// Remove as follower
-					Follow.unlink(session.project, user)
+					Follow.unlink(flash.project, user)
 				}
 
-				session.project.owner = user
-				session.project.save()
+				flash.project.owner = user
+				flash.project.save()
 			} else {
 				flash.message = message(code:"project.error.masterOrOwnerRemoved")
 			}
@@ -212,27 +216,28 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Moves a person back to the user list.
 	 */
 	def movePersonToUsers = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			User user = User.get(removePersonPrefix(params.personId))
-			session.project.refresh()
-			if (session.project.master.id != user.id && session.project.owner.id != user.id) {
-				if (User.projectTeam(session.project).list().contains(user)) {
+			flash.project.refresh()
+			if (flash.project.master.id != user.id && flash.project.owner.id != user.id) {
+				if (User.projectTeam(flash.project).list().contains(user)) {
 					// Remove as developer
-					removeDeveloper(user, session.project)
+					removeDeveloper(user, flash.project)
 				}
-				if (User.followers(session.project).list().contains(user)) {
+				if (User.followers(flash.project).list().contains(user)) {
 					// Remove as follower
-					Follow.unlink(session.project, user)
+					Follow.unlink(flash.project, user)
 				}
 
-				session.project.save()
+				flash.project.save()
 			} else {
 				flash.message = message(code:"project.error.masterOrOwnerRemoved")
 			}
@@ -240,23 +245,24 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Adds a person to a project as follower.
 	 */
 	def movePersonToFollowers = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			User user = User.get(removePersonPrefix(params.personId))
-			session.project.refresh()
-			if (session.project.master.id != user.id && session.project.owner.id != user.id) {
-				if (User.projectTeam(session.project).list().contains(user)) {
+			flash.project.refresh()
+			if (flash.project.master.id != user.id && flash.project.owner.id != user.id) {
+				if (User.projectTeam(flash.project).list().contains(user)) {
 					// Remove as developer
-					removeDeveloper(user, session.project)
+					removeDeveloper(user, flash.project)
 				}
 				// Add as follower
-				Follow.link(session.project, user)
+				Follow.link(flash.project, user)
 			} else {
 				flash.message = message(code:"project.error.masterOrOwnerRemoved")
 			}
@@ -264,23 +270,24 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Adds a person to a project as developer.
 	 */
 	def movePersonToDevelopers = {
-		if (sprintWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (sprintWritePermission(session.user, flash.project)) {
 			User user = User.get(removePersonPrefix(params.personId))
-			session.project.refresh()
-			if (session.project.master.id != user.id && session.project.owner.id != user.id) {
-				if (User.followers(session.project).list().contains(user)) {
+			flash.project.refresh()
+			if (flash.project.master.id != user.id && flash.project.owner.id != user.id) {
+				if (User.followers(flash.project).list().contains(user)) {
 					// Remove as follower
-					Follow.unlink(session.project, user)
+					Follow.unlink(flash.project, user)
 				}
 				// Add as developer
-				Membership.link(session.project, user)
+				Membership.link(flash.project, user)
 			} else {
 				flash.message = message(code:"project.error.masterOrOwnerRemoved")
 			}
@@ -288,7 +295,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**

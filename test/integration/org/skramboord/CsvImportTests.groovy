@@ -43,7 +43,7 @@ class CsvImportTests extends GroovyTestCase {
 		
 		controller.response.reset()
 		controller.response.committed = false*/
-		controller.session.project = Project.get(1)
+		controller.flash.project = Project.get(1)
 		controller.session.user = User.findByUsername('admin')		
 		controller.params.fwdTo = 'task'
 		controller.params.target = 'sprint'		

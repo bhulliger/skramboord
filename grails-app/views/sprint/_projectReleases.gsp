@@ -12,12 +12,12 @@
 
 	function deleteRelease(releaseId, message){
 		if (confirm(message)){
-			location.href="${request.contextPath}/release/delete?release=" + releaseId;
+			location.href="${request.contextPath}/project/${flash.project.id}/release/delete?release=" + releaseId;
 		}
 	}
 
 	function editRelease(releaseId){
-		location.href="${request.contextPath}/release/edit?release=" + releaseId;
+		location.href="${request.contextPath}/project/${flash.project.id}/release/edit?release=" + releaseId;
 	}
 </script>
 
@@ -27,7 +27,7 @@
 <g:elseif test="${flash.releaseEdit}">
 	<g:render template="../release/formEditRelease"/>
 </g:elseif>
-<g:elseif test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+<g:elseif test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 	<g:render template="formNewSprint"/>
 	<g:render template="../release/formNewRelease"/>
 </g:elseif>
@@ -37,14 +37,14 @@
 		<g:message code="release.noReleases"/>
 	</div>
 	
-	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 		<div class="buttons">
 			<span class="button"><g:actionSubmit class="add" onclick="return openFormNewRelease();" value="${message(code:'release.createRelease')}" /></span>
 		</div>
 	</g:if>
 </g:if>
 <g:else>
-	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+	<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 		<div class="buttons">
 			<span class="button"><g:actionSubmit class="add" onclick="return openFormNewRelease();" value="${message(code:'release.createRelease')}" /></span>
 		</div>
@@ -54,7 +54,7 @@
 			<h3>
 				<a href="#" onclick="${remoteFunction(controller: 'user', action:'tabChange', params:[viewName: 'releases', tabName: j])}">
 					${release.name} - ${release.goal}, <g:formatDate format="dd.MM.yyyy" date="${Sprint.startDateRelease(release).list()?.first()}"/> - <g:formatDate format="dd.MM.yyyy" date="${Sprint.endDateRelease(release).list()?.first()}"/>
-					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}" onclick="return deleteRelease(${release.id}, '${message(code:'release.delete', args: [release.name])}');"/></span>
 						<span style="float: right;"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}" onclick="return editRelease(${release.id});"/></span>
 						<span class="clear">&nbsp;</span>
@@ -66,8 +66,8 @@
 					<div class="message">
 						<g:message code="sprint.noSprints"/>
 					</div>
-					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
-						<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+					<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
+						<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 							<div class="buttons">
 								<span class="button"><g:actionSubmit class="add" onclick="return openFormNewSprint(${release.id});" value="${message(code:'sprint.createSprint')}" /></span>
 							</div>
@@ -85,7 +85,7 @@
 								<th style="width: 70px;"><g:message code="sprint.end"/></th>
 								<th style="text-align:center;"><g:message code="task.tasks"/></th>
 								<th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
-								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+								<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 									<th style="width: 40px;"></th>
 								</g:if>
 							</tr>
@@ -93,7 +93,7 @@
 								<g:def var="sprintId" value="${sprint.id}"/>
 								<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 									<td>
-										<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
+										<g:link mapping="task" action="list" params="[project: flash.project.id, sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
 									</td>
 									<td style="vertical-align: middle;">${sprint.goal}</td>
 									<td style="vertical-align: middle;text-align:center;">${sprint.personDays}</td>
@@ -111,16 +111,16 @@
 											<img src="${resource(dir:'images/icons',file:'flag_red.png')}" alt="Sprint is finished"/>
 										</g:else>
 									</td>
-									<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+									<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 										<td>
-											<g:link controller="sprint" action="edit" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span></g:link>
-											<g:link controller="sprint" action="delete" params="[sprint: sprintId]" onclick="return confirm('${message(code:'sprint.delete', args: [sprint.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span></g:link>
+											<g:link mapping="sprint" action="edit" params="[project: flash.project.id, sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span></g:link>
+											<g:link mapping="sprint" action="delete" params="[project: flash.project.id, sprint: sprintId]" onclick="return confirm('${message(code:'sprint.delete', args: [sprint.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span></g:link>
 										</td>
 									</g:if>
 								</tr>
 							</g:each>
 						</table>
-						<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(session.project.owner) || session.user.equals(session.project.master)}">
+						<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(flash.project.owner) || session.user.equals(flash.project.master)}">
 							<div class="buttons">
 								<span class="button"><g:actionSubmit class="add" onclick="return openFormNewSprint(${release.id});" value="${message(code:'sprint.createSprint')}" /></span>
 							</div>

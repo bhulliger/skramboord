@@ -88,7 +88,7 @@ $("#productBacklog").hide();
 	
 <g:if test="${flash.teammate}">
 	function changeTo(event, ui, stateMethod){
-		location.href="${request.contextPath}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
+		location.href="${request.contextPath}/project/${flash.project.id}/sprint/${flash.sprint.id}/task/" + stateMethod + "?taskId=" + $(ui.item).attr("id");
 	}
 
 	function openNewTaskForm(){
@@ -167,7 +167,7 @@ $("#productBacklog").hide();
 	<g:if test="${flash.taskEdit}">
 		<g:render template="formEditTask" model="['fwdTo': 'task']"/>
 	</g:if>
-	<g:elseif test="${session.sprint.isSprintActive()}">
+	<g:elseif test="${flash.sprint.isSprintActive()}">
 		<g:render template="formNewTask" model="['fwdTo': 'task', 'target': 'sprint']"/>
 		<g:render template="formImportTasks" model="['fwdTo': 'task', 'target': 'sprint']"/>
 	</g:elseif>

@@ -27,8 +27,8 @@
 						    	    {
 					    	    		xaxis: {
 				    							mode: 'time',
-				    							min: ${(session.sprint.startDate).getTime()},
-				    							max: ${(session.sprint.endDate).getTime() + 10000000}
+				    							min: ${(flash.sprint.startDate).getTime()},
+				    							max: ${(flash.sprint.endDate).getTime() + 10000000}
 										},
 						    			grid: { markings: markings }
 						    	    });
@@ -46,7 +46,7 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: session.project.id]">> ${session.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: session.sprint.id]">> ${session.sprint.name}</g:link></h1>
+			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: flash.project.id]">> ${flash.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: flash.sprint.id]">> ${flash.sprint.name}</g:link></h1>
 			<g:hasErrors bean="${flash.objectToSave}">
 				<div class="errors">
 					<g:renderErrors bean="${flash.objectToSave}" as="list"/>

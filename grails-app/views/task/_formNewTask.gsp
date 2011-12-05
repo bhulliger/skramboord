@@ -20,7 +20,9 @@
 </script>
 
 <div id="dialog-form" title="${message(code:'task.formNameCreateTask')}" class="form">
-	<g:form url="[ controller: 'task', action: 'addTask', params: [ fwdTo: fwdTo, target: target ]]" name='formNewTask'>
+	<g:form url="${flash.sprint?.id != null ?
+					createLink(mapping: 'task', action: 'addTask', params: [project: flash.project.id, sprint: flash.sprint?.id, fwdTo: fwdTo, target: target])
+					: createLink(mapping: 'task', action: 'addTask', params: [project: flash.project.id, sprint: 0, fwdTo: fwdTo, target: target])}" name="formNewTask">
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
 				<g:if test="${!flash.taskNumberingEnabled}">

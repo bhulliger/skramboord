@@ -18,15 +18,15 @@
 		</div>
 	</g:if>
 	<g:else>
-		<g:if test="${session.project.twitter}">
-			<g:if test="${session.project.twitter.enabled}">
+		<g:if test="${flash.project.twitter}">
+			<g:if test="${flash.project.twitter.enabled}">
 				<span class="icon"><img src="${resource(dir:'images/icons',file:'accept.png')}"/></span><span class="icon"><g:message code="twitter.enabled"/></span>
 			</g:if>
 			<g:else>
 				<span class="icon"><img src="${resource(dir:'images/icons',file:'error.png')}"/></span><span class="icon"><g:message code="twitter.disabled"/></span>
 			</g:else>
 			<div class="buttons">
-				<g:if test="${session.project.twitter.enabled}">
+				<g:if test="${flash.project.twitter.enabled}">
 					<span class="button"><g:actionSubmit class="disconnect" action="disableTwitter" value="${message(code:'default.button.twitter.disable.label')}" /></span>
 				</g:if>
 				<g:else>
@@ -44,5 +44,5 @@
 		</g:else>
 	</g:else>
 	
-	<input type="hidden" name="projectId" value="${session.project.id}" style="border-style: none;"/>
+	<input type="hidden" name="projectId" value="${flash.project.id}" style="border-style: none;"/>
 </g:form>

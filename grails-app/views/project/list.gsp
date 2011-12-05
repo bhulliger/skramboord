@@ -163,15 +163,16 @@
 										</tr>
 										<g:each var="task" in="${flash.myTasks}" status="i">
 											<g:def var="sprintId" value="${task.sprint?.id}"/>
+											<g:def var="projectId" value="${task.sprint?.release?.project.id}"/>
 											<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 												<td style="vertical-align: middle;">
-													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.number}</span></g:link>
+													<g:link mapping="task" action="list" params="[project: projectId, sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${task.number}</span></g:link>
 												</td>
 												<td style="vertical-align: middle;">${task.sprint?.release?.project?.name}</td>
 												<td style="vertical-align: middle;">${task.sprint?.release?.name}</td>
 												<td style="vertical-align: middle;">${task.sprint?.name}</td>
 												<td style="vertical-align: middle;text-align:center;">${task.effort}</td>
-												<td style="vertical-align: middle; font-weight: bold; color: #${task.priority.colorAsString()};"><g:message code="priorities.${task.priority.name}"/></td>
+												<td style="vertical-align: middle; font-weight: bold;"><g:message code="priorities.${task.priority.name}"/></td>
 											</tr>
 										</g:each>
 									</table>
@@ -202,9 +203,10 @@
 										</tr>
 										<g:each var="sprint" in="${flash.runningSprintsList}" status="i">
 											<g:def var="sprintId" value="${sprint.id}"/>
+											<g:def var="projectId" value="${sprint.release?.project.id}"/>
 											<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 												<td>
-													<g:link controller="task" action="list" params="[sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
+													<g:link mapping="task" action="list" params="[project: projectId, sprint: sprintId]"><span class="icon"><img src="${resource(dir:'images/icons',file:'magnifier.png')}" alt="edit"/></span><span class="icon">${sprint.name}</span></g:link>
 												</td>
 												<td style="vertical-align: middle;">${sprint.release?.name}</td>
 												<td style="vertical-align: middle;">${sprint.goal}</td>
@@ -276,10 +278,10 @@
 												<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || flash.ownerOfAProject}">
 													<td>
 														<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || session.user.equals(project.owner)}">
-															<g:link controller="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span></g:link>
+															<g:link mapping="project" action="edit" params="[project: projectId, fwdTo: 'project']"><span class="icon"><img src="${resource(dir:'images/icons',file:'edit.png')}" alt="${message(code:'default.button.edit.label')}"/></span></g:link>
 														</g:if>
 														<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER')}">
-															<g:link controller="project" action="delete" params="[project: projectId]" onclick="return confirm('${message(code:'project.delete', args: [project.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span></g:link>
+															<g:link mapping="project" action="delete" params="[project: projectId]" onclick="return confirm('${message(code:'project.delete', args: [project.name])}');"><span class="icon"><img src="${resource(dir:'images/icons',file:'delete.png')}" alt="${message(code:'default.button.delete.label')}"/></span></g:link>
 														</g:if>
 													</td>
 												</g:if>

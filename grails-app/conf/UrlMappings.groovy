@@ -17,12 +17,30 @@
 
 class UrlMappings {
     static mappings = {
-      "/$controller/$action?/$id?"{
-	      constraints {
-			 // apply constraints here
-		  }
-	  }
-      "/"(controller:"project", action:"list")
+	  "/$controller/$action?/$id?"{ constraints {
+		  // apply constraints here
+	  }}
+	  "/"(controller:"project", action:"list")
 	  "500"(view:'/error')
+		
+	  name administration: "/administration/$action?/" {
+		  controller = 'administration'
+	  }
+	  
+      name project: "/project/$action?/" {
+          controller = 'project'
+      }
+	  
+	  name sprint: "/project/$project/sprint/$action?/" {
+		  controller = 'sprint'
+	  }
+	  
+	  name release: "/project/$project/release/$action?/" {
+		  controller = 'release'
+	  }
+	  
+	  name task: "/project/$project/sprint/$sprint/task/$action?/" {
+		  controller = 'task'
+	  }
 	}
 }

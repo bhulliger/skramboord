@@ -56,34 +56,36 @@
 	        	<div style="float: right;">
 	        		<sec:ifLoggedIn>
 	        			<sec:ifAnyGranted roles="ROLE_SUPERUSER">
-							<g:link controller="administration" action="list" style="padding-right: 10px;">
+							<g:link mapping="administration" action="list" style="padding-right: 10px;">
 		        				<span class="icon">
 			        				<img src="${resource(dir:'images/icons',file:'bullet_wrench.png')}" alt="profil"/>
 			        			</span>
 			        			<span class="icon"><g:message code="admin.systemPreferences"/></span>
 		        			</g:link>
 						</sec:ifAnyGranted>
-	        			<g:link controller="user" action="edit" params="[id: session.user.id, fwdTo: request.getServletPath()]" style="padding-right: 10px;">
-	        				<span class="icon">
-		        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil"/>
-		        			</span>
-		        			<span class="icon"><g:message code="main.welcome"/>, ${session.user.userRealName}</span>
-	        			</g:link>
+						<g:if test="${session.user}" >
+		        			<g:link controller="user" action="edit" params="[id: session.user.id, fwdTo: request.getServletPath()]" style="padding-right: 10px;">
+		        				<span class="icon">
+			        				<img src="${resource(dir:'images/icons',file:'person.png')}" alt="profil"/>
+			        			</span>
+			        			<span class="icon"><g:message code="main.welcome"/>, ${session.user.userRealName}</span>
+		        			</g:link>
+	        			</g:if>
 	        		</sec:ifLoggedIn>
 	        		
-	        			<g:link controller="${params.controller}" action="${params.action}" params="[lang:'en']">
+	        			<g:link url="${request.forwardURI}?lang=en">
 	        				<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'english.png')}" alt="english"/>
 		        			</span>
 	        			</g:link>
-						<g:link controller="${params.controller}" action="${params.action}" params="[lang:'de']" style="padding-right: 10px;">
+						<g:link url="${request.forwardURI}?lang=de" style="padding-right: 10px;">
 							<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'german.png')}" alt="german"/>
 		        			</span>
 						</g:link>
 						
 	        		<sec:ifLoggedIn>
-		        		<g:link controller="logout" action="index">
+	        			<g:link controller="logout" action="index">
 		        			<span class="icon">
 		        				<img src="${resource(dir:'images/icons',file:'application_go.png')}" alt="logout"/>
 		        			</span>

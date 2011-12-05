@@ -36,7 +36,7 @@
 </script>
 
 <div id="dialog-form-sprint" title="${message(code:'sprint.formNameCreateSprint')}" class="form">
-	<g:form action="addSprint" name="formNewSprint">
+	<g:form url="${createLink(mapping: 'sprint', action: 'addSprint', params: [project: flash.project.id])}" name='formNewSprint'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
 				<tr>

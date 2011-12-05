@@ -26,11 +26,12 @@ import twitter4j.TwitterException;
 import twitter4j.conf.*;
 import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
+import grails.plugins.springsecurity.Secured;
 
 class ProjectController extends BaseController {
 
 	def index = {
-		redirect(controller:'project', action:'list')
+		redirect(url: createLink(mapping: 'project', action: 'list'))
 	}
 
 	def list = {
@@ -84,19 +85,16 @@ class ProjectController extends BaseController {
 	/**
 	 * Project delete action
 	 */
+	@Secured(["ROLE_SUPERUSER"])
 	def delete = {
-		if (SpringSecurityUtils.ifAnyGranted(Role.ROLE_SUPERUSER)) {
-			if (params.project) {
-				def project = Project.get(params.project)
-				project.delete()
+		if (params.project) {
+			def project = Project.get(params.project)
+			project.delete()
 
-				flash.message = message(code:"project.deleted", args:[project.name])
-			}
-		} else {
-			flash.message = message(code:"error.insufficientAccessRights")
+			flash.message = message(code:"project.deleted", args:[project.name])
 		}
 
-		redirect(controller:'project', action:'list')
+		redirect(url: createLink(mapping: 'project', action: 'list'))
 	}
 
 	def edit = {
@@ -110,15 +108,16 @@ class ProjectController extends BaseController {
 			}
 		}
 
-		redirect(controller:params.fwdTo, action:'list')
+		createRedirect(params.fwdTo, getProject(), getSprint())
 	}
 
 	/**
 	 * Project edit action
 	 */
 	def update = {
-		if (params.projectId) {
-			def project = Project.get(params.projectId)
+		flash.project = getProject()
+		if (flash.project) {
+			def project = Project.get(flash.project.id)
 			if (projectEditPermission(session.user, project)) {
 				project.name = params.projectName
 				project.taskNumberingEnabled = params.projectTaskNumberingEnabled != null ? Boolean.valueOf(params.projectTaskNumberingEnabled) : false
@@ -131,8 +130,8 @@ class ProjectController extends BaseController {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-
-		redirect(controller:params.fwdTo, action:'list')
+		
+		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
 
 	/**
@@ -150,117 +149,107 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'project', action:'list')
+		redirect(url: createLink(mapping: 'project', action: 'list'))
 	}
 
 	/**
 	 * Disable Twitter account
 	 */
 	def disableTwitter = {
-		if (params.projectId) {
-			def project = Project.get(params.projectId)
-			if (projectEditPermission(session.user, project)) {
-				project.twitter.enabled = false
+		flash.project = getProject()
+		if (projectEditPermission(session.user, project)) {
+			project.twitter.enabled = false
 
-				if (!project.twitter.save()) {
-					flash.objectToSave = project.twitter
-				}
-			} else {
-				flash.message = message(code:"error.insufficientAccessRights")
+			if (!flash.project.twitter.save()) {
+				flash.objectToSave = flash.project.twitter
 			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Enable Twitter account
 	 */
 	def enableTwitter = {
-		if (params.projectId) {
-			def project = Project.get(params.projectId)
-			if (projectEditPermission(session.user, project)) {
-				project.twitter.enabled = true
+		flash.project = getProject()
+		if (projectEditPermission(session.user, flash.project)) {
+			flash.project.twitter.enabled = true
 
-				if (!project.twitter.save()) {
-					flash.objectToSave = project.twitter
-				}
-			} else {
-				flash.message = message(code:"error.insufficientAccessRights")
+			if (!flash.project.twitter.save()) {
+				flash.objectToSave = flash.project.twitter
 			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Remove Twitter account
 	 */
 	def removeTwitter = {
-		if (params.projectId) {
-			def project = Project.get(params.projectId)
-			if (projectEditPermission(session.user, project)) {
-				TwitterAccount account = project.twitter
-				project.twitter = null
-				if (!account.delete()) {
-					flash.objectToSave = account
-				}
-			} else {
-				flash.message = message(code:"error.insufficientAccessRights")
+		flash.project = getProject()
+		if (projectEditPermission(session.user, flash.project)) {
+			TwitterAccount account = flash.project.twitter
+			flash.project.twitter = null
+			if (!account.delete()) {
+				flash.objectToSave = account
 			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Add Twitter account
 	 */
 	def addTwitter = {
-		if (params.projectId) {
-			def project = Project.get(params.projectId)
-			if (projectEditPermission(session.user, project)) {
-				def twitterAppSettings = getSystemPreferences().twitterSettings
-				try {
-					session.twitter = new TwitterFactory().getInstance()
-					session.twitter.setOAuthConsumer(twitterAppSettings.consumerKey, twitterAppSettings.consumerSecret)
-					session.requestToken = session.twitter.getOAuthRequestToken()
-					flash.twitterAccessUrl = session.requestToken.getAuthorizationURL()
-				} catch (TwitterException e) {
-					flash.message = message(code:"error.twitterProblems")
-				}
-			} else {
-				flash.message = message(code:"error.insufficientAccessRights")
+		flash.project = getProject()
+		if (projectEditPermission(session.user, flash.project)) {
+			def twitterAppSettings = getSystemPreferences().twitterSettings
+			try {
+				session.twitter = new TwitterFactory().getInstance()
+				session.twitter.setOAuthConsumer(twitterAppSettings.consumerKey, twitterAppSettings.consumerSecret)
+				session.requestToken = session.twitter.getOAuthRequestToken()
+				flash.twitterAccessUrl = session.requestToken.getAuthorizationURL()
+			} catch (TwitterException e) {
+				flash.message = message(code:"error.twitterProblems")
 			}
+		} else {
+			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
 	 * Create Twitter account with pin
 	 */
 	def createTwitterAccount = {
-		if (params.projectId) {
-			if (params.twitterAccessPin && params.twitterAccessPin.length() > 0) {
-				def project = Project.get(params.projectId)
-				if (projectEditPermission(session.user, project)) {
-					try {
-						AccessToken accessToken = session.twitter.getOAuthAccessToken(session.requestToken, params.twitterAccessPin)
-						project.twitter = new TwitterAccount(token: accessToken.getToken(), tokenSecret: accessToken.getTokenSecret()).save()
-						project.save()
-					} catch (TwitterException e) {
-						flash.message = message(code:"error.twitterProblems")
-					}
-				} else {
-					flash.message = message(code:"error.insufficientAccessRights")
+		if (params.twitterAccessPin && params.twitterAccessPin.length() > 0) {
+			flash.project = getProject()
+			if (projectEditPermission(session.user, flash.project)) {
+				try {
+					AccessToken accessToken = session.twitter.getOAuthAccessToken(session.requestToken, params.twitterAccessPin)
+					flash.project.twitter = new TwitterAccount(token: accessToken.getToken(), tokenSecret: accessToken.getTokenSecret()).save()
+					flash.project.save()
+				} catch (TwitterException e) {
+					flash.message = message(code:"error.twitterProblems")
 				}
 			} else {
-				flash.message = message(code:"error.twitter.noPin")
+				flash.message = message(code:"error.insufficientAccessRights")
 			}
+		} else {
+			flash.message = message(code:"error.twitter.noPin")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	/**
@@ -285,7 +274,7 @@ class ProjectController extends BaseController {
 			++index
 		}
 
-		redirect(controller:'project', action:'list')
+		redirect(url: createLink(mapping: 'project', action: 'list'))
 	}
 
 	/**
@@ -303,7 +292,7 @@ class ProjectController extends BaseController {
 			portlet.save()
 		}
 
-		redirect(controller:'project', action:'list')
+		redirect(url: createLink(mapping: 'project', action: 'list'))
 	}
 
 	private boolean projectNewPermission() {

@@ -25,7 +25,7 @@
 </script>
 
 <div id="dialog-form-release" title="${message(code:'release.formNameCreateRelease')}" class="form">
-	<g:form action='addRelease' controller='release' name='formNewRelease'>
+	<g:form url="${createLink(mapping: 'release', action: 'addRelease', params: [project: flash.project.id])}" name='formNewRelease'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
 				<tr>

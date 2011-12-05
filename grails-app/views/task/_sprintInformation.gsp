@@ -10,18 +10,18 @@
 	    <th style="text-align:center; width: 20px;"><g:message code="sprint.active"/></th>
 	</tr>
 	<tr>
-		<td><b>${session.sprint.name}</b></td>
-		<td>${session.sprint.goal}</td>
-		<td><g:formatDate format="dd.MM.yyyy" date="${session.sprint.startDate}"/></td>
-		<td><g:formatDate format="dd.MM.yyyy" date="${session.sprint.endDate}"/></td>
+		<td><b>${flash.sprint.name}</b></td>
+		<td>${flash.sprint.goal}</td>
+		<td><g:formatDate format="dd.MM.yyyy" date="${flash.sprint.startDate}"/></td>
+		<td><g:formatDate format="dd.MM.yyyy" date="${flash.sprint.endDate}"/></td>
 		<td style="text-align:center;">${flash.numberOfTasks}</td>
 		<td style="text-align:center;">${flash.totalEffort}</td>
 		<td style="text-align:center;">${flash.totalEffortDone}</td>
 		<td style="text-align:center;">
-			<g:if test="${session.sprint.isSprintRunning()}">
+			<g:if test="${flash.sprint.isSprintRunning()}">
 				<img src="${resource(dir:'images/icons',file:'flag_green.png')}" alt="Sprint is running"/>
 			</g:if>
-			<g:elseif test="${!session.sprint.isSprintRunning() && session.sprint.isSprintActive()}">
+			<g:elseif test="${!flash.sprint.isSprintRunning() && flash.sprint.isSprintActive()}">
 				<img src="${resource(dir:'images/icons',file:'flag_blue.png')}" alt="Sprint not started yet"/>
 			</g:elseif>
 			<g:else>

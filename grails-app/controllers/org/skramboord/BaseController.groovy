@@ -17,39 +17,79 @@
 
 package org.skramboord
 
+import javax.servlet.http.HttpServletResponse
+
 abstract class BaseController {
 	def springSecurityService
 	
 	def beforeInterceptor = [action:this.&doBefore]
 	
 	def doBefore() {
-		if (!session.theme) {
-			def systemPreferences = getSystemPreferences()
-			session.theme = systemPreferences.theme
-		}
-		
-		if (!session.logo) {
-			def systemPreferences = getSystemPreferences()
-			session.logo = systemPreferences.logo
-		}
-		
-		if (!session.logoUrl) {
-			def systemPreferences = getSystemPreferences()
-			session.logoUrl = systemPreferences.logoUrl
-		}
-		
-		if (springSecurityService && springSecurityService.isLoggedIn()) {
-			def username = springSecurityService.getPrincipal().username
-			if (username && !username.equals(session.username)) {
-				User user = User.withCriteria(uniqueResult:true) {
-					eq('username', username)
-				}
-				session.user = user
+		if (session) {
+			if (!session.theme) {
+				def systemPreferences = getSystemPreferences()
+				session.theme = systemPreferences.theme
 			}
+			
+			if (!session.logo) {
+				def systemPreferences = getSystemPreferences()
+				session.logo = systemPreferences.logo
+			}
+			
+			if (!session.logoUrl) {
+				def systemPreferences = getSystemPreferences()
+				session.logoUrl = systemPreferences.logoUrl
+			}
+		}
+		
+		if (springSecurityService) {
+			session.user = springSecurityService.currentUser
 		}
 	}
 	
 	protected SystemPreferences getSystemPreferences() {
 		return SystemPreferences.getPreferences(SystemPreferences.APPLICATION_NAME).list().first()
 	}
+	
+	protected Project getProject() {
+		def project = Project.get(params.project)
+		
+		if (project == null){
+			response.sendError(HttpServletResponse.SC_NOT_FOUND)
+			return null
+		}
+		return project
+	}
+	
+	protected Sprint getSprint() {
+		def sprint = Sprint.get(params.sprint)
+		
+		if (project == null){
+			response.sendError(HttpServletResponse.SC_NOT_FOUND)
+			return null
+		}
+		return sprint
+	}
+	
+	protected def createRedirect(String fwdTo, Project project, Sprint sprint) {
+		def paramList = []
+		if (project?.id != null && sprint?.id != null) {
+			return redirect(url: createLink(mapping: fwdTo, action: 'list', params: [project: project.id, sprint: sprint.id]))
+		} else if (project?.id != null) {
+			return redirect(url: createLink(mapping: fwdTo, action: 'list', params: [project: project.id]))
+		} else {
+			return redirect(url: createLink(mapping: fwdTo, action: 'list'))
+		}
+	}
+	
+	/**
+	* Returns true if this user is allowed to change the state of the tasks.
+	*
+	* @param user
+	* @param project
+	* @return
+	*/
+   protected boolean taskWorkPermission(User user, Project project) {
+	   return Project.changeRight(project, user, springSecurityService).list().first() != 0
+   }
 }

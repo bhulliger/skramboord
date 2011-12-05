@@ -29,7 +29,7 @@
 	});
 </script>
 <div id="dialog-form-sprint-edit" title="${message(code:'sprint.formNameEditSprint')}" class="form">
-	<g:form action="update" name="formEditSprint">
+	<g:form url="${createLink(mapping: 'sprint', action: 'update', params: [project: flash.project.id])}" name='formEditSprint'>
 		<fieldset>
 			<table cellpadding="0" cellspacing="0">
 				<tr>

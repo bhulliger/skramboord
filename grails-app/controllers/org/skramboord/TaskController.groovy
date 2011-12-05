@@ -37,49 +37,49 @@ class TaskController extends BaseController {
 	}
 
 	def list = {
-		if (params.sprint) {
-			session.sprint = Sprint.get(params.sprint)
-			session.project = session.sprint.release.project
-		}
+		flash.project = getProject()
+		flash.sprint = getSprint()
 
 		// check if this user has access rights
-		if (!taskViewPermission(session.user, session.project)) {
+		if (!taskViewPermission(session.user, flash.project)) {
 			redirect(controller:'project', action:'list')
 		}
 
 		// teammate or follower?
-		if (taskWorkPermission(session.user, session.project)) {
+		if (taskWorkPermission(session.user, flash.project)) {
 			flash.teammate = true
 		}
 		// Scrum master, product owner or superuser
-		if (taskWritePermission(session.user, session.project)) {
+		if (taskWritePermission(session.user, flash.project)) {
 			flash.scrumMaster = true
 		}
 
 		flash.priorityList=Priority.list()
 		flash.taskTypes=TaskType.list()
 
-		flash.projectBacklog = Task.projectBacklog(session.project).list()
+		flash.projectBacklog = Task.projectBacklog(flash.project).list()
 
-		flash.taskListOpen = Task.fromSprint(session.sprint, StateTask.getStateOpen()).list()
-		flash.taskListCheckout = Task.fromSprint(session.sprint, StateTask.getStateCheckedOut()).list()
-		flash.taskListCodereview = Task.fromSprint(session.sprint, StateTask.getStateCodereview()).list()
-		flash.taskListDone = Task.fromSprint(session.sprint, StateTask.getStateDone()).list()
-		flash.taskListStandBy = Task.fromSprint(session.sprint, StateTask.getStateStandBy()).list()
-		flash.taskListNext = Task.fromSprint(session.sprint, StateTask.getStateNext()).list()
+		flash.taskListOpen = Task.fromSprint(flash.sprint, StateTask.getStateOpen()).list()
+		flash.taskListCheckout = Task.fromSprint(flash.sprint, StateTask.getStateCheckedOut()).list()
+		flash.taskListCodereview = Task.fromSprint(flash.sprint, StateTask.getStateCodereview()).list()
+		flash.taskListDone = Task.fromSprint(flash.sprint, StateTask.getStateDone()).list()
+		flash.taskListStandBy = Task.fromSprint(flash.sprint, StateTask.getStateStandBy()).list()
+		flash.taskListNext = Task.fromSprint(flash.sprint, StateTask.getStateNext()).list()
 
 		flash.numberOfTasks = flash.taskListOpen.size() + flash.taskListCheckout.size() + flash.taskListCodereview.size() + flash.taskListDone.size() + flash.taskListStandBy.size()
 
-		def totalEffort = Task.effortTasksTotal(session.sprint).list()?.first()
-		def totalEffortDone = Task.effortTasksDone(session.sprint).list()?.first()
+		flash.taskNumberingEnabled = flash.project.taskNumberingEnabled
+		
+		def totalEffort = Task.effortTasksTotal(flash.sprint).list()?.first()
+		def totalEffortDone = Task.effortTasksDone(flash.sprint).list()?.first()
 
 		flash.totalEffort = totalEffort ? totalEffort : 0
 		flash.totalEffortDone = totalEffortDone ? totalEffortDone : 0
 
-		if (flash.totalEffort > session.sprint.personDays) {
+		if (flash.totalEffort > flash.sprint.personDays) {
 			flash.message = message(code:"sprint.toMuchEffort", args:[
 				flash.totalEffort,
-				session.sprint.personDays
+				flash.sprint.personDays
 			])
 		}
 
@@ -88,16 +88,16 @@ class TaskController extends BaseController {
 		def burnDownEffort = flash.totalEffort
 		flash.burndownReal = []
 		flash.burndownReal.add([
-			session.sprint.startDate.getTime(),
+			flash.sprint.startDate.getTime(),
 			burnDownEffort
 		])
 		def lastEffort = 0
-		for (Date startDate = session.sprint.startDate; startDate <= session.sprint.endDate; startDate++) {
+		for (Date startDate = flash.sprint.startDate; startDate <= flash.sprint.endDate; startDate++) {
 			datesXTarget.add(startDate.getTime())
 
 			def taskListDone = Task.withCriteria {
 				eq('state', StateTask.getStateDone())
-				eq('sprint', session.sprint)
+				eq('sprint', flash.sprint)
 				eq('finishedDate', startDate)
 			}
 			def tmpEffort = 0
@@ -129,66 +129,87 @@ class TaskController extends BaseController {
 	 * Add task
 	 */
 	def addTask = {
-		if (taskWorkPermission(session.user, session.project)) {
-			Task task = new Task(name: params.taskName, description: params.taskDescription,
+		flash.project = getProject()
+		flash.sprint = getSprint()
+		if (taskWorkPermission(session.user, flash.project)) {
+			
+			def project = Project.get(flash.project.id)
+			def number = params.taskNumber
+			if (project.taskNumberingEnabled) {
+				number = String.format(project.taskNumberingPattern, project.taskCounter)
+			}
+			
+			Task task = new Task(number: number, title: params.taskTitle, description: params.taskDescription,
 					effort: params.taskEffort, url: params.taskLink, state: StateTask.getStateOpen(),
 					priority: Priority.byName(params.taskPriority).list().first(),
 					type: TaskType.byName(params.taskType).list().first())
 			if ("sprint".equals(params.target)) {
-				task.sprint= Sprint.find(session.sprint)
+				task.sprint= Sprint.find(flash.sprint)
 			} else {
-				task.project = Project.get(session.project.id)
+				task.project = Project.get(flash.project.id)
 			}
 			if (!task.save()) {
 				flash.taskIncomplete = task
 				flash.objectToSave = task
+			} else {
+				++project.taskCounter
+				project.save()
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-
-		redirect(controller:params.fwdTo, action:'list')
+		
+		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
-
+	
 	/**
 	 * Task delete action
 	 */
 	def delete = {
-		if (taskWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWritePermission(session.user, flash.project)) {
 			if (params.task) {
 				def task = Task.get(params.task)
 				task.delete()
 
-				flash.message = message(code:"task.deleted", args:[task.name])
+				flash.message = message(code:"task.deleted", args:[task.number])
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:params.fwdTo, action:'list')
+		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
 
 	def edit = {
-		if (taskWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWritePermission(session.user, flash.project)) {
 			if (params.task) {
 				flash.taskEdit = Task.get(params.task)
+				flash.taskNumberingEnabled = flash.project.taskNumberingEnabled
 			}
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:params.fwdTo, action:'list')
+		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
 
 	/**
 	 * Task edit action
 	 */
 	def update = {
-		if (taskWritePermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWritePermission(session.user, flash.project)) {
 			if (params.taskId) {
 				def task = Task.get(params.taskId)
 
-				task.name = params.taskName
+				def project = Project.get(flash.project.id)
+				if (!project.taskNumberingEnabled) {
+					task.number = params.taskNumber
+				}
+				
+				task.title = params.taskTitle
 				task.description = params.taskDescription
 				task.effort = params.taskEffort ? params.taskEffort.toDouble() : null
 				task.url = params.taskLink
@@ -203,14 +224,15 @@ class TaskController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:params.fwdTo, action:'list')
+		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
 
 	/**
 	 * Import tasks from CSV
 	 */
 	def importCSV = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 
 			if (params.importtaskid) {
 
@@ -225,14 +247,15 @@ class TaskController extends BaseController {
 					def taskObject
 
 					// decide if update or new
-					if (Task.findByName(task.name) == null) {
+					if (Task.findByName(task.number) == null) {
 						taskObject = new Task()
 					} else {
-						taskObject = Task.findByName(task.name)
+						taskObject = Task.findByName(task.number)
 					}
 
 					taskObject.user = task.user
-					taskObject.name = task.name
+					taskObject.number = task.number
+					taskObject.title = task.title
 					taskObject.description = task.description
 					taskObject.effort = task.effort
 					taskObject.url = task.url
@@ -246,9 +269,9 @@ class TaskController extends BaseController {
 
 					// decide if task should go into the backlog
 					if (taskObject.state.name == "Open") {
-						taskObject.project = Sprint.find(session.sprint).release.project
+						taskObject.project = Sprint.find(flash.sprint).release.project
 					} else {
-						taskObject.sprint= Sprint.find(session.sprint)
+						taskObject.sprint= Sprint.find(flash.sprint)
 					}
 
 					// subtract current effort form token task if any
@@ -337,20 +360,22 @@ class TaskController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:params.fwdTo, action:'list')
+		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
 
 	/**
 	 * Changes status of a task to open
 	 */
 	def changeTaskStateToOpen = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		flash.sprint = getSprint()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			if (task.project) {
 				// task from backlog -> set state to open
 				task.state = StateTask.getStateOpen()
 				task.project = null
-				task.sprint = Sprint.get(session.sprint.id)
+				task.sprint = Sprint.get(flash.sprint.id)
 				task.save()
 			} else {
 				// Change to state open
@@ -360,14 +385,16 @@ class TaskController extends BaseController {
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
-		redirect(controller:'task', action:'list')
+		
+		createRedirect("task", flash.project, getSprint())
 	}
 
 	/**
 	 * Changes status of a task to checkout
 	 */
 	def changeTaskStateToCheckOut = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.user = session.user
 			task.state.checkOut(task)
@@ -376,50 +403,53 @@ class TaskController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'task', action:'list')
+		createRedirect("task", flash.project, getSprint())
 	}
 
 	/**
 	 * Changes status of a task to codereview
 	 */
 	def changeTaskStateToCodereview = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.state.codereview(task)
 			task.save()
 
 			// tweet it!
-			sendTwitterMessage(session.project, (String)"Task '${task.name}' by '${task.user?.userRealName}' ready to review, ${new Date()}")
+			sendTwitterMessage(flash.project, (String)"Task '${task.number}' by '${task.user?.userRealName}' ready to review, ${new Date()}")
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'task', action:'list')
+		createRedirect("task", flash.project, getSprint())
 	}
 
 	/**
 	 * Changes status of a task to done
 	 */
 	def changeTaskStateToDone = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.state.done(task)
 			task.save()
 
 			// tweet it!
-			sendTwitterMessage(session.project, (String)"Task '${task.name}' done by '${task.user?.userRealName}', ${new Date()}")
+			sendTwitterMessage(flash.project, (String)"Task '${task.number}' done by '${task.user?.userRealName}', ${new Date()}")
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'task', action:'list')
+		createRedirect("task", flash.project, getSprint())
 	}
 
 	/**
 	 * Changes status of a task to next
 	 */
 	def changeTaskStateToNext = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.state.next(task)
 			task.save()
@@ -427,14 +457,15 @@ class TaskController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'task', action:'list')
+		createRedirect("task", flash.project, getSprint())
 	}
 
 	/**
 	 * Changes status of a task to standby
 	 */
 	def changeTaskStateToStandBy = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.state.standBy(task)
 			task.save()
@@ -442,31 +473,33 @@ class TaskController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'task', action:'list')
+		createRedirect("task", flash.project, getSprint())
 	}
 
 	/**
 	 * Copy Task to Backlog
 	 */
 	def copyTaskToBacklog = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 
 			task.sprint = null
-			task.project = Project.get(session.project.id)
+			task.project = Project.get(flash.project.id)
 			task.save()
 		} else {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'task', action:'list')
+		createRedirect("task", flash.project, getSprint())
 	}
 
 	/**
 	 * Changes task priority
 	 */
 	def changeTaskPrio = {
-		if (taskWorkPermission(session.user, session.project)) {
+		flash.project = getProject()
+		if (taskWorkPermission(session.user, flash.project)) {
 			Task task = Task.get(removeTaskPrefix(params.taskId))
 			task.priority = Priority.byName(params.taskPrio).list()?.first()
 			task.save()
@@ -474,7 +507,7 @@ class TaskController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(controller:'sprint', action:'list')
+		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
 	}
 
 	def enableBacklog = {
@@ -482,7 +515,7 @@ class TaskController extends BaseController {
 			session.enableBacklog = Boolean.valueOf(params.enableBacklog)
 		}
 	}
-
+	
 	/**
 	 * Removes prefix 'taskId_'
 	 * 
@@ -501,18 +534,7 @@ class TaskController extends BaseController {
 	 * @return
 	 */
 	private boolean taskViewPermission(User user, Project project) {
-		return Project.accessRight(session.project, session.user, springSecurityService).list().first() != 0
-	}
-
-	/**
-	 * Returns true if this user is allowed to change the state of the tasks.
-	 * 
-	 * @param user
-	 * @param project
-	 * @return
-	 */
-	private boolean taskWorkPermission(User user, Project project) {
-		return Project.changeRight(session.project, session.user, springSecurityService).list().first() != 0
+		return Project.accessRight(project, user, springSecurityService).list().first() != 0
 	}
 
 	/**

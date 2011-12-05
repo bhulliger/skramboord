@@ -29,6 +29,6 @@ class LogoutController extends BaseController {
 	 */
 	def index = {
 		session.invalidate()
-		redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl // '/j_spring_security_logout'
+		return redirect(uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl) // '/j_spring_security_logout'
 	}
 }

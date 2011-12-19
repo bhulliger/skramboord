@@ -112,12 +112,18 @@ class BootStrap {
 		Date date3 = date2 - 10
 		Date date4 = date3 - 10
 
+		// Initialize Project skramboord
+		Project skramboord = new Project(name: "skramboord", owner: userAdmin, master: userDevChief)
+		skramboord.save()
+		
 		// Releases
-		Release release1_0 = new Release(name: "1.0", goal: "Login System")
-		Release release1_1 = new Release(name: "1.1", goal: "Usability Improvements")
+		Release release1_0 = new Release(name: "1.0", goal: "Login System", project: skramboord)
+		release1_0.save()
+		Release release1_1 = new Release(name: "1.1", goal: "Usability Improvements", project: skramboord)
+		release1_1.save()
 
 		// Sprint 1
-		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", personDays: 26, startDate: date4, endDate: date3, tasks: [])
+		Sprint sprint1_0 = new Sprint(name: "#1", goal: "Login System", personDays: 26, startDate: date4, endDate: date3, tasks: [], release: release1_0)
 		createTask(userDev1, sprint1_0, "Mantis 1812", "Long names", "Long names of the tasks should be shortened.", 2.0, url, taskStateDone, normal, bug, date4 + 1)
 		createTask(userDev3, sprint1_0, "Mantis 1798", "CSS style", "Change CSS style of the whole application to blue/white.", 4.0, url, taskStateDone, normal, feature, date4 + 3)
 		createTask(userDev1, sprint1_0, "Mantis 1765", "hmmm.... nothing", null, 4.5, url, taskStateDone, high, feature, date4 + 4)
@@ -126,9 +132,10 @@ class BootStrap {
 		createTask(userDev1, sprint1_0, "Mantis 1733", "nada!", null, 2.5, url, taskStateDone, low, documentation, date4 + 8)
 		createTask(userDev2, sprint1_0, "Mantis 1722", "niente!", null, 0.5, url, taskStateDone, low, feature, date4 + 9)
 		createTask(userDev2, sprint1_0, "Mantis 1700", "nŸŸt!", null, 4, url, taskStateDone, low, feature, date4 + 10)
+		sprint1_0.save()
 
 		// Sprint 2
-		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", personDays: 28.5, startDate: date3, endDate: date2, tasks: [])
+		Sprint sprint1_1 = new Sprint(name: "#2", goal: "Drag'n'Drop Functionality", personDays: 28.5, startDate: date3, endDate: date2, tasks: [], release: release1_0)
 		createTask(userDev2, sprint1_1, "Mantis 1980", "Leere Menge", null, 5.5, url, taskStateDone, normal, feature, date3 + 2)
 		createTask(userDev3, sprint1_1, "Mantis 2100", "maybe?! no, nothing.", null, 2.0, url, taskStateDone, immediate, feature, date3 + 4)
 		createTask(null, sprint1_1, "Mantis 2001", "nonononothing", null, 2.0, url, taskStateOpen, normal, feature, null)
@@ -138,28 +145,15 @@ class BootStrap {
 		createTask(userDev1, sprint1_1, "Mantis 1999", "another title to read", null, 1.0, url, taskStateChecked, immediate, feature, null)
 		createTask(null, sprint1_1, "Mantis 2012", "Titugschicht", null, 1.5, url, taskStateNext, normal, feature, null)
 		createTask(null, sprint1_1, "Mantis 2014", "CSS style", "Change CSS style of the whole application to orange/white.", 5.0, url, taskStateNext, low, feature, null)
+		sprint1_1.save()
 
 		// Sprint 1
-		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", personDays: null, startDate: date2, endDate: date1, tasks: [])
+		Sprint sprint1_2 = new Sprint(name: "#1", goal: "Email Warning System", personDays: null, startDate: date2, endDate: date1, tasks: [], release: release1_1)
 		sprint1_2.save()
 
 		// Sprint 2
-		Sprint sprint1_3 = new Sprint(name: "#2", goal: "Usability Improvements", personDays: null, startDate: date1, endDate: date0, tasks: [])
+		Sprint sprint1_3 = new Sprint(name: "#2", goal: "Usability Improvements", personDays: null, startDate: date1, endDate: date0, tasks: [], release: release1_1)
 		sprint1_3.save()
-
-		// Initialize Project skramboord
-		Project skramboord = new Project(name: "skramboord", owner: userAdmin, master: userDevChief)
-		skramboord.addToReleases(release1_0)
-		skramboord.addToReleases(release1_1)
-		skramboord.save()
-
-		// Initialize Releases
-		release1_0.addToSprints(sprint1_0)
-		release1_0.addToSprints(sprint1_1)
-		release1_1.addToSprints(sprint1_2)
-		release1_1.addToSprints(sprint1_3)
-		release1_0.save()
-		release1_1.save()
 
 		Membership.link(skramboord, userDev1)
 		Membership.link(skramboord, userDev3)
@@ -263,7 +257,7 @@ class BootStrap {
 	 */
 	def createTask(User user, Sprint sprint, String number, String title, String description, Double effort, String url, StateTask state, Priority priority, TaskType type, Date finished) {
 		Task task = new Task(user: user, number: number, title: title, description: description, effort: effort, url: url, state: state, priority: priority, type: type, finishedDate: finished, sprint: sprint, project: null)
-		task.save()
+		sprint.addToTasks(task)
 	}
 	
 	/**

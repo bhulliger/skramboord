@@ -46,7 +46,7 @@
 	</head>
 	<body>
 		<div class="body">
-			<h1><g:link controller="project" action="list"">> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: flash.project.id]">> ${flash.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: flash.sprint.id]">> ${flash.sprint.name}</g:link></h1>
+			<h1><g:link controller="project" action="list"> <img src="${resource(dir:'images/skin',file:'house.png')}" alt="Home"/> </g:link><g:link controller="sprint" action="list" params="[project: flash.project.id]">> ${flash.project.name}</g:link> <g:link controller="task" action="list" params="[sprint: flash.sprint.id]">> ${flash.sprint.name}</g:link></h1>
 			<g:hasErrors bean="${flash.objectToSave}">
 				<div class="errors">
 					<g:renderErrors bean="${flash.objectToSave}" as="list"/>

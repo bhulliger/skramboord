@@ -31,7 +31,7 @@ import grails.plugins.springsecurity.Secured;
 class ProjectController extends BaseController {
 
 	def index = {
-		redirect(url: createLink(mapping: 'project', action: 'list'))
+		redirect(mapping: 'project', action: 'list')
 	}
 
 	def list = {
@@ -94,7 +94,7 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"project.deleted", args:[project.name])
 		}
 
-		redirect(url: createLink(mapping: 'project', action: 'list'))
+		redirect(mapping: 'project', action: 'list')
 	}
 
 	def edit = {
@@ -149,7 +149,7 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'project', action: 'list'))
+		redirect(mapping: 'project', action: 'list')
 	}
 
 	/**
@@ -167,7 +167,7 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -185,7 +185,7 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -203,7 +203,7 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -225,7 +225,7 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -249,7 +249,7 @@ class ProjectController extends BaseController {
 			flash.message = message(code:"error.twitter.noPin")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -274,7 +274,7 @@ class ProjectController extends BaseController {
 			++index
 		}
 
-		redirect(url: createLink(mapping: 'project', action: 'list'))
+		redirect(mapping: 'project', action: 'list')
 	}
 
 	/**
@@ -292,7 +292,7 @@ class ProjectController extends BaseController {
 			portlet.save()
 		}
 
-		redirect(url: createLink(mapping: 'project', action: 'list'))
+		redirect(mapping: 'project', action: 'list')
 	}
 
 	private boolean projectNewPermission() {

@@ -40,7 +40,7 @@ class ReleaseController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 	
 	/**
@@ -68,7 +68,7 @@ class ReleaseController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 	
 	def edit = {
@@ -81,7 +81,7 @@ class ReleaseController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 	
 	/**
@@ -103,7 +103,7 @@ class ReleaseController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 		
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 	
 	private boolean releaseViewPermission(User user, Project project) {

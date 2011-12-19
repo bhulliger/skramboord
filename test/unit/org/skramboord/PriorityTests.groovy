@@ -35,7 +35,7 @@ class PriorityTests extends GrailsUnitTestCase {
      */
     void testCorrectPriority() {
 		// given
-		Priority low = new Priority(name: "low", color: Color.GREEN)
+		Priority low = new Priority(name: "low")
 		
 		// when
 		
@@ -44,24 +44,11 @@ class PriorityTests extends GrailsUnitTestCase {
     }
 	
 	/**
-	 * Invalid priority with missing color
-	 */
-	void testPriorityWithMissingColor() {
-		// given
-		Priority low = new Priority(name: "low")
-		
-		// when
-		
-		// then
-		assertFalse low.validate()
-	}
-	
-	/**
 	 * Invalid priority with missing name
 	 */
 	void testPriorityWithMissingName() {
 		// given
-		Priority low = new Priority(color: Color.GREEN)
+		Priority low = new Priority()
 		
 		// when
 		

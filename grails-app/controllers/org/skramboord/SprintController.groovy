@@ -24,7 +24,7 @@ import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 class SprintController extends BaseController {
 
 	def index = {
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	def list = {
@@ -95,7 +95,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 	
 	def edit = {
@@ -108,7 +108,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -137,7 +137,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -156,7 +156,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -186,7 +186,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -216,7 +216,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -245,7 +245,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -270,7 +270,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**
@@ -295,7 +295,7 @@ class SprintController extends BaseController {
 			flash.message = message(code:"error.insufficientAccessRights")
 		}
 
-		redirect(url: createLink(mapping: 'sprint', action: 'list', params:[project: flash.project.id]))
+		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
 	/**

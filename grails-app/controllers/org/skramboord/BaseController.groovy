@@ -74,11 +74,11 @@ abstract class BaseController {
 	protected def createRedirect(String fwdTo, Project project, Sprint sprint) {
 		def paramList = []
 		if (project?.id != null && sprint?.id != null) {
-			return redirect(url: createLink(mapping: fwdTo, action: 'list', params: [project: project.id, sprint: sprint.id]))
+			return redirect(mapping: fwdTo, action: 'list', params: [project: project.id, sprint: sprint.id])
 		} else if (project?.id != null) {
-			return redirect(url: createLink(mapping: fwdTo, action: 'list', params: [project: project.id]))
+			return redirect(mapping: fwdTo, action: 'list', params: [project: project.id])
 		} else {
-			return redirect(url: createLink(mapping: fwdTo, action: 'list'))
+			return redirect(mapping: fwdTo, action: 'list')
 		}
 	}
 	

@@ -20,6 +20,7 @@ class UrlMappings {
 	  "/$controller/$action?/$id?"{ constraints {
 		  // apply constraints here
 	  }}
+	  "/index.gsp"(controller:"project", action:"list")
 	  "/"(controller:"project", action:"list")
 	  "500"(view:'/error')
 		

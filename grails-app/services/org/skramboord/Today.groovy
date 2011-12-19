@@ -17,7 +17,7 @@
 
 package org.skramboord
 
-abstract class Today {
+class Today {
 	/**
 	 * @return today as date.
 	 */

@@ -257,6 +257,7 @@
 											<g:sortableColumn property="name" defaultOrder="asc" title="${message(code:'project.project')}"/>
 											<g:sortableColumn property="owner" defaultOrder="asc" title="${message(code:'project.owner')}"/>
 											<g:sortableColumn property="master" defaultOrder="asc" title="${message(code:'project.master')}"/>
+											<g:sortableColumn property="releases" defaultOrder="desc" title="${message(code:'release.releases')}" style="text-align:center; width: 50px;"/>
 											<g:sortableColumn property="sprints" defaultOrder="desc" title="${message(code:'sprint.sprints')}" style="text-align:center; width: 50px;"/>
 											<sec:ifAnyGranted roles="ROLE_SUPERUSER">
 												<th style="width: 40px;"></th>
@@ -273,7 +274,8 @@
 												</td>
 												<td style="vertical-align: middle;">${project.owner.userRealName}</td>
 												<td style="vertical-align: middle;">${project.master.userRealName}</td>
-												<td style="vertical-align: middle; text-align:center;">${project.sprints.size()}</td>
+												<td style="vertical-align: middle; text-align:center;">${project?.releases?.size()}</td>
+												<td style="vertical-align: middle; text-align:center;">${project.countSprints()}</td>
 												
 												<g:if test="${org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils.ifAnyGranted('ROLE_SUPERUSER') || flash.ownerOfAProject}">
 													<td>

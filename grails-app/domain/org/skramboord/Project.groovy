@@ -36,6 +36,14 @@ class Project {
 		return follower.collect{it.user}
 	}
 
+	def countSprints() {
+		Integer counter = 0;
+		if (releases) {
+			releases.each{counter += it.sprints?.size()}
+		}
+		return counter
+	}
+	
 	static mapping = {
 		owner lazy:false
 		master lazy:false

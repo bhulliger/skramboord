@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="${resource(dir:'css/colorpicker',file:'colorpicker.css')}" ></link>
         
 		<g:javascript library="jquery" plugin="jquery"/>
-		<jqui:resources themeCss="css/themes/${session.theme?.name}/${session.theme?.css}"/>
+		<jqui:resources themeCss="/skramboord/css/themes/${session.theme?.name}/${session.theme?.css}"/>
 		<script type="text/javascript" src="${resource(dir:'js/jquery/colorpicker',file:'colorpicker.js')}"></script>
         
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" ></link>

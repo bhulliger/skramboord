@@ -485,6 +485,38 @@ th.desc a {
 	background: transparent url(../images/skramboord/postit-blue-fill.png) repeat-x top left;
 }
 
+.postit-right-orange {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/skramboord/postit-orange-right.png) no-repeat top right;
+	cursor: move;
+}
+
+.postit-orange {
+	height: 60px;
+	padding-top: 5px;
+	padding-left: 5px;
+	margin: 0;
+	background: transparent url(../images/skramboord/postit-orange-fill.png) repeat-x top left;
+}
+
+.postit-right-white {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	background: transparent url(../images/skramboord/postit-white-right.png) no-repeat top right;
+	cursor: move;
+}
+
+.postit-white {
+	height: 60px;
+	padding-top: 5px;
+	padding-left: 5px;
+	margin: 0;
+	background: transparent url(../images/skramboord/postit-white-fill.png) repeat-x top left;
+}
+
 .connectedSortable {
 	list-style-type: none;
 	margin: 0;

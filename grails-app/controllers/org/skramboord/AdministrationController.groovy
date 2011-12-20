@@ -33,7 +33,7 @@ class AdministrationController extends BaseController {
 		flash.userRoleDefault = Role.withAuthority(Role.ROLE_USER).list().first()
 		
 		flash.taskTypes=TaskType.list()
-		flash.taskTypeColors=["blue","green","purple","yellow"]
+		flash.taskTypeColors=["blue","green","purple","yellow","orange","white"]
 		
 		flash.themeActually = systemPreferences?.theme
 		flash.themes = Theme.withCriteria {

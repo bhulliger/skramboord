@@ -3,60 +3,161 @@
 		// Task tooltip
 		xOffset = 5;
 		yOffset = -15;
-		$("li.tooltip").hover(function(e){	
-				this.t = this.title;
-				this.title = "";									  
-				$("body").append("<p id='tooltip' style='width:260pt;'>"+ this.t +"</p>");
-				$("#tooltip").css("top",(e.pageY - yOffset) + "px")
-                             .css("left",(e.pageX + xOffset) + "px")
-                             .fadeIn("fast");
-	    	},
-			function(){
-				this.title = this.t;
-				$("#tooltip").remove();});	
+		$("li.tooltip").hover(
+				function(e){	
+					this.t = this.title;
+					this.title = "";									  
+					$("body").append("<p id='tooltip' style='width:260pt;'>"+ this.t +"</p>");
+					$("#tooltip").css("top",(e.pageY - yOffset) + "px")
+	                             .css("left",(e.pageX + xOffset) + "px")
+	                             .fadeIn("fast");
+		    	},
+				function(){
+					this.title = this.t;
+					$("#tooltip").remove();
+				}
+			);	
 		$("li.tooltip").mousemove(function(e){
 			$("#tooltip")
 				.css("top",(e.pageY - yOffset) + "px")
 				.css("left",(e.pageX + xOffset) + "px");
 		});
+
+		backgroundMarked = "#aaa";
+		backgroundNormal = "transparent";
 		
 <g:if test="${flash.scrumMaster}">
 		$("#backlog").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
-			receive: function(event, ui) { changeTo(event, ui, 'copyTaskToBacklog') }
+			receive: function(event, ui) { changeTo(event, ui, 'copyTaskToBacklog') },
+			start: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundMarked;
+						$("#tooltip").remove();
+					},
+			stop: function(event, ui) { document.getElementById('open').style.backgroundColor = backgroundNormal },
+			over: function(event, ui) { this.style.paddingBottom = "0px" },
+			out: function(event, ui) { this.style.paddingBottom = "62px" }
 		}).disableSelection();	
 </g:if>
 <g:if test="${flash.teammate}">
 		$("#open").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
-			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToOpen') }
+			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToOpen') },
+			start: function(event, ui) {
+						document.getElementById('checkout').style.backgroundColor = backgroundMarked;
+						document.getElementById('next').style.backgroundColor = backgroundMarked;
+						document.getElementById('standBy').style.backgroundColor = backgroundMarked;
+						document.getElementById('backlog').style.backgroundColor = backgroundMarked;
+						$("#tooltip").remove();
+					},
+			stop: function(event, ui) {
+						document.getElementById('checkout').style.backgroundColor = backgroundNormal;
+						document.getElementById('next').style.backgroundColor = backgroundNormal;
+						document.getElementById('standBy').style.backgroundColor = backgroundNormal;
+						document.getElementById('backlog').style.backgroundColor = backgroundNormal;
+					},
+			over: function(event, ui) { this.style.paddingBottom = "0px" },
+			out: function(event, ui) { this.style.paddingBottom = "62px" }
 		}).disableSelection();
 		$("#checkout").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
-			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToCheckOut') }
+			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToCheckOut') },
+			start: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundMarked;
+						document.getElementById('codereview').style.backgroundColor = backgroundMarked;
+						document.getElementById('next').style.backgroundColor = backgroundMarked;
+						document.getElementById('standBy').style.backgroundColor = backgroundMarked;
+						document.getElementById('backlog').style.backgroundColor = backgroundMarked;
+						$("#tooltip").remove();
+					},
+			stop: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundNormal;
+						document.getElementById('codereview').style.backgroundColor = backgroundNormal;
+						document.getElementById('next').style.backgroundColor = backgroundNormal;
+						document.getElementById('standBy').style.backgroundColor = backgroundNormal;
+						document.getElementById('backlog').style.backgroundColor = backgroundNormal;
+					},
+			over: function(event, ui) { this.style.paddingBottom = "0px" },
+			out: function(event, ui) { this.style.paddingBottom = "62px" }
 		}).disableSelection();
 		$("#codereview").sortable({
             connectWith: '.connectedSortable',
             dropOnEmpty: true,
-            receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToCodereview') }
+            receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToCodereview') },
+			start: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundMarked;
+						document.getElementById('done').style.backgroundColor = backgroundMarked;
+						document.getElementById('next').style.backgroundColor = backgroundMarked;
+						document.getElementById('standBy').style.backgroundColor = backgroundMarked;
+						document.getElementById('backlog').style.backgroundColor = backgroundMarked;
+						$("#tooltip").remove();
+					},
+			stop: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundNormal;
+						document.getElementById('done').style.backgroundColor = backgroundNormal;
+						document.getElementById('next').style.backgroundColor = backgroundNormal;
+						document.getElementById('standBy').style.backgroundColor = backgroundNormal;
+						document.getElementById('backlog').style.backgroundColor = backgroundNormal;
+					},
+			over: function(event, ui) { this.style.paddingBottom = "0px" },
+			out: function(event, ui) { this.style.paddingBottom = "62px" }
         }).disableSelection();
 		$("#done").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
-			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToDone') }
+			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToDone') },
+			start: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundMarked;
+						document.getElementById('checkout').style.backgroundColor = backgroundMarked;
+						document.getElementById('backlog').style.backgroundColor = backgroundMarked;
+						$("#tooltip").remove();
+					},
+			stop: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundNormal;
+						document.getElementById('checkout').style.backgroundColor = backgroundNormal;
+						document.getElementById('backlog').style.backgroundColor = backgroundNormal;
+					},
+			over: function(event, ui) { this.style.paddingBottom = "0px" },
+			out: function(event, ui) { this.style.paddingBottom = "62px" }
 		}).disableSelection();
 		$("#next").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
-			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToNext') }
+			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToNext') },
+			start: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundMarked;
+						document.getElementById('backlog').style.backgroundColor = backgroundMarked;
+						$("#tooltip").remove();
+					},
+			stop: function(event, ui) {
+						document.getElementById('open').style.backgroundColor = backgroundNormal;
+						document.getElementById('backlog').style.backgroundColor = backgroundNormal;
+					},
+			over: function(event, ui) { this.style.paddingBottom = "0px" },
+			out: function(event, ui) { this.style.paddingBottom = "62px" }
 		}).disableSelection();
 		$("#standBy").sortable({
 			connectWith: '.connectedSortable',
 			dropOnEmpty: true,
-			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToStandBy') }
+			receive: function(event, ui) { changeTo(event, ui, 'changeTaskStateToStandBy') },
+			start: function(event, ui) {
+						document.getElementById('checkout').style.backgroundColor = backgroundMarked;
+						document.getElementById('next').style.backgroundColor = backgroundMarked;
+						document.getElementById('open').style.backgroundColor = backgroundMarked;
+						document.getElementById('backlog').style.backgroundColor = backgroundMarked;
+						$("#tooltip").remove();
+					},
+			stop: function(event, ui) {
+						document.getElementById('checkout').style.backgroundColor = backgroundNormal;
+						document.getElementById('next').style.backgroundColor = backgroundNormal;
+						document.getElementById('open').style.backgroundColor = backgroundNormal;
+						document.getElementById('backlog').style.backgroundColor = backgroundNormal;
+					},
+			over: function(event, ui) { this.style.paddingBottom = "0px" },
+			out: function(event, ui) { this.style.paddingBottom = "62px" }
 		}).disableSelection();
 </g:if>
 
@@ -185,13 +286,13 @@ $("#productBacklog").hide();
 	<div class="clear"></div>
 	
 	<div class="backlog" id="productBacklog">
-		<div class="boardheader"><g:message code="project.backlog"/></div>
+		<div class="boardheader" style="padding-top: 2px;"><g:message code="project.backlog"/></div>
 		<div style="height: 500px; overflow: auto;">
 			<g:if test="${flash.projectBacklog.size() > 0}">
 				<ul id="backlog" class="connectedSortable">
 			</g:if>
 			<g:else>
-				<ul id="backlog" class="connectedSortable" style="padding-bottom: 100px;">
+				<ul id="backlog" class="connectedSortable" style="padding-bottom: 62px;">
 			</g:else>
 				<g:each var="task" in="${flash.projectBacklog}" status="i">
 					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
@@ -207,7 +308,7 @@ $("#productBacklog").hide();
 				<ul id="open" class="connectedSortable">
 			</g:if>
 			<g:else>
-				<ul id="open" class="connectedSortable" style="padding-bottom: 100px;">
+				<ul id="open" class="connectedSortable" style="padding-bottom: 62px;">
 			</g:else>
 				<g:each var="task" in="${flash.taskListOpen}" status="i">
 					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
@@ -221,7 +322,7 @@ $("#productBacklog").hide();
 				<ul id="checkout" class="connectedSortable">
 			</g:if>
 			<g:else>
-				<ul id="checkout" class="connectedSortable" style="padding-bottom: 100px;">
+				<ul id="checkout" class="connectedSortable" style="padding-bottom: 62px;">
 			</g:else>
 				<g:each var="task" in="${flash.taskListCheckout}" status="i">
 					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
@@ -235,7 +336,7 @@ $("#productBacklog").hide();
                 <ul id="codereview" class="connectedSortable">
             </g:if>
             <g:else>
-                <ul id="codereview" class="connectedSortable" style="padding-bottom: 100px;">
+                <ul id="codereview" class="connectedSortable" style="padding-bottom: 62px;">
             </g:else>
                 <g:each var="task" in="${flash.taskListCodereview}" status="i">
                     <g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
@@ -249,7 +350,7 @@ $("#productBacklog").hide();
 				<ul id="done" class="connectedSortable">
 			</g:if>
 			<g:else>
-				<ul id="done" class="connectedSortable" style="padding-bottom: 100px;">
+				<ul id="done" class="connectedSortable" style="padding-bottom: 62px;">
 			</g:else>
 				<g:each var="task" in="${flash.taskListDone}" status="i">
 					<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
@@ -264,7 +365,7 @@ $("#productBacklog").hide();
 					<ul id="next" class="connectedSortable">
 				</g:if>
 				<g:else>
-					<ul id="next" class="connectedSortable" style="padding-bottom: 100px;">
+					<ul id="next" class="connectedSortable" style="padding-bottom: 62px;">
 				</g:else>
 					<g:each var="task" in="${flash.taskListNext}" status="i">
 						<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>
@@ -278,7 +379,7 @@ $("#productBacklog").hide();
 					<ul id="standBy" class="connectedSortable">
 				</g:if>
 				<g:else>
-					<ul id="standBy" class="connectedSortable" style="padding-bottom: 100px;">
+					<ul id="standBy" class="connectedSortable" style="padding-bottom: 62px;">
 				</g:else>
 					<g:each var="task" in="${flash.taskListStandBy}" status="i">
 						<g:render template="task" model="['task':task, 'fwdTo': 'task']"/>

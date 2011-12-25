@@ -521,8 +521,9 @@ th.desc a {
 	list-style-type: none;
 	margin: 0;
 	float: left;
-	width: 210px;
-	padding: 2px 0 0 0;
+	width: 195px;
+	padding: 2px 0px 2px 4px;
+	margin-top: 2px;
 }
 
 .connectedSortable li {
@@ -536,7 +537,7 @@ th.desc a {
 	list-style-type: none;
 	margin: 0;
 	float: left;
-	width: 210px;
+	width: 195px;
 	padding: 2px 0 0 0;
 }
 
@@ -565,7 +566,7 @@ div.projectTeam {
 
 div.open, div.checkout, div.codereview, div.done {
 	float: left;
-	width: 24%;
+	width: 25%;
 	margin-top: 5px;
 }
 

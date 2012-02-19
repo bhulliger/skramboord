@@ -130,6 +130,7 @@ class TaskController extends BaseController {
 	 */
 	def addTask = {
 		flash.project = getProject()
+
 		flash.sprint = getSprint()
 		if (taskWorkPermission(session.user, flash.project)) {
 			
@@ -232,6 +233,7 @@ class TaskController extends BaseController {
 	 */
 	def importCSV = {
 		flash.project = getProject()
+
 		if (taskWorkPermission(session.user, flash.project)) {
 
 			if (params.importtaskid) {
@@ -247,7 +249,8 @@ class TaskController extends BaseController {
 					def taskObject
 
 					// decide if update or new
-					if (Task.findByName(task.number) == null) {
+
+					if (task.number == null || Task.findByNumber(task.number) == null) {
 						taskObject = new Task()
 					} else {
 						taskObject = Task.findByName(task.number)
@@ -290,7 +293,8 @@ class TaskController extends BaseController {
 				session.removeAttribute(params.importtaskid)
 				flash.message = message(code:"sprint.importDone")
 				
-			} else {
+			} 
+			else {
 				def csv = request.getFile('cvsFile')
 				def errors = []
 				if (!csv.empty) {
@@ -303,6 +307,7 @@ class TaskController extends BaseController {
 
 					session[importtaskid] = []
 
+					
 					try {
 						new CSVMapReader(reader).eachWithIndex{ map, i ->
 
@@ -313,9 +318,9 @@ class TaskController extends BaseController {
 									formatError = true
 								}
 							}
-
 							// process tasks
 							if (!formatError) {
+								
 								def data
 
 								// check if the task can be ignored
@@ -329,29 +334,32 @@ class TaskController extends BaseController {
 								} catch (InvalidPropertyException ipe) {									
 									importReport.errors[(i+2)] = message(code:"error.csvInvalidField", args:[ipe.message])
 								}
-								
+
 								// calc stats
-								if (Task.findByName(map[csvParser.nameColumn]) == null) {
+								if (Task.findByNumber(map[csvParser.nameColumn]) == null) {
 									importReport.stats['new'] += 1
 								} else {
 									importReport.stats.update += 1
 								}
-
+								
 								// store data to session as long as there are no parse errors
 								if (importReport.errors.size() == 0) {
 									session[importtaskid] << data
 								} else {
 									session.removeAttribute(importtaskid)
 								}
+							} else 
+							{
+								flash.message = message(code:"error.invalidCSVFormat")
 							}
 						}
-
 						// render the import or parse report
 						flash.importtaskid = importtaskid
 						flash.importReport = importReport
 					} catch (ArrayIndexOutOfBoundsException e) {
 						flash.message = message(code:"error.invalidCSVFormat")
 					}
+
 				} else {
 					flash.message = message(code:"error.emptyFile")
 				}

@@ -236,7 +236,7 @@ $("#productBacklog").hide();
 				       </tr>
 				    </g:each>
 			    </table>
-			    <g:form url="[ controller: 'task', action: 'importCSV', params: ['fwdTo': 'task', 'target': 'sprint']]" name='formImportTasks' enctype="multipart/form-data" method="post">
+			    <g:form url="[ controller: 'task', action: 'importCSV', params: ['fwdTo': 'task', 'target': 'sprint', project: flash.project.id, sprint: flash.sprint?.id]]" name='formImportTasks' enctype="multipart/form-data" method="post">
 			        <fieldset>
 			            <input type="file" name="cvsFile" id="cvsFile" />
 			        </fieldset>
@@ -257,7 +257,7 @@ $("#productBacklog").hide();
                         <td>${flash.importReport.stats.ignore}</td>
                     </tr>
 	            </table>
-	            <g:form url="[ controller: 'task', action: 'importCSV', params: ['fwdTo': 'task', 'target': 'sprint']]" name='formImportTasks' enctype="multipart/form-data" method="post">
+	            <g:form url="[ controller: 'task', action: 'importCSV', params: ['fwdTo': 'task', 'target': 'sprint', project: flash.project.id, sprint: flash.sprint?.id]]" name='formImportTasks' enctype="multipart/form-data" method="post">
                     <fieldset>
                         <input type="hidden" name="importtaskid" id="importtaskid" value="${flash.importtaskid}" />
                     </fieldset>

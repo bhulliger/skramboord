@@ -98,39 +98,38 @@ class ProjectController extends BaseController {
 	}
 
 	def edit = {
-		if (params.project) {
-			def project = Project.get(params.project)
+		flash.project = Project.get(params.project)
+		if (project) {
 
-			if (projectEditPermission(session.user, project)) {
-				flash.projectEdit = project
+			if (projectEditPermission(session.user, flash.project)) {
+				flash.projectEdit = flash.project
 			} else {
 				flash.message = message(code:"error.insufficientAccessRights")
-			}
-		}
+			}		
+		} 
 
-		createRedirect(params.fwdTo, getProject(), getSprint())
+		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
 
 	/**
 	 * Project edit action
 	 */
 	def update = {
-		flash.project = getProject()
+		flash.project = Project.get(params.projectId)
 		if (flash.project) {
-			def project = Project.get(flash.project.id)
-			if (projectEditPermission(session.user, project)) {
-				project.name = params.projectName
-				project.taskNumberingEnabled = params.projectTaskNumberingEnabled != null ? Boolean.valueOf(params.projectTaskNumberingEnabled) : false
-				project.taskNumberingPattern = params.projectTaskNumberingPattern
+			if (projectEditPermission(session.user, flash.project)) {
+				flash.project.name = params.projectName
+				flash.project.taskNumberingEnabled = params.projectTaskNumberingEnabled != null ? Boolean.valueOf(params.projectTaskNumberingEnabled) : false
+				flash.project.taskNumberingPattern = params.projectTaskNumberingPattern
 
-				if (!project.save()) {
+				if (!flash.project.save()) {
 					flash.objectToSave=project
 				}
 			} else {
 				flash.message = message(code:"error.insufficientAccessRights")
 			}
 		}
-		
+
 		createRedirect(params.fwdTo, flash.project, getSprint())
 	}
 

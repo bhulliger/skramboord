@@ -20,7 +20,7 @@ package org.skramboord
 class StateTask {
 	String name = "Abstract state"
 	
-	protected StateTask() {}
+	StateTask() {}
 	
 	def checkOut(Task task) {
 		// do nothing

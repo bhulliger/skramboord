@@ -32,7 +32,8 @@ class Task {
 	static belongsTo = [sprint:Sprint, project:Project, user:User]
 	
 	public void setUrl(String url) {
-		this.url = url.replaceAll(" ", "")
+		if (url != null)
+			this.url = url.replaceAll(" ", "")
 	}
 	
 	static mapping = {

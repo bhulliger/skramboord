@@ -42,11 +42,11 @@ class CustomMantisParser extends BaseParser {
 	final FIELD_ID = 'Id'
 	final FIELD_PROJECT = 'Project'
 	final FIELD_CATEGORY = 'Category'
-	final FIELD_DESCRIPTION = 'Description'
-	final FIELD_ESTIMATE = 'Schätzung in PT'
+	final FIELD_DESCRIPTION = 'Summary'
+	final FIELD_ESTIMATE = 'Estimate'
 	final FIELD_PRIORITY = 'Priority'
 	final FIELD_STATE = 'Status'
-	final FIELD_USER = 'Assigned To'
+	final FIELD_USER = 'Assigned'
 	final FIELD_IGNORE = 'ignore on skramboord'
 
 	final CSV_DATA_FIELDS = [

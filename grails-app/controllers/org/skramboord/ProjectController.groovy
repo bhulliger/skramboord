@@ -98,9 +98,9 @@ class ProjectController extends BaseController {
 	}
 
 	def edit = {
-		flash.project = Project.get(params.project)
+		flash.project = getProject()
 		if (project) {
-
+			def project = Project.get(flash.project.id)
 			if (projectEditPermission(session.user, flash.project)) {
 				flash.projectEdit = flash.project
 			} else {
@@ -115,8 +115,9 @@ class ProjectController extends BaseController {
 	 * Project edit action
 	 */
 	def update = {
-		flash.project = Project.get(params.projectId)
+		flash.project = getProject()
 		if (flash.project) {
+			def project = Project.get(flash.project.id)
 			if (projectEditPermission(session.user, flash.project)) {
 				flash.project.name = params.projectName
 				flash.project.taskNumberingEnabled = params.projectTaskNumberingEnabled != null ? Boolean.valueOf(params.projectTaskNumberingEnabled) : false

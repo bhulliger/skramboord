@@ -30,7 +30,6 @@ import twitter4j.http.RequestToken;
 
 class TaskController extends BaseController {
 	def twitterService
-	def csvParser
 
 	def index = {
 		redirect(controller:'task', action:'list')

@@ -25,6 +25,8 @@ import org.grails.plugins.csv.CSVMapReader;
 abstract class BaseController {
 	def springSecurityService
 	
+	def csvParser
+
 	def beforeInterceptor = [action:this.&doBefore]
 	
 	def doBefore() {

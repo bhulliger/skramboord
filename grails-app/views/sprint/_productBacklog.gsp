@@ -41,22 +41,48 @@
 	function openNewTaskForm(){
 		$('#dialog-form').dialog('open');
 	}
+	function openImportTasksForm(){
+		$('#dialog-import-form').dialog('open');
+	}
+
+</g:if>
+<g:if test="${flash.importReport}">
+	$(function() {
+	    $("#dialog-csv-form").dialog({
+	        width: 500,
+	        modal: true,
+	        buttons: {
+	            '<g:message code="default.button.import.label"/>': function() {
+	                document.getElementById("formImportTasks").submit();
+	                $(this).dialog('close');
+	            },
+	            '<g:message code="default.button.cancel.label"/>': function() {
+	                location.reload(true);
+	                $(this).dialog('close');
+	            }
+	        }
+	    });
+	});
 </g:if>
 </script>
 
 <div>
+	<g:render template="../task/importTasksReport" model="['controller':'sprint', 'fwdTo' : 'sprint']"/>
 	<g:if test="${flash.taskEdit}">
 		<g:render template="../task/formEditTask" model="['fwdTo': 'sprint']"/>
 	</g:if>
 	<g:render template="../task/formNewTask" model="['fwdTo': 'sprint', 'target': 'backlog']"/>
+	<g:render template="../task/formImportTasks" model="['controller':'sprint','fwdTo': 'sprint', 'target': 'backlog']"/>
 
 	<div class="buttons">
 		<span class="button">
 			<g:if test="${flash.teammate}">
 				<g:actionSubmit class="add" onclick="openNewTaskForm();" value="${message(code:'task.createTask')}"/>
+				<g:actionSubmit class="import" onclick="openImportTasksForm();" value="${message(code:'task.importTasks')}"/>
 			</g:if>
 		</span>
 	</div>
+	
 	
 	<div class="clear"></div>
 	

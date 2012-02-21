@@ -159,6 +159,10 @@ class SprintController extends BaseController {
 		redirect(mapping: 'sprint', action: 'list', params:[project: flash.project.id])
 	}
 
+	def importCSV = {
+		return importCSVTaskFile(params.fwd, getProject(), getSprint())
+	}
+
 	/**
 	 * Sets a new scrum master.
 	 */

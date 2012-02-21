@@ -19,7 +19,7 @@
 </script>
 
 <div id="dialog-import-form" title="${message(code:'task.formNameImportTasks')}" class="form">
-	<g:form url="[ controller: 'task', action: 'importCSV', params: [ fwdTo: fwdTo, target: target, project: flash.project.id, sprint: flash.sprint.id ]]" name='formImportTasks' enctype="multipart/form-data" method="post">
+	<g:form url="[ controller: controller, action: 'importCSV', params: [ fwdTo: fwdTo, target: target, project: flash.project.id, sprint: flash.sprint?.id ]]" name='formImportTasks' enctype="multipart/form-data" method="post">
 		<fieldset>
 			<input type="file" name="cvsFile" id="cvsFile" />
 		</fieldset>

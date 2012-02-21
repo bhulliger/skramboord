@@ -68,7 +68,7 @@ abstract class BaseParser {
 	}
 	
 	def getUser(username, field) throws InvalidPropertyException {
-		if (User.findByUsername(username) == null) {
+		if (!username.empty && User.findByUsername(username) == null) {
 			throw new InvalidPropertyException(field)
 		} else {
 			return User.findByUsername(username)

@@ -1,7 +1,7 @@
-import org.skramboord.utils.csv.CustomMantisParser;
+import org.skramboord.utils.csv.ExampleParser;
 
 beans = {
-    csvParser(org.skramboord.utils.csv.CustomMantisParser){
+    csvParser(org.skramboord.utils.csv.ExampleParser){
         nameColumn = "Id"
     }
 }

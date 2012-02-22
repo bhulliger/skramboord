@@ -231,17 +231,19 @@ $("#productBacklog").hide();
 		<g:render template="formImportTasks" model="['controller':'task','fwdTo': 'sprint', 'target': 'backlog']"/>
 	</g:elseif>
 
-	<g:if test="${flash.sprint.isSprintActive()}">
-		<div class="buttons">
-			<span class="button">
+	
+	<div class="buttons">
+		<span class="button">
+			<g:if test="${flash.sprint.isSprintActive()}">
 				<g:if test="${flash.teammate}">
 					<g:actionSubmit class="add" onclick="openNewTaskForm();" value="${message(code:'task.createTask')}"/>
+					<g:actionSubmit class="import" onclick="openImportTasksForm();" value="${message(code:'task.importTasks')}"/>
 				</g:if>
-				<g:actionSubmit class="import" onclick="openImportTasksForm();" value="${message(code:'task.importTasks')}"/>
-				<g:actionSubmit class="table" onclick="toggleProductBacklog();" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}" />
-			</span>
+			</g:if>
+			<g:actionSubmit class="table" onclick="toggleProductBacklog();" value="${message(code:'project.backlog.button', args: [flash.projectBacklog.size()])}" />
+			
+		</span>
 	</div>
-	</g:if>
 	
 	<div class="clear"></div>
 	
